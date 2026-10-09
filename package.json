@@ -1,0 +1,19 @@
+{
+  "name": "mundo-a-la-carta-gestion-empleados",
+  "version": "1.0.0",
+  "description": "Sistema de Gestión de Empleados (Mundo a la Carta) - Arquitectura modular JavaScript basada en prototipo de pantallas",
+  "main": "js/app.js",
+  "scripts": {
+    "start": "npx serve .",
+    "dev": "npx live-server --port=3000 --entry-file=index.html"
+  },
+  "keywords": [
+    "javascript",
+    "spa",
+    "empleados",
+    "recursos-humanos",
+    "reglas-de-negocio"
+  ],
+  "author": "Mundo a la Carta",
+  "license": "MIT"
+}

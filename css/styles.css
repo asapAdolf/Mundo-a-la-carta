@@ -1,0 +1,253 @@
+/* ==========================================================================
+   ESTILOS PRINCIPALES - SISTEMA DE GESTIÓN DE EMPLEADOS
+   Mundo a la Carta
+   ========================================================================== */
+
+:root {
+  --primary-orange: #ff8c00;
+  --secondary-orange: #ffa500;
+  --accent-orange: #ff7700;
+  --bg-orange-light: #fff7ed;
+  --border-orange: #fed7aa;
+  
+  --emerald-primary: #059669;
+  --emerald-dark: #047857;
+  --emerald-bg: #ecfdf5;
+  --emerald-border: #a7f3d0;
+  
+  --blue-primary: #2563eb;
+  --blue-dark: #1d4ed8;
+  --blue-bg: #eff6ff;
+  --blue-border: #bfdbfe;
+  
+  --gray-50: #f9fafb;
+  --gray-100: #f3f4f6;
+  --gray-200: #e5e7eb;
+  --gray-400: #9ca3af;
+  --gray-600: #4b5563;
+  --gray-700: #374151;
+  --gray-800: #1f2937;
+  --gray-900: #111827;
+  
+  --danger: #dc2626;
+  --danger-bg: #fef2f2;
+  
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+  
+  --shadow-card: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+  --shadow-widget: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  background-color: #f3f4f6;
+  color: var(--gray-800);
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+.bg-wave {
+  background: linear-gradient(135deg, var(--primary-orange) 0%, var(--secondary-orange) 100%);
+}
+
+/* Pantallas SPA */
+.screen-content {
+  display: none;
+  animation: fadeIn 0.25s ease-in-out;
+}
+
+.screen-content.active {
+  display: grid;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Estilos de inputs personalizados */
+.input-field {
+  background-color: var(--bg-orange-light);
+  border: 1px solid var(--border-orange);
+  color: var(--gray-800);
+  border-radius: var(--radius-full);
+  padding: 0.55rem 1.25rem;
+  font-size: 0.875rem;
+  transition: all 0.2s ease;
+  width: 100%;
+}
+
+.input-field:focus {
+  outline: none;
+  border-color: var(--accent-orange);
+  box-shadow: 0 0 0 3px rgba(255, 140, 0, 0.2);
+}
+
+.input-field.input-error {
+  border-color: var(--danger);
+  background-color: var(--danger-bg);
+}
+
+/* Selector de empleado en barra de estado */
+.employee-selector {
+  border: 1px solid var(--border-orange);
+  background: white;
+  font-size: 0.75rem;
+  padding: 0.25rem 0.75rem;
+  border-radius: var(--radius-full);
+  color: var(--gray-700);
+  cursor: pointer;
+  outline: none;
+}
+
+/* Botones con micro-interacciones */
+.btn-primary {
+  background-color: var(--primary-orange);
+  color: white;
+  font-weight: 600;
+  padding: 0.55rem 2rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(255, 140, 0, 0.3);
+}
+
+.btn-primary:hover {
+  background-color: #ea580c;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 12px -2px rgba(255, 140, 0, 0.4);
+}
+
+.btn-secondary {
+  background-color: #ffedd5;
+  color: #9a3412;
+  font-weight: 600;
+  padding: 0.55rem 2rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: #fed7aa;
+  transform: translateY(-1px);
+}
+
+.btn-danger {
+  background-color: #ef4444;
+  color: white;
+  font-weight: 600;
+  padding: 0.55rem 2rem;
+  border-radius: var(--radius-full);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 6px -1px rgba(239, 68, 68, 0.3);
+}
+
+.btn-danger:hover {
+  background-color: #dc2626;
+  transform: translateY(-1px);
+}
+
+/* Diálogo Modal de Confirmación para Baja */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background-color: rgba(17, 24, 39, 0.6);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s ease-in-out;
+}
+
+.modal-backdrop.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-dialog {
+  background: white;
+  border-radius: 1.25rem;
+  max-width: 28rem;
+  width: 90%;
+  padding: 1.75rem;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.25);
+  transform: scale(0.95);
+  transition: transform 0.2s ease-in-out;
+}
+
+.modal-backdrop.open .modal-dialog {
+  transform: scale(1);
+}
+
+/* Toast de retroalimentación */
+#toast-container {
+  position: fixed;
+  top: 1.5rem;
+  right: 1.5rem;
+  z-index: 110;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  pointer-events: none;
+}
+
+.toast {
+  pointer-events: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  background: white;
+  color: var(--gray-800);
+  padding: 0.85rem 1.25rem;
+  border-radius: var(--radius-lg);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  border-left: 4px solid var(--primary-orange);
+  font-size: 0.875rem;
+  animation: slideIn 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  min-width: 280px;
+}
+
+.toast.toast-success {
+  border-left-color: var(--emerald-primary);
+}
+
+.toast.toast-error {
+  border-left-color: var(--danger);
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateX(30px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
