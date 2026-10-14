@@ -4,8 +4,8 @@
   "description": "Sistema de Gestión de Empleados (Mundo a la Carta) - Arquitectura modular JavaScript basada en prototipo de pantallas",
   "main": "js/app.js",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx live-server --port=3000 --entry-file=index.html"
+    "start": "node server.js",
+    "dev": "node server.js"
   },
   "keywords": [
     "javascript",
