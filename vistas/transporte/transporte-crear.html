@@ -11,6 +11,7 @@
 </head>
 <body class="pantalla pantalla--formulario" data-raiz="../..">
 <div class="app">
+  <!-- REGLA RN_79 y RN_80: Identidad visual corporativa y eslogan -->
   <header class="hero bg-wave">
     <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
@@ -46,8 +47,12 @@
     <div class="cuerpo-lateral">
       <nav class="lateral" aria-label="Acciones"><a href="transporte-crear.html" title="Alta transporte" class="activo"><i class="fa-solid fa-circle-plus"></i></a><a href="transporte-modificar.html" title="Modificar transporte" class=""><i class="fa-solid fa-pen-to-square"></i></a><a href="transporte-baja.html" title="Baja transporte" class=""><i class="fa-solid fa-trash-can"></i></a><a href="transporte-consulta.html" title="Consulta transporte" class=""><i class="fa-solid fa-magnifying-glass"></i></a></nav>
       <div class="principal">
-        <form class="tarjeta-pantalla" data-validar data-exito="unidad de transporte creado con éxito" data-ir="transporte-consulta.html" novalidate>
+        <form class="tarjeta-pantalla" data-validar data-exito="Unidad de transporte creada con éxito" data-ir="transporte-consulta.html" novalidate>
+          
+          <!-- REGLA RN_185: Estado inicial automático como "Disponible" y no editable -->
           <div class="form-cabecera"><div class="folio"><span>Folio de la unidad <i class="fa-solid fa-circle-info dato-info" title="Generado por el sistema"></i></span><strong>Automático</strong></div></div>
+          
+          <!-- REGLAS DE ALTA: RN_189 (VIN de 17 caracteres), RN_190 (Capacidad entera), RN_199 (Campos obligatorios), RN_200 (Folio de Póliza), RN_201 (Vigencia de póliza/tarjeta), RN_202 (Estatus de verificación), RN_188 (Equipamiento inmersivo opcional) -->
           <div class="form-grid">
 <div class="campo-grupo"><label for="vin">Busca Número de serie (VIN) <span class="req">*</span></label><input class="input-custom" type="text" id="vin" name="vin" required maxlength="17" placeholder="Número de serie"><small class="ayuda">Texto · máx. 17 caracteres</small></div>
 <div class="campo-grupo"><label for="equipamiento-inmersivo">Equipamiento Inmersivo</label><input class="input-custom" type="text" id="equipamiento-inmersivo" name="equipamiento-inmersivo" maxlength="150"><small class="ayuda">Texto · máx. 150 caracteres</small></div>

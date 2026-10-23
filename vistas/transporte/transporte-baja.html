@@ -11,6 +11,7 @@
 </head>
 <body class="pantalla pantalla--formulario" data-raiz="../..">
 <div class="app">
+  <!-- REGLA RN_79 y RN_80: Identidad visual corporativa en el encabezado -->
   <header class="hero bg-wave">
     <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
@@ -49,6 +50,7 @@
         <form class="tarjeta-pantalla"  novalidate>
           <div class="form-cabecera"><div class="folio"><span>Estado <i class="fa-solid fa-circle-info dato-info"></i></span><strong>Activo</strong></div><div class="folio"><span>Folio de la unidad <i class="fa-solid fa-circle-info dato-info" title="Generado por el sistema"></i></span><strong>000123</strong></div></div>
           <div class="form-grid">
+<!-- REGLA RN_196: Validación de que solo se puede dar de baja si el estado actual es diferente de "Baja" -->
 <div class="campo-grupo"><label for="vin">Busca Número de serie (VIN) <span class="req">*</span></label><input class="input-custom" type="text" id="vin" name="vin" required value="1HGCM82633A004352" maxlength="17" placeholder="Número de serie"><small class="ayuda">Texto · máx. 17 caracteres</small></div>
 <div class="campo-grupo"><label for="equipamiento-inmersivo">Equipamiento Inmersivo <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="equipamiento-inmersivo" name="equipamiento-inmersivo" readonly value="Pantallas 4K y audio envolvente" maxlength="150"></div>
 <div class="campo-grupo"><label for="marca">Marca <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="marca" name="marca" readonly value="Mercedes-Benz" maxlength="50"></div>
@@ -63,6 +65,7 @@
 <div class="campo-grupo"><label for="estatus-de-verificacion-vehicular">Estatus de Verificación Vehicular <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="estatus-de-verificacion-vehicular" name="estatus-de-verificacion-vehicular" readonly value="Vigente" maxlength="30"></div>
           </div>
           <div class="form-pie">
+            <!-- REGLA RN_207 y RN_208: Botones disparadores de Baja Temporal y Baja Definitiva -->
             <div class="acciones "><button type="button" class="btn-secondary" data-modal-abrir="modal-temporal">Baja temporal</button>
 <button type="button" class="btn-danger" data-modal-abrir="modal-definitiva">Baja definitiva</button>
 <button type="button" class="btn-secondary" data-ir="transporte-crear.html">Regresar</button></div>
@@ -75,22 +78,39 @@
 
   <footer class="pie">Baja transporte</footer>
 </div>
+
+<!-- REGLA RN_197 y RN_207: Modal de confirmación para Baja Temporal (Requiere capturar motivo obligatorio) -->
 <div class="modal-backdrop" id="modal-temporal" role="dialog" aria-modal="true" aria-labelledby="modal-temporal-t">
   <div class="modal-dialog">
     <h2 id="modal-temporal-t" style="margin:0 0 .5rem;font-size:1.25rem;font-weight:800">Confirmar baja temporal</h2>
-    <p style="margin:0 0 1.25rem;color:#4b5563">El registro de unidad de transporte quedará <strong>inactivo</strong> y podrá reactivarse más adelante.</p>
+    <p style="margin:0 0 1.25rem;color:#4b5563">El registro de unidad de transporte quedará <strong>inactivo (En Mantenimiento)</strong> y podrá reactivarse más adelante.</p>
+    <!-- Campo obligatorio para el motivo de la baja temporal -->
+    <div class="campo-grupo" style="margin-bottom: 1.25rem;">
+      <label for="motivo-baja-temporal" style="display:block; margin-bottom:0.3rem; font-size:0.9rem; font-weight:600;">Motivo de entrada a taller / mantenimiento <span class="req" style="color:red;">*</span></label>
+      <textarea class="input-custom" id="motivo-baja-temporal" name="motivo-baja-temporal" rows="3" required placeholder="Especifique el motivo de la baja temporal..." style="width:100%; box-sizing: border-box;"></textarea>
+      <small class="error-mensaje" id="error-motivo-temp" style="color:red; display:none;">El motivo es obligatorio para procesar la baja.</small>
+    </div>
     <div class="acciones acciones--fin" style="margin-top:0"><button type="button" class="btn-secondary" data-modal-cerrar>Cancelar</button>
 <button type="button" class="btn-primary" data-ir="transporte-consulta.html" data-toast="Baja temporal registrada" data-toast-tipo="success" data-modal-cerrar>Confirmar baja temporal</button></div>
   </div>
 </div>
+
+<!-- REGLA RN_197 y RN_208: Modal de confirmación para Baja Definitiva (Requiere capturar causa de retiro obligatoria) -->
 <div class="modal-backdrop" id="modal-definitiva" role="dialog" aria-modal="true" aria-labelledby="modal-definitiva-t">
   <div class="modal-dialog">
     <h2 id="modal-definitiva-t" style="margin:0 0 .5rem;font-size:1.25rem;font-weight:800">Confirmar baja definitiva</h2>
-    <p style="margin:0 0 1.25rem;color:#4b5563">Esta acción es <strong>permanente</strong>. ¿Deseas dar de baja definitivamente a unidad de transporte?</p>
+    <p style="margin:0 0 1.25rem;color:#4b5563">Esta acción es <strong>permanente (Retirado / Sin Servicio)</strong>. ¿Deseas dar de baja definitivamente a unidad de transporte?</p>
+    <!-- Campo obligatorio para el motivo de la baja definitiva -->
+    <div class="campo-grupo" style="margin-bottom: 1.25rem;">
+      <label for="motivo-baja-definitiva" style="display:block; margin-bottom:0.3rem; font-size:0.9rem; font-weight:600;">Causa del retiro definitivo <span class="req" style="color:red;">*</span></label>
+      <textarea class="input-custom" id="motivo-baja-definitiva" name="motivo-baja-definitiva" rows="3" required placeholder="Especifique la causa (ej. venta, siniestro, chatarrización)..." style="width:100%; box-sizing: border-box;"></textarea>
+      <small class="error-mensaje" id="error-motivo-def" style="color:red; display:none;">La causa del retiro es obligatoria.</small>
+    </div>
     <div class="acciones acciones--fin" style="margin-top:0"><button type="button" class="btn-secondary" data-modal-cerrar>Cancelar</button>
 <button type="button" class="btn-danger" data-ir="transporte-consulta.html" data-toast="Baja definitiva procesada" data-toast-tipo="success" data-modal-cerrar>Baja definitiva</button></div>
   </div>
 </div>
+
 <div id="toast-container" aria-live="polite"></div>
     <script src="../../js/pantallas-indice.js"></script>
     <script src="../../js/comun.js"></script>

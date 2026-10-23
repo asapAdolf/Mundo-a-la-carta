@@ -11,6 +11,7 @@
 </head>
 <body class="pantalla pantalla--formulario" data-raiz="../..">
 <div class="app">
+  <!-- REGLA RN_79 y RN_80: Identidad visual corporativa y eslogan -->
   <header class="hero bg-wave">
     <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
@@ -46,21 +47,25 @@
     <div class="cuerpo-lateral">
       <nav class="lateral" aria-label="Acciones"><a href="transporte-crear.html" title="Alta transporte" class=""><i class="fa-solid fa-circle-plus"></i></a><a href="transporte-modificar.html" title="Modificar transporte" class="activo"><i class="fa-solid fa-pen-to-square"></i></a><a href="transporte-baja.html" title="Baja transporte" class=""><i class="fa-solid fa-trash-can"></i></a><a href="transporte-consulta.html" title="Consulta transporte" class=""><i class="fa-solid fa-magnifying-glass"></i></a></nav>
       <div class="principal">
+        <!-- REGLA RN_194: El guardado de cambios requiere confirmación obligatoria mediante ventana emergente -->
+        <!-- REGLA RN_195: Al presionar "Regresar" con modificaciones no guardadas, se solicita confirmación -->
         <form class="tarjeta-pantalla" data-validar data-exito="Cambios guardados con éxito" data-ir="transporte-consulta.html" novalidate>
           <div class="form-cabecera"><div class="folio"><span>Estado <i class="fa-solid fa-circle-info dato-info"></i></span><strong>Activo</strong></div><div class="folio"><span>Folio de la unidad <i class="fa-solid fa-circle-info dato-info" title="Generado por el sistema"></i></span><strong>000123</strong></div></div>
+          
+          <!-- REGLA RN_193 / RN_205: Durante el flujo de Cambios, el Número de Serie actúa como identificador único y no puede ser editado -->
           <div class="form-grid">
-<div class="campo-grupo"><label for="vin">Busca Número de serie (VIN) <span class="req">*</span></label><input class="input-custom" type="text" id="vin" name="vin" required value="1HGCM82633A004352" maxlength="17" placeholder="Número de serie"><small class="ayuda">Texto · máx. 17 caracteres</small></div>
+<div class="campo-grupo"><label for="vin">Busca Número de serie (VIN) </label><input class="input-custom" type="text" id="vin" name="vin" required value="1HGCM82633A004352" maxlength="17" placeholder="Número de serie"><small class="ayuda">Texto · máx. 17 caracteres</small></div>
 <div class="campo-grupo"><label for="equipamiento-inmersivo">Equipamiento Inmersivo</label><input class="input-custom" type="text" id="equipamiento-inmersivo" name="equipamiento-inmersivo" value="Pantallas 4K y audio envolvente" maxlength="150"><small class="ayuda">Texto · máx. 150 caracteres</small></div>
-<div class="campo-grupo"><label for="marca">Marca <span class="req">*</span></label><input class="input-custom" type="text" id="marca" name="marca" required value="Mercedes-Benz" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
-<div class="campo-grupo"><label for="capacidad">Capacidad <span class="req">*</span></label><input class="input-custom" type="text" id="capacidad" name="capacidad" required value="18" inputmode="numeric" pattern="[0-9]*" maxlength="5"><small class="ayuda">Numérico entero · máx. 5 dígitos</small></div>
-<div class="campo-grupo"><label for="modelo">Modelo <span class="req">*</span></label><input class="input-custom" type="text" id="modelo" name="modelo" required value="Sprinter 2024" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
-<div class="campo-grupo"><label for="folio-de-poliza-de-seguro">Folio de Póliza de seguro <span class="req">*</span></label><input class="input-custom" type="text" id="folio-de-poliza-de-seguro" name="folio-de-poliza-de-seguro" required value="POL-2026-0457" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
-<div class="campo-grupo"><label for="placas">Placas <span class="req">*</span></label><input class="input-custom" type="text" id="placas" name="placas" required value="ABC-123-D" maxlength="15"><small class="ayuda">Texto · máx. 15 caracteres</small></div>
-<div class="campo-grupo"><label for="vigencia-de-poliza">Vigencia de Póliza <span class="req">*</span></label><input class="input-custom" type="date" id="vigencia-de-poliza" name="vigencia-de-poliza" required value="2027-03-15"></div>
-<div class="campo-grupo"><label for="tipo-de-vehiculo">Tipo de Vehículo <span class="req">*</span></label><input class="input-custom" type="text" id="tipo-de-vehiculo" name="tipo-de-vehiculo" required value="Van" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
-<div class="campo-grupo"><label for="vigencia-de-tarjeta-de-circulacion">Vigencia de Tarjeta de Circulación <span class="req">*</span></label><input class="input-custom" type="date" id="vigencia-de-tarjeta-de-circulacion" name="vigencia-de-tarjeta-de-circulacion" required value="2027-01-20"></div>
-<div class="campo-grupo"><label for="color">Color <span class="req">*</span></label><input class="input-custom" type="text" id="color" name="color" required value="Blanco" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
-<div class="campo-grupo"><label for="estatus-de-verificacion-vehicular">Estatus de Verificación Vehicular <span class="req">*</span></label><input class="input-custom" type="text" id="estatus-de-verificacion-vehicular" name="estatus-de-verificacion-vehicular" required value="Vigente" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
+<div class="campo-grupo"><label for="marca">Marca</label><input class="input-custom" type="text" id="marca" name="marca" required value="Mercedes-Benz" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
+<div class="campo-grupo"><label for="capacidad">Capacidad </label><input class="input-custom" type="text" id="capacidad" name="capacidad" required value="18" inputmode="numeric" pattern="[0-9]*" maxlength="5"><small class="ayuda">Numérico entero · máx. 5 dígitos</small></div>
+<div class="campo-grupo"><label for="modelo">Modelo </label><input class="input-custom" type="text" id="modelo" name="modelo" required value="Sprinter 2024" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
+<div class="campo-grupo"><label for="folio-de-poliza-de-seguro">Folio de Póliza de seguro </label><input class="input-custom" type="text" id="folio-de-poliza-de-seguro" name="folio-de-poliza-de-seguro" required value="POL-2026-0457" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
+<div class="campo-grupo"><label for="placas">Placas </label><input class="input-custom" type="text" id="placas" name="placas" required value="ABC-123-D" maxlength="15"><small class="ayuda">Texto · máx. 15 caracteres</small></div>
+<div class="campo-grupo"><label for="vigencia-de-poliza">Vigencia de Póliza </label><input class="input-custom" type="date" id="vigencia-de-poliza" name="vigencia-de-poliza" required value="2027-03-15"></div>
+<div class="campo-grupo"><label for="tipo-de-vehiculo">Tipo de Vehículo </label><input class="input-custom" type="text" id="tipo-de-vehiculo" name="tipo-de-vehiculo" required value="Van" maxlength="50"><small class="ayuda">Texto · máx. 50 caracteres</small></div>
+<div class="campo-grupo"><label for="vigencia-de-tarjeta-de-circulacion">Vigencia de Tarjeta de Circulación </label><input class="input-custom" type="date" id="vigencia-de-tarjeta-de-circulacion" name="vigencia-de-tarjeta-de-circulacion" required value="2027-01-20"></div>
+<div class="campo-grupo"><label for="color">Color </label><input class="input-custom" type="text" id="color" name="color" required value="Blanco" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
+<div class="campo-grupo"><label for="estatus-de-verificacion-vehicular">Estatus de Verificación Vehicular </label><input class="input-custom" type="text" id="estatus-de-verificacion-vehicular" name="estatus-de-verificacion-vehicular" required value="Vigente" maxlength="30"><small class="ayuda">Texto · máx. 30 caracteres</small></div>
           </div>
           <div class="form-pie">
             <div class="acciones "><button type="submit" class="btn-primary">Guardar cambios</button>

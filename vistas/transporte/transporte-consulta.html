@@ -11,6 +11,7 @@
 </head>
 <body class="pantalla pantalla--formulario" data-raiz="../..">
 <div class="app">
+  <!-- REGLA RN_79 y RN_80: Identidad visual corporativa y eslogan -->
   <header class="hero bg-wave">
     <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
@@ -48,6 +49,8 @@
       <div class="principal">
         <form class="tarjeta-pantalla"  novalidate>
           <div class="form-cabecera"><div class="folio"><span>Estado <i class="fa-solid fa-circle-info dato-info"></i></span><strong>Activo</strong></div><div class="folio"><span>Folio de la unidad <i class="fa-solid fa-circle-info dato-info" title="Generado por el sistema"></i></span><strong>000123</strong></div></div>
+          
+          <!-- REGLA RN_192 y RN_206: La consulta se realiza por Número de Serie (VIN) y todos los campos se muestran bloqueados en modo lectura -->
           <div class="form-grid">
 <div class="campo-grupo"><label for="vin">Busca Número de serie (VIN) <span class="req">*</span></label><input class="input-custom" type="text" id="vin" name="vin" required value="1HGCM82633A004352" maxlength="17" placeholder="Número de serie"><small class="ayuda">Texto · máx. 17 caracteres</small></div>
 <div class="campo-grupo"><label for="equipamiento-inmersivo">Equipamiento Inmersivo <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="equipamiento-inmersivo" name="equipamiento-inmersivo" readonly value="Pantallas 4K y audio envolvente" maxlength="150"></div>
@@ -64,7 +67,6 @@
           </div>
           <div class="form-pie">
             <div class="acciones "><button type="button" class="btn-secondary" data-ir="transporte-crear.html">Regresar</button></div>
-            
           </div>
         </form>
       </div>
