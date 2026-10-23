@@ -26,18 +26,34 @@
   color: #fff;
   background: var(--secondary-orange);
 }
-.panel-comanda-cab button { color: #fff; background: none; border: 0; cursor: pointer; font-weight: 800; font-size: 1rem; }
+.panel-comanda-cab button {
+  color: #fff;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  font-weight: 800;
+  font-size: 1rem;
+  padding: 0.15rem 0.45rem;
+  border-radius: 0.4rem;
+  transition: background 0.15s ease;
+}
+.panel-comanda-cab button:hover:not(:disabled) { background: rgba(255, 255, 255, 0.2); }
+.panel-comanda-cab button:disabled { opacity: 0.45; cursor: default; }
 
 .categorias { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; padding: 1rem; }
-.categoria {
+.categoria,
+.platillo-btn {
   display: flex;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  gap: 0.25rem;
   min-height: 4.2rem;
   padding: 0.5rem;
   font: inherit;
   font-weight: 700;
   font-size: 0.8rem;
+  text-align: center;
   color: #1f2937;
   background: #fed7aa;
   border: 0;
@@ -45,8 +61,13 @@
   cursor: pointer;
   transition: all 0.15s ease;
 }
-.categoria:hover { background: #fdba74; transform: translateY(-2px); }
-.categoria.seleccionada { background: var(--naranja-fuerte); color: #fff; }
+.categoria:hover,
+.platillo-btn:hover { background: #fdba74; transform: translateY(-2px); }
+.categoria.seleccionada,
+.platillo-btn.seleccionada { background: var(--naranja-fuerte); color: #fff; }
+.platillo-btn .platillo-nombre { line-height: 1.2; }
+.platillo-btn .platillo-precio { font-size: 0.75rem; font-weight: 800; color: #9a3412; }
+.platillo-btn:hover .platillo-precio { color: #7c2d12; }
 
 .tabla-comanda { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
 .tabla-comanda th { padding: 0.6rem 0.5rem; font-weight: 700; background: #fed7aa; text-align: center; }
