@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Baja souvenir</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+</head>
+<body class="pantalla pantalla--formulario" data-raiz="../..">
+<div class="app">
+  <header class="hero bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="souvenir-crear.html">Souvenir</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="../carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Baja<br>souvenir</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <div class="cuerpo-lateral">
+      <nav class="lateral" aria-label="Acciones"><a href="souvenir-crear.html" title="Crear souvenir" class=""><i class="fa-solid fa-circle-plus"></i></a><a href="souvenir-modificar.html" title="Modificar souvenir" class=""><i class="fa-solid fa-pen-to-square"></i></a><a href="souvenir-baja.html" title="Baja souvenir" class="activo"><i class="fa-solid fa-trash-can"></i></a><a href="souvenir-consulta.html" title="Consulta souvenir" class=""><i class="fa-solid fa-magnifying-glass"></i></a></nav>
+      <div class="principal">
+        <form class="tarjeta-pantalla"  novalidate>
+          <div class="form-cabecera"><div class="folio"><span>Folio del souvenir <i class="fa-solid fa-circle-info dato-info" title="Generado por el sistema"></i></span><strong>000123</strong></div></div>
+          <div class="form-grid">
+<div class="campo-grupo"><label for="nombre">Nombre <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="nombre" name="nombre" readonly value="Taza UMAD" maxlength="150"></div>
+<div class="campo-grupo"><label for="precio-por-unidad">Precio por unidad <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="precio-por-unidad" name="precio-por-unidad" readonly value="180" inputmode="numeric" pattern="[0-9]*" maxlength="10"></div>
+<div class="campo-grupo"><label for="departamento">Departamento <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="departamento" name="departamento" readonly value="Artesanías" maxlength="50"></div>
+<div class="campo-grupo"><label for="clave-del-proveedor">Clave del proveedor <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="clave-del-proveedor" name="clave-del-proveedor" readonly value="10234" inputmode="numeric" pattern="[0-9]*" maxlength="5"></div>
+<div class="campo-grupo campo-grupo--ancho"><label for="descripcion">Descripción <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><textarea class="input-custom" id="descripcion" name="descripcion" readonly maxlength="300" placeholder="">Taza de talavera pintada a mano</textarea></div>
+          </div>
+          <div class="form-pie">
+            <div class="acciones "><button type="button" class="btn-secondary" data-modal-abrir="modal-temporal">Baja temporal</button>
+<button type="button" class="btn-danger" data-modal-abrir="modal-definitiva">Baja definitiva</button>
+<button type="button" class="btn-secondary" data-ir="souvenir-crear.html">Regresar</button></div>
+            
+          </div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">Baja souvenir</footer>
+</div>
+<div class="modal-backdrop" id="modal-temporal" role="dialog" aria-modal="true" aria-labelledby="modal-temporal-t">
+  <div class="modal-dialog">
+    <h2 id="modal-temporal-t" style="margin:0 0 .5rem;font-size:1.25rem;font-weight:800">Confirmar baja temporal</h2>
+    <p style="margin:0 0 1.25rem;color:#4b5563">El registro de souvenir quedará <strong>inactivo</strong> y podrá reactivarse más adelante.</p>
+    <div class="acciones acciones--fin" style="margin-top:0"><button type="button" class="btn-secondary" data-modal-cerrar>Cancelar</button>
+<button type="button" class="btn-primary" data-ir="souvenir-consulta.html" data-toast="Baja temporal registrada" data-toast-tipo="success" data-modal-cerrar>Confirmar baja temporal</button></div>
+  </div>
+</div>
+<div class="modal-backdrop" id="modal-definitiva" role="dialog" aria-modal="true" aria-labelledby="modal-definitiva-t">
+  <div class="modal-dialog">
+    <h2 id="modal-definitiva-t" style="margin:0 0 .5rem;font-size:1.25rem;font-weight:800">Confirmar baja definitiva</h2>
+    <p style="margin:0 0 1.25rem;color:#4b5563">Esta acción es <strong>permanente</strong>. ¿Deseas dar de baja definitivamente a souvenir?</p>
+    <div class="acciones acciones--fin" style="margin-top:0"><button type="button" class="btn-secondary" data-modal-cerrar>Cancelar</button>
+<button type="button" class="btn-danger" data-ir="souvenir-consulta.html" data-toast="Baja definitiva procesada" data-toast-tipo="success" data-modal-cerrar>Baja definitiva</button></div>
+  </div>
+</div>
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+</body>
+</html>

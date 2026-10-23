@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Catálogo de pantallas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="../css/layout.css">
+    <link rel="stylesheet" href="../css/pantallas/catalogo.css">
+</head>
+<body class="pantalla pantalla--catalogo" data-raiz="..">
+<div class="app">
+  <header class="hero hero--compacto bg-wave">
+    <div class="topbar"><a class="marca" href="catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        
+        <a href="catalogo.html">Inicio</a>
+        <a href="carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Catálogo de<br>pantallas</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <p class="catalogo-intro">Índice de las 55 pantallas del sistema (pantallas.pdf), organizadas por módulo en sus carpetas correspondientes.</p>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="../index.html"><strong>Login / Cuenta</strong><small>index.html</small></a>
+        <a class="pantalla-enlace" href="auth/acceso-login.html"><strong>Acceso · Inicio de sesión</strong><small>vistas/auth/acceso-login.html</small></a>
+        <a class="pantalla-enlace" href="auth/acceso-registro.html"><strong>Acceso · Crear cuenta</strong><small>vistas/auth/acceso-registro.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-users"></i>Usuarios</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="usuarios/usuario-crear.html"><strong>Crear usuario</strong><small>vistas/usuarios/usuario-crear.html</small></a>
+        <a class="pantalla-enlace" href="usuarios/usuario-modificar.html"><strong>Modificar usuario</strong><small>vistas/usuarios/usuario-modificar.html</small></a>
+        <a class="pantalla-enlace" href="usuarios/usuario-baja.html"><strong>Baja usuario</strong><small>vistas/usuarios/usuario-baja.html</small></a>
+        <a class="pantalla-enlace" href="usuarios/usuario-consulta.html"><strong>Consulta usuario</strong><small>vistas/usuarios/usuario-consulta.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-gift"></i>Souvenirs</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="souvenirs/souvenir-crear.html"><strong>Crear souvenir</strong><small>vistas/souvenirs/souvenir-crear.html</small></a>
+        <a class="pantalla-enlace" href="souvenirs/souvenir-modificar.html"><strong>Modificar souvenir</strong><small>vistas/souvenirs/souvenir-modificar.html</small></a>
+        <a class="pantalla-enlace" href="souvenirs/souvenir-baja.html"><strong>Baja souvenir</strong><small>vistas/souvenirs/souvenir-baja.html</small></a>
+        <a class="pantalla-enlace" href="souvenirs/souvenir-consulta.html"><strong>Consulta souvenir</strong><small>vistas/souvenirs/souvenir-consulta.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-user-tie"></i>Roles / empleados</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="empleados/rol-crear.html"><strong>Crear rol / empleado</strong><small>vistas/empleados/rol-crear.html</small></a>
+        <a class="pantalla-enlace" href="empleados/rol-modificar.html"><strong>Modificar rol / empleado</strong><small>vistas/empleados/rol-modificar.html</small></a>
+        <a class="pantalla-enlace" href="empleados/rol-baja.html"><strong>Baja rol / empleado</strong><small>vistas/empleados/rol-baja.html</small></a>
+        <a class="pantalla-enlace" href="empleados/rol-consulta.html"><strong>Consulta rol / empleado</strong><small>vistas/empleados/rol-consulta.html</small></a>
+        <a class="pantalla-enlace" href="empleados/empleados.html"><strong>Gestión de empleados (SPA interactiva)</strong><small>CU_PA_01–04 · vistas/empleados/empleados.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-van-shuttle"></i>Transporte</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="transporte/transporte-crear.html"><strong>Alta transporte</strong><small>vistas/transporte/transporte-crear.html</small></a>
+        <a class="pantalla-enlace" href="transporte/transporte-modificar.html"><strong>Modificar transporte</strong><small>vistas/transporte/transporte-modificar.html</small></a>
+        <a class="pantalla-enlace" href="transporte/transporte-baja.html"><strong>Baja transporte</strong><small>vistas/transporte/transporte-baja.html</small></a>
+        <a class="pantalla-enlace" href="transporte/transporte-consulta.html"><strong>Consulta transporte</strong><small>vistas/transporte/transporte-consulta.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-calendar-check"></i>Reservaciones</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="reservas/reservacion-crear.html"><strong>Alta de reservación</strong><small>PA_07_01_01</small></a>
+        <a class="pantalla-enlace" href="reservas/disponibilidad.html"><strong>Consultar disponibilidad</strong><small>PA_07_02_01</small></a>
+        <a class="pantalla-enlace" href="reservas/reservacion-resumen.html"><strong>Resumen de reservación</strong><small>PA_07_01_02</small></a>
+        <a class="pantalla-enlace" href="reservas/reservacion-modificar.html"><strong>Modificar reservación</strong><small>PA_07_01_03</small></a>
+        <a class="pantalla-enlace" href="reservas/reservacion-consultar.html"><strong>Consultar reservación</strong><small>PA_07_01_04</small></a>
+        <a class="pantalla-enlace" href="reservas/reservacion-cancelar.html"><strong>Cancelar reservación</strong><small>PA_07_06_01</small></a>
+        <a class="pantalla-enlace" href="reservas/reservacion-cancelar-devolucion.html"><strong>Cancelar reservación con devolución</strong><small>PA_07_05_01</small></a>
+        <a class="pantalla-enlace" href="reservas/recepcion-crear.html"><strong>Alta de recepción</strong><small>PA_07_03_01</small></a>
+        <a class="pantalla-enlace" href="reservas/recepcion-resumen.html"><strong>Resumen de recepción</strong><small>PA_07_03_02</small></a>
+        <a class="pantalla-enlace" href="reservas/recepcion-modificar.html"><strong>Modificar recepción</strong><small>PA_07_03_03</small></a>
+        <a class="pantalla-enlace" href="reservas/recepcion-consultar.html"><strong>Consultar recepción</strong><small>PA_07_03_04</small></a>
+        <a class="pantalla-enlace" href="reservas/recepcion-cancelar.html"><strong>Cancelar recepción</strong><small>PA_07_03_05</small></a>
+        <a class="pantalla-enlace" href="reservas/inmersion-crear.html"><strong>Alta de inmersión</strong><small>PA_07_04_01</small></a>
+        <a class="pantalla-enlace" href="reservas/inmersion-consultar.html"><strong>Consultar inmersión</strong><small>PA_07_04_02</small></a>
+        <a class="pantalla-enlace" href="reservas/inmersion-modificar.html"><strong>Modificar inmersión</strong><small>PA_07_04_03</small></a>
+        <a class="pantalla-enlace" href="reservas/recibo-reserva.html"><strong>Recibo de reserva</strong><small>vistas/reservas/recibo-reserva.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-utensils"></i>Carta y pagos</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="carta/carta.html"><strong>Carta</strong><small>vistas/carta/carta.html</small></a>
+        <a class="pantalla-enlace" href="carta/carrito.html"><strong>Carrito de compra</strong><small>vistas/carta/carrito.html</small></a>
+        <a class="pantalla-enlace" href="carta/checkout.html"><strong>Métodos de pago / checkout</strong><small>vistas/carta/checkout.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="ventas/vender-souvenir.html"><strong>Vender y pagar souvenirs</strong><small>vistas/ventas/vender-souvenir.html</small></a>
+        <a class="pantalla-enlace" href="ventas/cobro-efectivo.html"><strong>Cobro en efectivo</strong><small>vistas/ventas/cobro-efectivo.html</small></a>
+        <a class="pantalla-enlace" href="ventas/cobro-tarjeta.html"><strong>Cobro con tarjeta</strong><small>vistas/ventas/cobro-tarjeta.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="comandas/mesas.html"><strong>Mesas</strong><small>vistas/comandas/mesas.html</small></a>
+        <a class="pantalla-enlace" href="comandas/comanda-crear.html"><strong>Crear comanda</strong><small>PA_09_01_01</small></a>
+        <a class="pantalla-enlace" href="comandas/comanda-cancelar-aviso.html"><strong>Cancelar comanda (aviso)</strong><small>PA_09_02_01</small></a>
+        <a class="pantalla-enlace" href="comandas/comanda-cancelar-resumen.html"><strong>Resumen de cancelación</strong><small>PA_09_02_01</small></a>
+        <a class="pantalla-enlace" href="comandas/cancelar-comanda.html"><strong>Cancelar comanda (formulario gerente)</strong><small>PA_09_02_01 · vistas/comandas/cancelar-comanda.html</small></a>
+      </div>
+    </section>
+    <section class="modulo">
+      <h2><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</h2>
+      <div class="modulo-lista">
+        <a class="pantalla-enlace" href="compras/registrar-compra.html"><strong>Registrar compra</strong><small>CU_11</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-compra-buscar.html"><strong>Devolución de compra de souvenirs</strong><small>vistas/compras/devolucion-compra-buscar.html</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-compra-datos.html"><strong>Devolución de compra · Datos de la orden</strong><small>vistas/compras/devolucion-compra-datos.html</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-compra-completada.html"><strong>Devolución completada</strong><small>vistas/compras/devolucion-compra-completada.html</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-venta-buscar.html"><strong>Devolución de ventas de souvenirs</strong><small>CU_14_01</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-venta-autorizar.html"><strong>Autorizar o rechazar devolución</strong><small>CU_14_01_01</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-venta-autorizada.html"><strong>Devolución autorizada</strong><small>CU_14_01_02</small></a>
+        <a class="pantalla-enlace" href="compras/devolucion-venta-rechazada.html"><strong>Devolución rechazada</strong><small>CU_14_01_03</small></a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="pie">Catálogo de pantallas</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../js/pantallas-indice.js"></script>
+    <script src="../js/comun.js"></script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Carta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/carta.css">
+</head>
+<body class="pantalla pantalla--carta" data-raiz="../..">
+<div class="app">
+  <header class="hero hero--compacto bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="carta.html">Usuario</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <div class="carta-barra" style="position:relative">
+      <button type="button" class="carrito-boton" id="carrito-abrir" aria-label="Ver carrito"><i class="fa-solid fa-cart-shopping"></i><span class="contador-carrito" id="carrito-contador">0</span></button>
+      <aside class="carrito-panel" id="carrito-panel" aria-label="Carrito">
+        <div class="carrito-cab"><span>Descripción</span><span>Cantidad</span><span>Subtotal</span></div>
+        <div id="carrito-lista"></div>
+        <div class="carrito-total"><h3>Total</h3><p><span>Total de la compra:</span><span id="carrito-total">$0.00</span></p></div>
+        <button type="button" class="btn-pagar" data-ir="carrito.html">PAGAR<small>Procesar pago</small></button>
+      </aside>
+    </div>
+    <section class="carta-grid" aria-label="Carta">
+        <article class="producto" data-id="champagne" data-nombre="Dom Pérignon Vintage Flute" data-precio="35.5">
+          <div class="producto-imagen"><i class="fa-solid fa-champagne-glasses" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Dom Pérignon Vintage Flute">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Dom Pérignon Vintage Flute">+</button></div>
+          <div class="producto-datos"><span>Dom Pérignon Vintage Flute</span><span class="precio">$35.50</span></div>
+        </article>
+        <article class="producto" data-id="popcorn" data-nombre="Saffron &amp; Gold Leaf Popcorn" data-precio="14.5">
+          <div class="producto-imagen"><i class="fa-solid fa-bowl-food" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Saffron &amp; Gold Leaf Popcorn">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Saffron &amp; Gold Leaf Popcorn">+</button></div>
+          <div class="producto-datos"><span>Saffron &amp; Gold Leaf Popcorn</span><span class="precio">$14.50</span></div>
+        </article>
+        <article class="producto" data-id="tapas-jamon" data-nombre="Iberian Ham &amp; Olive Tapas" data-precio="22.09">
+          <div class="producto-imagen"><i class="fa-solid fa-bacon" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Iberian Ham &amp; Olive Tapas">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Iberian Ham &amp; Olive Tapas">+</button></div>
+          <div class="producto-datos"><span>Iberian Ham &amp; Olive Tapas</span><span class="precio">$22.09</span></div>
+        </article>
+        <article class="producto" data-id="arancini" data-nombre="Truffled Wild Mushroom Arancini" data-precio="18.5">
+          <div class="producto-imagen"><i class="fa-solid fa-bowl-rice" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Truffled Wild Mushroom Arancini">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Truffled Wild Mushroom Arancini">+</button></div>
+          <div class="producto-datos"><span>Truffled Wild Mushroom Arancini</span><span class="precio">$18.50</span></div>
+        </article>
+        <article class="producto" data-id="old-fashioned" data-nombre="Signature Smoked Old Fashioned Cocktail" data-precio="18.5">
+          <div class="producto-imagen"><i class="fa-solid fa-martini-glass-citrus" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Signature Smoked Old Fashioned Cocktail">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Signature Smoked Old Fashioned Cocktail">+</button></div>
+          <div class="producto-datos"><span>Signature Smoked Old Fashioned Cocktail</span><span class="precio">$18.50</span></div>
+        </article>
+        <article class="producto" data-id="foie-gras" data-nombre="Seared Foie Gras Crostini" data-precio="22">
+          <div class="producto-imagen"><i class="fa-solid fa-bread-slice" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Seared Foie Gras Crostini">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Seared Foie Gras Crostini">+</button></div>
+          <div class="producto-datos"><span>Seared Foie Gras Crostini</span><span class="precio">$22.00</span></div>
+        </article>
+        <article class="producto" data-id="pinot-noir" data-nombre="Domaine Serene Pinot Noir Glass" data-precio="94">
+          <div class="producto-imagen"><i class="fa-solid fa-wine-glass" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Domaine Serene Pinot Noir Glass">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Domaine Serene Pinot Noir Glass">+</button></div>
+          <div class="producto-datos"><span>Domaine Serene Pinot Noir Glass</span><span class="precio">$94.00</span></div>
+        </article>
+        <article class="producto" data-id="agua" data-nombre="Hildon Premium Sparkling Water" data-precio="8">
+          <div class="producto-imagen"><i class="fa-solid fa-glass-water" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Hildon Premium Sparkling Water">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Hildon Premium Sparkling Water">+</button></div>
+          <div class="producto-datos"><span>Hildon Premium Sparkling Water</span><span class="precio">$8.00</span></div>
+        </article>
+        <article class="producto" data-id="caviar" data-nombre="Caviar &amp; Blini Bites" data-precio="13">
+          <div class="producto-imagen"><i class="fa-solid fa-fish" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Caviar &amp; Blini Bites">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Caviar &amp; Blini Bites">+</button></div>
+          <div class="producto-datos"><span>Caviar &amp; Blini Bites</span><span class="precio">$13.00</span></div>
+        </article>
+        <article class="producto" data-id="salmon" data-nombre="Smoked Salmon &amp; Cream Cheese Rolls" data-precio="18">
+          <div class="producto-imagen"><i class="fa-solid fa-fish-fins" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Smoked Salmon &amp; Cream Cheese Rolls">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Smoked Salmon &amp; Cream Cheese Rolls">+</button></div>
+          <div class="producto-datos"><span>Smoked Salmon &amp; Cream Cheese Rolls</span><span class="precio">$18.00</span></div>
+        </article>
+        <article class="producto" data-id="huevos" data-nombre="Truffle Deviled Eggs" data-precio="8">
+          <div class="producto-imagen"><i class="fa-solid fa-egg" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Truffle Deviled Eggs">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Truffle Deviled Eggs">+</button></div>
+          <div class="producto-datos"><span>Truffle Deviled Eggs</span><span class="precio">$8.00</span></div>
+        </article>
+        <article class="producto" data-id="baklava" data-nombre="Pistachio &amp; Rosewater Baklava" data-precio="18">
+          <div class="producto-imagen"><i class="fa-solid fa-cookie-bite" aria-hidden="true"></i></div>
+          <div class="stepper-mini"><button type="button" data-delta="-1" aria-label="Quitar Pistachio &amp; Rosewater Baklava">–</button><span class="cant">0</span><button type="button" data-delta="1" aria-label="Agregar Pistachio &amp; Rosewater Baklava">+</button></div>
+          <div class="producto-datos"><span>Pistachio &amp; Rosewater Baklava</span><span class="precio">$18.00</span></div>
+        </article>
+    </section>
+  </main>
+
+  <footer class="pie">Carta</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/carrito.js"></script>
+    <script src="../../js/pantallas/carta.js"></script>
+</body>
+</html>

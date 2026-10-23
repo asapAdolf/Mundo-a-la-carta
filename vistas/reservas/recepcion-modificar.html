@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Modificar recepción</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+    <link rel="stylesheet" href="../../css/pantallas/reservas.css">
+</head>
+<body class="pantalla pantalla--reservas" data-raiz="../..">
+<div class="app">
+  <header class="hero bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="../empleados/rol-crear.html">Roles</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="../carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Modificar<br>recepción</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <div class="cuerpo-lateral">
+      <nav class="lateral" aria-label="Acciones"><a href="recepcion-crear.html" title="Alta" class=""><i class="fa-solid fa-circle-plus"></i></a><a href="recepcion-modificar.html" title="Modificar" class="activo"><i class="fa-solid fa-pen-to-square"></i></a><a href="recepcion-consultar.html" title="Consultar" class=""><i class="fa-solid fa-magnifying-glass"></i></a><a href="recepcion-cancelar.html" title="Cancelar" class=""><i class="fa-solid fa-trash-can"></i></a></nav>
+      <div class="principal">
+        <form class="tarjeta-pantalla" data-validar data-exito="Cambios guardados" data-ir="recepcion-consultar.html" novalidate>
+          <div class="form-cabecera"><span class="estado-reserva">Estado <span class="insignia insignia--ok">Activa</span></span><div style="min-width:12rem"><div class="campo-grupo"><label for="folio">Folio de reservación <span class="req">*</span></label><input class="input-custom" type="text" id="folio" name="folio" required value="1024" inputmode="numeric" pattern="[0-9]*" maxlength="10" placeholder="int(10)"><small class="ayuda">Ingresa el folio para consultar</small></div></div></div>
+          <div class="form-grid form-grid--4">
+            <div class="campo-grupo"><label for="fecha">Fecha <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="fecha" name="fecha" readonly value="15/05/2026" maxlength="20"><small class="ayuda">Se asigna automáticamente</small></div>
+            <div class="campo-grupo" style="grid-column: span 3"><label for="observaciones">Observaciones</label><input class="input-custom" type="text" id="observaciones" name="observaciones" value="Mesa junto a la ventana" maxlength="200"><small class="ayuda">Texto · máx. 200 caracteres</small></div>
+<div class="campo-grupo"><label for="monto-reserva">Posible monto a pagar <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="monto-reserva" name="monto-reserva" readonly value="1200.00" inputmode="decimal"></div>
+<div class="campo-grupo"><label for="tipo-evento">Tipo de evento <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><select class="input-custom" id="tipo-evento" name="tipo-evento" disabled><option value="">Selecciona...</option><option>Cumpleaños</option><option selected>Aniversario</option><option>Boda</option><option>Corporativo</option><option>Otro</option></select></div>
+<div class="campo-grupo"><label for="cliente">Nombre del cliente <span class="req">*</span></label><input class="input-custom" type="text" id="cliente" name="cliente" required value="Juan Pérez" maxlength="150"></div>
+<div class="campo-grupo"><label for="descorche">Descorche <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><label class="interruptor"><input type="checkbox" id="descorche" name="descorche" checked disabled><span class="pista"></span><span>Sí</span></label></div>
+<div class="campo-grupo"><label for="hora-entrada">Hora de entrada <span class="req">*</span></label><input class="input-custom" type="time" id="hora-entrada" name="hora-entrada" required value="19:30"></div>
+<div class="campo-grupo"><label for="hora-salida">Hora de salida <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="time" id="hora-salida" name="hora-salida" readonly value="22:30"></div>
+<div class="campo-grupo"><label for="comensales">No. de comensales <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="comensales" name="comensales" readonly value="2" inputmode="numeric" pattern="[0-9]*" maxlength="2"></div>
+<div class="campo-grupo"><label for="vegetariano">Menú vegetariano <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><label class="interruptor"><input type="checkbox" id="vegetariano" name="vegetariano" disabled><span class="pista"></span><span>Sí</span></label></div>
+<div class="campo-grupo"><label for="tipo-menu">Tipo de menú <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><select class="input-custom" id="tipo-menu" name="tipo-menu" disabled><option value="">Selecciona...</option><option selected>Gourmet</option><option>Ejecutivo</option><option>Infantil</option><option>Degustación</option></select></div>
+<div class="campo-grupo"><label for="tipo-mesa">Tipo de mesa <span class="req">*</span></label><select class="input-custom" id="tipo-mesa" name="tipo-mesa" required><option value="">Selecciona...</option><option selected>Estándar</option><option>Redonda</option><option>Privada</option><option>Terraza</option></select></div>
+<div class="campo-grupo"><label for="alergias">Alergias <span class="req">*</span></label><input class="input-custom" type="text" id="alergias" name="alergias" required value="Ninguna" maxlength="200"></div>
+<div class="campo-grupo"><label for="vegano">Menú vegano <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><label class="interruptor"><input type="checkbox" id="vegano" name="vegano" disabled><span class="pista"></span><span>Sí</span></label></div>
+          </div>
+          
+          <div class="acciones acciones--fin"><button type="button" class="btn-secondary" data-ir="disponibilidad.html">Consultar disponibilidad</button>
+<button type="button" class="btn-secondary" data-ir="../catalogo.html">Cancelar</button>
+<button type="submit" class="btn-primary">Guardar</button></div>
+        </form>
+      </div>
+    </div>
+  </main>
+
+  <footer class="pie">PA_07_03_03 · Modificar recepción</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/reservas.js"></script>
+</body>
+</html>

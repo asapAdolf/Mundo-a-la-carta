@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Cancelar comanda (aviso)</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+    <link rel="stylesheet" href="../../css/pantallas/comanda.css">
+</head>
+<body class="pantalla pantalla--comanda" data-raiz="../..">
+<div class="app">
+  <header class="hero hero--comanda bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <div class="rol-activo"><span class="activo">Mesero</span><span>Comandera</span></div>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Cancelar comanda</h1>
+    <p class="codigo-pantalla">PA_09_02_01 Cancelar comanda (aviso)</p>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <section class="comanda-layout">
+      <div class="panel-comanda">
+        <div class="panel-comanda-cab"><span>Opciones de alimentos</span><span><button type="button" aria-label="Anterior">&lt;</button><button type="button" aria-label="Siguiente">&gt;</button></span></div>
+        <div class="categorias"><button type="button" class="categoria">Bebidas</button><button type="button" class="categoria">Mar y Tierra</button><button type="button" class="categoria">Pastas</button><button type="button" class="categoria">Pizzas</button><button type="button" class="categoria">Sopas</button><button type="button" class="categoria">Croisssants</button><button type="button" class="categoria">Molletes</button><button type="button" class="categoria">Tapas</button><button type="button" class="categoria">Crepas</button><button type="button" class="categoria">Paninos</button><button type="button" class="categoria">Cafe</button><button type="button" class="categoria">Cocteleria</button></div>
+      </div>
+      <div class="panel-comanda">
+        <div class="comanda-tabla-caja">
+          <table class="tabla-comanda"><thead><tr><th>Precio</th><th>Cantidad</th><th>Nombre</th><th>Eliminar</th></tr></thead><tbody id="lineas-comanda"></tbody></table>
+        </div>
+      </div>
+    </section>
+    <div class="comanda-pie">
+      <span>Mesero: <em>Juan Pérez</em></span><span>Mesa: <em>A3</em></span><span>Total a pagar: <em id="total-comanda">$0.00</em></span>
+      <span style="display:inline-flex;gap:.75rem;align-items:center"><button type="button" class="btn-secondary" data-ir="cancelar-comanda.html">Cancelar comanda</button><button type="button" class="btn-confirmar" id="btn-confirmar-comanda" aria-label="Confirmar comanda"><i class="fa-solid fa-check"></i></button></span>
+    </div>
+  </main>
+
+  <footer class="pie">PA_09_02_01 · Cancelar comanda (aviso)</footer>
+</div>
+<div class="modal-backdrop open" id="modal-cancelada" role="dialog" aria-modal="true" aria-labelledby="modal-cancelada-t">
+  <div class="modal-dialog">
+    <h2 id="modal-cancelada-t" style="margin:0 0 .5rem;font-size:1.25rem;font-weight:800">Se canceló la comanda</h2>
+    <p style="margin:0 0 1.25rem;color:#4b5563">La comanda fue cancelada. Continúa para ver el resumen de cancelación.</p>
+    <div class="acciones acciones--fin" style="margin-top:0"><button type="button" class="btn-primary" data-ir="comanda-cancelar-resumen.html">CONTINUAR</button></div>
+  </div>
+</div>
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/comanda.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Resumen de recepción</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+    <link rel="stylesheet" href="../../css/pantallas/reservas.css">
+</head>
+<body class="pantalla pantalla--reservas" data-raiz="../..">
+<div class="app">
+  <header class="hero hero--compacto bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="../empleados/rol-crear.html">Roles</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="../carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Resumen de<br>recepción</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <section class="tarjeta-pantalla">
+      <dl class="resumen-datos">
+      <div><dt>Fecha</dt><dd>15/05/2026</dd></div><div><dt>Folio</dt><dd>1024</dd></div>
+      <div><dt>Tipo de evento</dt><dd>Aniversario</dd></div><div><dt>Hora de entrada</dt><dd>19:30</dd></div>
+      <div><dt>Nombre del cliente</dt><dd>Juan Pérez</dd></div><div><dt>Número de comensales</dt><dd>2</dd></div>
+      <div><dt>Hora de salida</dt><dd>22:30</dd></div><div><dt>Tipo de ambientación</dt><dd>Torre Eiffel</dd></div>
+      <div><dt>Tipo de mesa</dt><dd>Estándar</dd></div><div><dt>Menú vegetariano</dt><dd>No</dd></div>
+      <div><dt>Alergias</dt><dd>Ninguna</dd></div><div><dt>Menú vegano</dt><dd>No</dd></div>
+      <div class="destacado"><dt>Posible monto a pagar</dt><dd>$1,200.00</dd></div></dl>
+      <label class="acepto"><input type="checkbox" id="acepto"> Acepto los datos de la recepción</label>
+      <div class="acciones "><button type="button" class="btn-primary" id="btn-confirmar-resumen" data-ir="../catalogo.html" data-toast="Recepción registrada" data-toast-tipo="success">Confirmar</button>
+<button type="button" class="btn-secondary" data-ir="recepcion-crear.html">Regresar</button></div>
+    </section>
+  </main>
+
+  <footer class="pie">PA_07_03_02 · Resumen de recepción</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/reservas.js"></script>
+</body>
+</html>

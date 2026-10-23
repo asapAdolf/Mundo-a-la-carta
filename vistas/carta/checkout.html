@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Métodos de pago / checkout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/pagos.css">
+</head>
+<body class="pantalla pantalla--pagos" data-raiz="../..">
+<div class="app">
+  <header class="hero bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="carta.html">Usuario</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Métodos de<br>pago / checkout</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <section class="pago-layout pago-layout--divisor">
+      <div>
+        <div class="pago-titulo"><h2>Métodos guardados</h2><span>3 Métodos Listos</span></div>
+        <button type="button" class="metodo seleccionado" data-metodo="Visa débito ••• 4821"><span class="metodo-icono">VISA</span><span><strong>Visa débito ••• 4821 <span class="insignia">Principal</span></strong><small>Juan Pérez • Expira 08/28</small></span></button>
+        <button type="button" class="metodo" data-metodo="PayPal"><span class="metodo-icono metodo-icono--paypal"><i class="fa-brands fa-paypal"></i></span><span><strong>PayPal</strong><small>juan.perez@email.com</small></span></button>
+        <button type="button" class="metodo" data-metodo="Apple Pay"><span class="metodo-icono metodo-icono--apple"><i class="fa-brands fa-apple"></i></span><span><strong>Apple Pay / Digital Wallet</strong><small>Verificación por Touch/Face ID</small></span></button>
+        <button type="button" class="metodo-nuevo" data-ir="../ventas/cobro-tarjeta.html"><i class="fa-solid fa-circle-plus"></i> Agregar Nuevo Método de Pago</button>
+      </div>
+      <aside class="resumen-caja">
+        <h2>RESUMEN DEL PEDIDO</h2>
+        <div class="linea linea--item"><span><span data-render="piezas">0</span> artículo(s) en tu pedido</span><span data-render="subtotal">$0.00</span></div>
+        <div class="linea"><span>Servicio Vending Tech</span><span data-render="servicio">$0.00</span></div>
+        <div class="linea"><span>Impuestos (IVA 8%)</span><span data-render="iva">$0.00</span></div>
+        <div class="total-caja"><div><small>TOTAL A PAGAR</small><strong data-render="total">$0.00</strong></div><i class="fa-solid fa-shield-halved"></i></div>
+        <button type="button" class="btn-pagar" data-toast="Pago procesado correctamente" data-toast-tipo="success" data-ir="../catalogo.html"><span><i class="fa-solid fa-lock"></i> CONFIRMAR Y PAGAR<small>Con <span id="btn-metodo">Visa débito ••• 4821</span></small></span></button>
+        <button type="button" class="btn-secondary" data-ir="carrito.html">Regresar al carrito</button>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="pie">Métodos de pago / checkout</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/carrito.js"></script>
+    <script src="../../js/pantallas/pagos.js"></script>
+</body>
+</html>

@@ -89,8 +89,9 @@ const server = http.createServer((req, res) => {
 
 server.listen(PORT, () => {
   console.log(`\n======================================================`);
-  console.log(`  🌐 Mundo a la Carta - Gestión de Empleados`);
-  console.log(`  Servidor activo en: http://localhost:${PORT}`);
+  console.log(`  🌐 Mundo a la Carta - Frontend del Sistema`);
+  console.log(`  Login (inicio): http://localhost:${PORT}/index.html`);
+  console.log(`  Catálogo:       http://localhost:${PORT}/vistas/catalogo.html`);
   console.log(`  Presiona Ctrl + C para detener el servidor`);
   console.log(`======================================================\n`);
 });

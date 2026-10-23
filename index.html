@@ -1,525 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo a la Carta - Gestión de Empleados</title>
-    <!-- Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- Font Awesome Icons -->
+    <title>Mundo a la Carta - Login / Cuenta</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Estilos del proyecto -->
     <link rel="stylesheet" href="css/styles.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap');
-
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-
-        .bg-wave {
-            background: linear-gradient(135deg, #FF8C00 0%, #FFA500 100%);
-        }
-
-        .screen-content {
-            display: none;
-        }
-
-        .screen-content.active {
-            display: grid;
-        }
-    </style>
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pantallas/auth.css">
 </head>
-
-<body class="bg-gray-100 min-h-screen flex items-center justify-center p-4 md:p-6">
-
-    <!-- Contenedor Principal -->
-    <div class="w-full max-w-5xl bg-white shadow-2xl rounded-2xl overflow-hidden relative">
-
-        <!-- Encabezado Común -->
-        <div class="bg-wave text-white pt-6 pb-16 px-6 md:px-10 relative">
-            <div class="flex justify-between items-center mb-8">
-                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchScreen('crear', 'Crear <br> empleado', document.querySelectorAll('.nav-btn')[0])">
-                    <i class="fa-solid fa-globe text-3xl"></i>
-                    <span class="font-bold text-xl tracking-wider">MUNDO<span class="font-light">A LA CARTA</span></span>
-                </div>
-                <nav class="hidden md:flex space-x-6 text-sm font-semibold opacity-90">
-                    <button onclick="switchScreen('crear', 'Crear <br> empleado', document.querySelectorAll('.nav-btn')[0])" class="hover:text-gray-200 border-b-2 border-white pb-1 focus:outline-none">
-                        Empleados <i class="fa-solid fa-chevron-down ml-1 text-xs"></i>
-                    </button>
-                    <a href="#" onclick="showToast('Inicio', 'info')" class="hover:text-gray-200">Inicio</a>
-                    <a href="#" onclick="showToast('Experiencias', 'info')" class="hover:text-gray-200">Experiencias</a>
-                    <a href="#" onclick="showToast('Contacto', 'info')" class="hover:text-gray-200">Contacto</a>
-                </nav>
-                <div class="flex items-center space-x-3">
-                    <button onclick="showToast('Búsqueda', 'info')" title="Búsqueda"><i class="fa-solid fa-magnifying-glass"></i></button>
-                    <button onclick="showToast('Menú', 'info')" title="Menú"><i class="fa-solid fa-bars"></i></button>
-                </div>
-            </div>
-
-            <!-- Título Dinámico -->
-            <h1 id="main-title"
-                class="text-3xl md:text-4xl font-bold max-w-md leading-tight drop-shadow-md transition-all duration-300">
-                Crear <br> empleado
-            </h1>
-
-            <!-- Decoración de onda SVG -->
-            <svg class="absolute bottom-0 left-0 w-full" viewBox="0 0 1440 120" fill="none"
-                xmlns="http://www.w3.org/2000/svg">
-                <path
-                    d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z"
-                    fill="white" />
-            </svg>
-        </div>
-
-        <!-- Cuerpo de la aplicación -->
-        <div class="px-6 md:px-10 py-8 flex flex-col md:flex-row gap-8 md:gap-10">
-
-            <!-- Menú Lateral Dinámico -->
-            <div class="flex md:flex-col gap-6 text-2xl text-gray-400 mt-2 justify-center md:justify-start shrink-0">
-                <button onclick="switchScreen('crear', 'Crear <br> empleado', this)"
-                    class="nav-btn text-orange-500 bg-orange-100 p-3 rounded-full shadow-sm hover:scale-105 transition"
-                    title="Crear empleado">
-                    <i class="fa-solid fa-circle-plus"></i>
-                </button>
-                <button onclick="switchScreen('modificar', 'Modificar <br> empleado', this)"
-                    class="nav-btn hover:text-orange-500 p-3 rounded-full transition hover:scale-105"
-                    title="Modificar empleado">
-                    <i class="fa-solid fa-pen-to-square"></i>
-                </button>
-                <button onclick="switchScreen('baja', 'Baja <br> empleado', this)"
-                    class="nav-btn hover:text-orange-500 p-3 rounded-full transition hover:scale-105"
-                    title="Baja de empleado">
-                    <i class="fa-solid fa-trash-can"></i>
-                </button>
-                <button onclick="switchScreen('consulta', 'Consulta <br> empleado', this)"
-                    class="nav-btn hover:text-orange-500 p-3 rounded-full transition hover:scale-105"
-                    title="Consulta de empleado">
-                    <i class="fa-solid fa-magnifying-glass"></i>
-                </button>
-            </div>
-
-            <!-- Formulario Dinámico -->
-            <div class="flex-1">
-
-                <!-- PANTALLA 1: CREAR -->
-                <div id="crear-screen" class="screen-content active grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Nombre <span
-                                class="text-red-500">*</span></label>
-                        <input id="crear-input-nombre" type="text" placeholder="Nombre completo"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Teléfono <span
-                                class="text-red-500">*</span></label>
-                        <input id="crear-input-telefono" type="tel" placeholder="Teléfono"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Área <span
-                                class="text-red-500">*</span></label>
-                        <select id="crear-input-area"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm appearance-none">
-                            <option value="" disabled selected>Selecciona un área...</option>
-                            <option value="Administración">Administración</option>
-                            <option value="Ventas">Ventas</option>
-                            <option value="Cocina">Cocina</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Correo <span
-                                class="text-red-500">*</span></label>
-                        <input id="crear-input-correo" type="email" placeholder="correo@ejemplo.com"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Puesto <span
-                                class="text-red-500">*</span></label>
-                        <select id="crear-input-puesto"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm appearance-none">
-                            <option value="" disabled selected>Selecciona puesto...</option>
-                            <option value="Gerente">Gerente</option>
-                            <option value="Empleado">Empleado</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Clave del contrato <span
-                                class="text-red-500">*</span></label>
-                        <input id="crear-input-clave" type="text" placeholder="Clave de contrato"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-
-                    <div class="col-span-1 md:col-span-2 flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
-                        <button onclick="handleGuardarCrear()"
-                            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
-                            Guardar
-                        </button>
-                        <button
-                            onclick="handleRegresarInicio()"
-                            class="bg-orange-200 hover:bg-orange-300 text-orange-800 font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
-                            Regresar
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PANTALLA 2: MODIFICAR -->
-                <div id="modificar-screen" class="screen-content grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Nombre</label>
-                        <input id="modificar-input-nombre" type="text" placeholder="Nombre completo" value="Carlos Eduardo Ramírez"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Teléfono</label>
-                        <input id="modificar-input-telefono" type="tel" placeholder="Teléfono" value="5543219876"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Área</label>
-                        <select id="modificar-input-area"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm appearance-none">
-                            <option value="Administración" selected>Administración</option>
-                            <option value="Ventas">Ventas</option>
-                            <option value="Cocina">Cocina</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Correo</label>
-                        <input id="modificar-input-correo" type="email" placeholder="correo@ejemplo.com" value="carlos.ramirez@mundoalacarta.com"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Puesto</label>
-                        <select id="modificar-input-puesto"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm appearance-none">
-                            <option value="Gerente" selected>Gerente</option>
-                            <option value="Empleado">Empleado</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Clave del contrato</label>
-                        <input id="modificar-input-clave" type="text" placeholder="Clave de contrato" value="8492019"
-                            class="bg-orange-50 border border-orange-200 text-gray-700 rounded-full px-5 py-2 focus:outline-none focus:ring-2 focus:ring-orange-400 shadow-sm">
-                    </div>
-
-                    <div class="col-span-1 md:col-span-2 flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
-                        <button onclick="handleGuardarModificar()"
-                            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
-                            Guardar cambios
-                        </button>
-                        <button
-                            onclick="switchScreen('crear', 'Crear <br> empleado', document.querySelectorAll('.nav-btn')[0])"
-                            class="bg-orange-200 hover:bg-orange-300 text-orange-800 font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
-                            Regresar
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PANTALLA 3: BAJA -->
-                <div id="baja-screen" class="screen-content grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Nombre</label>
-                        <div id="baja-nombre" class="text-sm text-orange-500 font-semibold ml-2">Carlos Eduardo Ramírez</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Teléfono</label>
-                        <div id="baja-telefono" class="text-sm text-orange-500 font-semibold ml-2">5543219876</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Área</label>
-                        <div id="baja-area" class="text-sm text-orange-500 font-semibold ml-2">Administración</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Correo</label>
-                        <div id="baja-correo" class="text-sm text-orange-500 font-semibold ml-2">carlos.ramirez@mundoalacarta.com</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Puesto</label>
-                        <div id="baja-puesto" class="text-sm text-orange-500 font-semibold ml-2">Gerente</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Clave del contrato</label>
-                        <div id="baja-clave" class="text-sm text-orange-500 font-semibold ml-2">8492019</div>
-                    </div>
-
-                    <div class="col-span-1 md:col-span-2 flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
-                        <button onclick="handleAbrirModalBaja()"
-                            class="bg-orange-500 hover:bg-orange-600 text-white font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 flex items-center gap-2 cursor-pointer">
-                            Baja <i class="fa-solid fa-trash-can text-sm"></i>
-                        </button>
-                        <button
-                            onclick="switchScreen('crear', 'Crear <br> empleado', document.querySelectorAll('.nav-btn')[0])"
-                            class="bg-orange-200 hover:bg-orange-300 text-orange-800 font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 cursor-pointer">
-                            Regresar
-                        </button>
-                    </div>
-                </div>
-
-                <!-- PANTALLA 4: CONSULTA -->
-                <div id="consulta-screen" class="screen-content grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-6">
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Nombre</label>
-                        <div id="consulta-nombre" class="text-sm text-orange-500 font-semibold ml-2">Carlos Eduardo Ramírez</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Teléfono</label>
-                        <div id="consulta-telefono" class="text-sm text-orange-500 font-semibold ml-2">5543219876</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Área</label>
-                        <div id="consulta-area" class="text-sm text-orange-500 font-semibold ml-2">Administración</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Correo</label>
-                        <div id="consulta-correo" class="text-sm text-orange-500 font-semibold ml-2">carlos.ramirez@mundoalacarta.com</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Puesto</label>
-                        <div id="consulta-puesto" class="text-sm text-orange-500 font-semibold ml-2">Gerente</div>
-                    </div>
-                    <div class="flex flex-col">
-                        <label class="text-sm font-semibold text-gray-700 mb-1 ml-2">Clave del contrato</label>
-                        <div id="consulta-clave" class="text-sm text-orange-500 font-semibold ml-2">8492019</div>
-                    </div>
-
-                    <div class="col-span-1 md:col-span-2 flex flex-wrap gap-4 mt-4 justify-center md:justify-start">
-                        <button
-                            onclick="switchScreen('crear', 'Crear <br> empleado', document.querySelectorAll('.nav-btn')[0])"
-                            class="bg-orange-200 hover:bg-orange-300 text-orange-800 font-semibold py-2 px-8 rounded-full shadow-md transition transform hover:-translate-y-0.5 w-full md:w-auto cursor-pointer">
-                            Regresar
-                        </button>
-                    </div>
-                </div>
-
-            </div>
-
-            <!-- Panel Derecho Común: Foto y Folio -->
-            <div class="flex flex-col items-center justify-start min-w-[200px] mt-6 md:mt-0">
-                <div class="text-right w-full mb-6 text-sm">
-                    <span class="text-gray-400 font-semibold">Folio del empleado <span
-                            class="text-red-500">*</span></span>
-                    <div id="folio-display-badge" class="bg-orange-100 text-orange-800 rounded-md px-3 py-1 inline-block ml-2 font-mono font-bold"
-                        title="Generado automáticamente por el sistema">1004</div>
-                </div>
-
-                <!-- Carga de Imagen -->
-                <div class="relative mt-4 group cursor-pointer" onclick="handleSubirFoto()">
-                    <div
-                        class="w-32 h-32 rounded-full border-4 border-orange-200 flex items-center justify-center bg-gray-50 overflow-hidden group-hover:border-orange-400 transition">
-                        <i class="fa-solid fa-user text-5xl text-orange-300"></i>
-                    </div>
-                    <!-- El botón plus solo debe mostrarse en crear/modificar -->
-                    <div id="photo-upload-btn"
-                        class="absolute bottom-0 right-0 bg-orange-500 text-white rounded-full w-10 h-10 flex items-center justify-center shadow-lg border-2 border-white group-hover:scale-110 transition">
-                        <i class="fa-solid fa-plus"></i>
-                    </div>
-                </div>
-                <p id="photo-label" class="mt-4 text-sm font-semibold text-gray-600">Subir foto del empleado</p>
-            </div>
-
-        </div>
+<body class="pantalla pantalla--auth" data-raiz=".">
+<div class="app">
+  <header class="hero bg-wave">
+    <div class="topbar"><a class="marca" href="vistas/catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="index.html">Login</a>
+        <a href="vistas/catalogo.html">Inicio</a>
+        <a href="vistas/carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
     </div>
-
-    <!-- Modal de Confirmación para Baja -->
-    <div id="baja-modal" class="modal-backdrop">
-        <div class="modal-dialog">
-            <div class="w-12 h-12 rounded-full bg-red-100 text-red-600 flex items-center justify-center text-xl mx-auto mb-4">
-                <i class="fa-solid fa-trash-can"></i>
-            </div>
-            <h3 class="text-lg font-bold text-gray-900 text-center mb-1">Confirmar Baja Definitiva</h3>
-            <p class="text-xs text-gray-500 text-center mb-4">
-                ¿Estás seguro de que deseas dar de baja al empleado <strong id="modal-employee-name" class="text-gray-800 block mt-1">Carlos Eduardo Ramírez (Folio 1001)</strong>?
-            </p>
-            <div class="flex items-center justify-end gap-2.5">
-                <button type="button" onclick="closeBajaModal()" class="bg-gray-100 hover:bg-gray-200 text-gray-700 font-semibold px-4 py-2 rounded-full text-xs transition">
-                    Cancelar
-                </button>
-                <button type="button" onclick="confirmarBaja()" class="bg-red-500 hover:bg-red-600 text-white font-semibold px-4 py-2 rounded-full text-xs shadow-md transition">
-                    Sí, confirmar baja
-                </button>
-            </div>
-        </div>
     </div>
+    <h1 class="hero-titulo">Login/Cuenta</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="vistas/usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="vistas/souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="vistas/empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="vistas/transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="vistas/reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="vistas/carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="vistas/ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="vistas/comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="vistas/compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="vistas/catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
 
-    <!-- Input oculto para carga de foto -->
-    <input type="file" id="file-input-foto" accept="image/*" class="hidden" onchange="handleFotoCargada(event)">
+  <main class="contenido">
+    <section class="auth-login">
+      <div class="auth-bienvenida">
+        <h2>¡Bienvenido a Mundo a la Carta!</h2>
+        <p>Por favor, ingrese a su cuenta para poder continuar navegando en la página y poder realizar su reservación</p>
+      </div>
+      <div class="auth-panel">
+        <div class="auth-avatar"><i class="fa-solid fa-user"></i></div>
+        <form class="auth-form" data-validar data-exito="Sesión iniciada correctamente" data-ir="vistas/catalogo.html" novalidate>
+          <input class="input-custom" type="text" id="usuario" name="usuario" placeholder="Usuario" aria-label="Usuario" autocomplete="username" required>
+          <input class="input-custom" type="password" id="password" name="password" placeholder="Contraseña" aria-label="Contraseña" autocomplete="current-password" required>
+          <p class="auth-enlaces">¿Olvidaste tu contraseña? <a href="#" data-toast="Te enviamos instrucciones a tu correo">Recuperar contraseña</a><br>
+            ¿No tienes una cuenta? <a href="vistas/auth/acceso-registro.html">Crear usuario</a></p>
+          <div class="acciones acciones--centro" style="margin-top:0"><button type="submit" class="btn-primary">Aceptar</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
 
-    <!-- Contenedor Toasts -->
-    <div id="toast-container"></div>
+  <footer class="pie">Login / Cuenta</footer>
+</div>
 
-    <!-- Script de lógica de navegación SPA -->
-    <script>
-        let autoFolio = 1004;
-
-        function switchScreen(screenType, newTitle, btnElement) {
-            // 1. Actualizar Título
-            const titleEl = document.getElementById('main-title');
-            if (titleEl) {
-                titleEl.innerHTML = newTitle;
-            }
-
-            // 2. Restablecer estilos de botones del menú lateral
-            const buttons = document.querySelectorAll('.nav-btn');
-            buttons.forEach(btn => {
-                btn.className = 'nav-btn hover:text-orange-500 p-3 rounded-full transition hover:scale-105';
-            });
-            // Aplicar estilo activo al botón clickeado
-            if (btnElement) {
-                btnElement.className = 'nav-btn text-orange-500 bg-orange-100 p-3 rounded-full shadow-sm hover:scale-105 transition';
-            }
-
-            // 3. Ocultar todas las pantallas
-            ['crear-screen', 'modificar-screen', 'baja-screen', 'consulta-screen'].forEach(id => {
-                const el = document.getElementById(id);
-                if (el) el.classList.remove('active');
-            });
-
-            // 4. Mostrar pantalla seleccionada y configurar controles de foto y folio
-            const photoBtn = document.getElementById('photo-upload-btn');
-            const photoLabel = document.getElementById('photo-label');
-            const folioBadge = document.getElementById('folio-display-badge');
-
-            if (screenType === 'crear') {
-                const s = document.getElementById('crear-screen');
-                if (s) s.classList.add('active');
-                if (photoBtn) photoBtn.style.display = 'flex';
-                if (photoLabel) photoLabel.innerText = 'Subir foto del empleado';
-                if (folioBadge) folioBadge.innerText = autoFolio;
-            }
-            else if (screenType === 'modificar') {
-                const s = document.getElementById('modificar-screen');
-                if (s) s.classList.add('active');
-                if (photoBtn) photoBtn.style.display = 'flex';
-                if (photoLabel) photoLabel.innerText = 'Actualizar foto';
-                if (folioBadge) folioBadge.innerText = '1001';
-            }
-            else if (screenType === 'baja') {
-                const s = document.getElementById('baja-screen');
-                if (s) s.classList.add('active');
-                if (photoBtn) photoBtn.style.display = 'none';
-                if (photoLabel) photoLabel.innerText = 'Foto del empleado';
-                if (folioBadge) folioBadge.innerText = '1001';
-            }
-            else if (screenType === 'consulta') {
-                const s = document.getElementById('consulta-screen');
-                if (s) s.classList.add('active');
-                if (photoBtn) photoBtn.style.display = 'none';
-                if (photoLabel) photoLabel.innerText = 'Foto del empleado';
-                if (folioBadge) folioBadge.innerText = '1001';
-            }
-        }
-
-        // Handlers de botones de formularios
-        function handleGuardarCrear() {
-            const nombre = document.getElementById('crear-input-nombre').value.trim();
-            const tel = document.getElementById('crear-input-telefono').value.trim();
-            const area = document.getElementById('crear-input-area').value;
-            const correo = document.getElementById('crear-input-correo').value.trim();
-            const puesto = document.getElementById('crear-input-puesto').value;
-            const clave = document.getElementById('crear-input-clave').value.trim();
-
-            if (!nombre || !tel || !area || !correo || !puesto || !clave) {
-                showToast('Por favor completa todos los campos con asterisco (*)', 'error');
-                return;
-            }
-
-            // Sincronizar con consulta
-            document.getElementById('consulta-nombre').innerText = nombre;
-            document.getElementById('consulta-telefono').innerText = tel;
-            document.getElementById('consulta-area').innerText = area;
-            document.getElementById('consulta-correo').innerText = correo;
-            document.getElementById('consulta-puesto').innerText = puesto;
-            document.getElementById('consulta-clave').innerText = clave;
-
-            showToast(`¡Empleado creado con éxito! Folio generado: ${autoFolio}. Redirigiendo a Consulta...`, 'success');
-            autoFolio++;
-
-            setTimeout(() => {
-                const navBtns = document.querySelectorAll('.nav-btn');
-                switchScreen('consulta', 'Consulta <br> empleado', navBtns[3]);
-            }, 900);
-        }
-
-        function handleRegresarInicio() {
-            showToast('Regresando a Inicio...', 'info');
-            document.getElementById('crear-input-nombre').value = '';
-            document.getElementById('crear-input-telefono').value = '';
-            document.getElementById('crear-input-correo').value = '';
-            document.getElementById('crear-input-clave').value = '';
-        }
-
-        function handleGuardarModificar() {
-            const nombre = document.getElementById('modificar-input-nombre').value.trim();
-            const tel = document.getElementById('modificar-input-telefono').value.trim();
-            const area = document.getElementById('modificar-input-area').value;
-            const correo = document.getElementById('modificar-input-correo').value.trim();
-            const puesto = document.getElementById('modificar-input-puesto').value;
-            const clave = document.getElementById('modificar-input-clave').value.trim();
-
-            document.getElementById('consulta-nombre').innerText = nombre || 'Carlos Eduardo Ramírez';
-            document.getElementById('consulta-telefono').innerText = tel || '5543219876';
-            document.getElementById('consulta-area').innerText = area || 'Administración';
-            document.getElementById('consulta-correo').innerText = correo || 'carlos.ramirez@mundoalacarta.com';
-            document.getElementById('consulta-puesto').innerText = puesto || 'Gerente';
-            document.getElementById('consulta-clave').innerText = clave || '8492019';
-
-            showToast('Cambios guardados con éxito. Redirigiendo a Consulta...', 'success');
-            setTimeout(() => {
-                const navBtns = document.querySelectorAll('.nav-btn');
-                switchScreen('consulta', 'Consulta <br> empleado', navBtns[3]);
-            }, 900);
-        }
-
-        function handleAbrirModalBaja() {
-            const modal = document.getElementById('baja-modal');
-            if (modal) modal.classList.add('open');
-        }
-
-        function closeBajaModal() {
-            const modal = document.getElementById('baja-modal');
-            if (modal) modal.classList.remove('open');
-        }
-
-        function confirmarBaja() {
-            closeBajaModal();
-            showToast('Baja procesada correctamente.', 'success');
-            setTimeout(() => {
-                const navBtns = document.querySelectorAll('.nav-btn');
-                switchScreen('consulta', 'Consulta <br> empleado', navBtns[3]);
-            }, 1000);
-        }
-
-        function handleSubirFoto() {
-            const input = document.getElementById('file-input-foto');
-            if (input) input.click();
-        }
-
-        function handleFotoCargada(e) {
-            if (e.target.files && e.target.files[0]) {
-                showToast(`Foto '${e.target.files[0].name}' seleccionada correctamente.`, 'success');
-            }
-        }
-
-        function showToast(message, type = 'info') {
-            const container = document.getElementById('toast-container');
-            if (!container) return;
-
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            const icon = type === 'success' ? 'fa-circle-check text-emerald-600' : type === 'error' ? 'fa-circle-xmark text-red-600' : 'fa-circle-info text-orange-500';
-            toast.innerHTML = `<i class="fa-solid ${icon}"></i><span>${message}</span>`;
-            container.appendChild(toast);
-
-            setTimeout(() => {
-                toast.style.opacity = '0';
-                toast.style.transform = 'translateX(20px)';
-                toast.style.transition = 'all 0.3s ease';
-                setTimeout(() => toast.remove(), 300);
-            }, 3000);
-        }
-    </script>
+<div id="toast-container" aria-live="polite"></div>
+    <script src="js/pantallas-indice.js"></script>
+    <script src="js/comun.js"></script>
 </body>
-
 </html>
