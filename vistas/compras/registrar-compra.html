@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Registrar compra</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+    <link rel="stylesheet" href="../../css/pantallas/compras.css">
+</head>
+<body class="pantalla pantalla--compras" data-raiz="../..">
+<div class="app">
+  <header class="hero hero--compacto bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="registrar-compra.html">Compras</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="../carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Registrar compra</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <form data-validar data-exito="Compra registrada correctamente" data-ir="../catalogo.html" novalidate>
+      <p class="panel-sub">CU_11 · Compra de souvenirs e ingredientes. Elige un proveedor y agrega souvenirs, ingredientes o ambos.</p>
+      <div class="compra-layout">
+        <section class="tarjeta-pantalla">
+          <h2 class="panel-titulo">Información de la compra</h2>
+          <p class="panel-sub">Completa los datos generales de la orden.</p>
+          <div class="panel-campos">
+            <div class="campo-grupo"><label for="proveedor">Proveedor <span class="req">*</span></label><select class="input-custom" id="proveedor" name="proveedor" required><option value="" selected>Selecciona un proveedor activo</option><option>Artesanías Puebla</option><option>Distribuidora Gourmet</option><option>Importadora del Sur</option></select></div>
+            <div class="campo-grupo"><label for="estado-proveedor">Estado del proveedor <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><label class="interruptor"><input type="checkbox" id="estado-proveedor" name="estado-proveedor" checked disabled><span class="pista"></span><span>Sí</span></label></div>
+            <div class="campo-grupo"><label for="fecha-de-compra">Fecha de compra <span class="req">*</span></label><input class="input-custom" type="date" id="fecha-de-compra" name="fecha-de-compra" required></div>
+            <div class="campo-grupo"><label for="registro">Fecha y hora de registro <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="registro" name="registro" readonly value="dd/mm/aaaa hh:mm" maxlength="20"></div>
+            <div class="campo-grupo"><label for="folio-orden">Folio de orden <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="folio-orden" name="folio-orden" readonly value="Automático" inputmode="numeric" pattern="[0-9]*" maxlength="10"></div>
+            <div class="campo-grupo"><label for="estado-orden">Estado de orden <i class="fa-solid fa-circle-info dato-info" title="Dato informativo (solo lectura)"></i></label><input class="input-custom" type="text" id="estado-orden" name="estado-orden" readonly value="Emitida" maxlength="15"></div>
+            <div class="campo-grupo"><label for="observaciones">Observaciones (opcional)</label><textarea class="input-custom" id="observaciones" name="observaciones" maxlength="150" placeholder="Escribe una nota (opcional)"></textarea><small class="ayuda">Texto · máx. 150 caracteres</small></div>
+          </div>
+        </section>
+        <section class="tarjeta-pantalla">
+          <h2 class="panel-titulo">Productos de la orden</h2>
+          <p class="panel-sub">Los souvenirs deben estar vigentes. Puedes agregar productos de ambos tipos.</p>
+          <table class="tabla-edicion"><thead><tr><th>Tipo de producto</th><th>Artículo</th><th>Estado (i)</th><th>Cantidad</th><th>Precio</th><th>Subtotal</th><th></th></tr></thead>
+            <tbody id="lineas-compra"><tr><td><select class="input-custom" aria-label="Tipo de producto"><option>Souvenir</option><option>Ingrediente</option></select></td>
+        <td><select class="input-custom articulo" aria-label="Artículo"><option data-precio="180" data-estado="Vigente">Taza UMAD</option><option data-precio="60" data-estado="Vigente">Llavero Mundo a la Carta</option><option data-precio="250" data-estado="Vigente">Playera</option><option data-precio="28" data-estado="n.a.">Harina de trigo</option><option data-precio="120" data-estado="n.a.">Aceite de oliva</option><option data-precio="310" data-estado="n.a.">Jamón serrano</option></select></td>
+        <td class="estado">Vigente</td><td><input class="input-custom cantidad" type="text" inputmode="numeric" maxlength="2" value="0" aria-label="Cantidad" style="width:4rem"></td>
+        <td class="num precio">0.00</td><td class="num sub">0.00</td><td><button type="button" class="quitar" aria-label="Quitar"><i class="fa-solid fa-xmark"></i></button></td></tr></tbody></table>
+          <div class="acciones "><button type="button" class="btn-ghost" id="agregar-linea"><i class="fa-solid fa-circle-plus"></i> Agregar artículo</button></div>
+          <div class="total-compra"><span>Total de la compra</span><strong id="total-compra">$0.00</strong></div>
+        </section>
+      </div>
+      <div class="acciones acciones--fin"><button type="submit" class="btn-primary">Guardar compra</button>
+<button type="button" class="btn-secondary" data-ir="../catalogo.html">Regresar</button></div>
+    </form>
+  </main>
+
+  <footer class="pie">CU_11 · Registrar compra</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/compras.js"></script>
+</body>
+</html>

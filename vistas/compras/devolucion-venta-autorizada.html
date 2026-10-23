@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Devolución autorizada</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/layout.css">
+    <link rel="stylesheet" href="../../css/pantallas/formulario.css">
+    <link rel="stylesheet" href="../../css/pantallas/compras.css">
+</head>
+<body class="pantalla pantalla--compras" data-raiz="../..">
+<div class="app">
+  <header class="hero hero--compacto bg-wave">
+    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="../empleados/rol-crear.html">Roles</a>
+        <a href="../catalogo.html">Inicio</a>
+        <a href="../carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Devolución autorizada</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
+
+  <main class="contenido">
+    <section class="tarjeta-pantalla">
+      <div class="banda-estado banda-estado--ok"><i class="fa-solid fa-circle-check"></i> Devolución autorizada</div>
+      <dl class="lista-dl">
+          <div><dt>Folio de devolución</dt><dd>D-2023-000451</dd></div><div><dt>Folio de venta original</dt><dd>214589</dd></div>
+          <div><dt>Cliente</dt><dd>María González</dd></div><div><dt>Souvenir y cantidad</dt><dd>Taza de talavera × 2</dd></div>
+          <div><dt>Motivo de la devolución</dt><dd>Producto con defecto de fábrica</dd></div><div><dt>Fecha de venta</dt><dd>08/10/2026</dd></div>
+          <div><dt>Monto a reembolsar</dt><dd>$1,450.00 MXN</dd></div><div><dt>Forma de reembolso</dt><dd>Tarjeta (misma de la venta)</dd></div>
+          <div><dt>Autorizado por</dt><dd>Luis Ramírez · Administrador</dd></div><div><dt>Reintegro a inventario</dt><dd>Sí · estado bueno</dd></div>
+          <div><dt>Estado actual</dt><dd><span class="insignia insignia--ok">Autorizada</span></dd></div></dl>
+      <div class="acciones acciones--fin"><button type="button" class="btn-secondary" onclick="window.print()"><i class="fa-solid fa-print"></i> Imprimir comprobante</button>
+<button type="button" class="btn-primary" data-ir="devolucion-venta-buscar.html">Regresar al listado</button></div>
+    </section>
+  </main>
+
+  <footer class="pie">CU_14_01_02 · Devolución autorizada</footer>
+</div>
+
+<div id="toast-container" aria-live="polite"></div>
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+</body>
+</html>

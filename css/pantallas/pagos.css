@@ -1,0 +1,83 @@
+/* ==========================================================================
+   PANTALLAS TIPO PAGO
+   Métodos de pago / checkout, cobro en efectivo, cobro con tarjeta y
+   venta de souvenirs.
+   ========================================================================== */
+
+.pago-layout { display: grid; grid-template-columns: 1.2fr 1fr; gap: 2rem; align-items: start; }
+.pago-layout--divisor > :first-child { padding-right: 2rem; border-right: 2px solid #1f2937; }
+
+.pago-titulo { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-bottom: 1rem; }
+.pago-titulo h2 { margin: 0; padding: 0.15rem 1rem; font-size: 0.85rem; color: #fff; background: var(--naranja-medio); border-radius: 9999px; }
+.pago-titulo span { font-size: 0.75rem; font-weight: 600; color: var(--text-orange-dark); background: var(--naranja-suave); padding: 0.1rem 0.75rem; border-radius: 9999px; }
+
+.metodo {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  width: 100%;
+  margin-bottom: 0.75rem;
+  padding: 0.8rem 1rem;
+  text-align: left;
+  font: inherit;
+  background: #fff;
+  border: 2px solid transparent;
+  border-radius: 0.9rem;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.metodo:hover { border-color: var(--border-orange); }
+.metodo.seleccionado { border-color: var(--naranja-fuerte); }
+.metodo-icono { display: flex; align-items: center; justify-content: center; width: 2.6rem; height: 1.8rem; font-size: 1rem; color: #fff; background: #1e3a8a; border-radius: 0.35rem; }
+.metodo-icono--paypal { background: #e0f2fe; color: #0369a1; }
+.metodo-icono--apple { background: #111827; }
+.metodo strong { display: block; font-size: 0.9rem; }
+.metodo small { color: var(--texto-suave); font-size: 0.75rem; }
+.metodo .insignia { margin-left: 0.5rem; font-size: 0.6rem; }
+.metodo-nuevo { width: 100%; padding: 0.7rem; font: inherit; font-weight: 700; font-size: 0.8rem; color: var(--text-orange-dark); background: transparent; border: 2px dashed var(--border-orange); border-radius: 0.9rem; cursor: pointer; }
+.metodo-nuevo:hover { background: var(--bg-orange-light); }
+
+.resumen-caja h2 { margin: 0 0 0.75rem; font-size: 0.8rem; letter-spacing: 0.08em; color: var(--texto-suave); }
+.resumen-caja .linea { display: flex; justify-content: space-between; gap: 1rem; padding: 0.3rem 0; font-size: 0.85rem; color: #4b5563; }
+.resumen-caja .linea--item { font-weight: 600; color: #1f2937; }
+.total-caja {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin: 1rem 0;
+  padding: 0.9rem 1.25rem;
+  background: #fff7ed;
+  border: 1px solid #fdba74;
+  border-radius: 1rem;
+}
+.total-caja small { display: block; font-size: 0.65rem; font-weight: 800; letter-spacing: 0.06em; color: var(--naranja-fuerte); }
+.total-caja strong { font-size: 1.8rem; color: #1f2937; }
+.total-caja i { font-size: 1.8rem; color: var(--naranja-fuerte); }
+
+/* Cobro (efectivo / tarjeta / venta) */
+.cobro-tarjeta { max-width: 640px; margin: 0 auto; }
+.cobro-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 1.1rem 2rem; }
+.monto-grande { font-size: 1.4rem; font-weight: 800; text-align: center; }
+.indicador {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-top: 1rem;
+  padding: 0.5rem 1rem;
+  font-size: 0.85rem;
+  font-weight: 700;
+  border-radius: 9999px;
+  background: var(--naranja-suave);
+  color: var(--text-orange-dark);
+}
+.indicador--falta { background: #fee2e2; color: #991b1b; }
+.indicador--ok { background: #d1fae5; color: #065f46; }
+.etiqueta-metodo { display: inline-flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-weight: 700; color: var(--text-orange-dark); }
+
+@media (max-width: 820px) {
+  .pago-layout, .cobro-grid { grid-template-columns: 1fr; }
+  .pago-layout--divisor > :first-child { padding-right: 0; border-right: 0; }
+}
+
+.resumen-caja .btn-secondary { display: flex; margin-top: 0.75rem; }

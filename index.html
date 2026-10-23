@@ -1,32 +1,71 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Mundo a la Carta - Gestión de Empleados</title>
-  
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
-  
-  <!-- Font Awesome Icons -->
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  
-  <!-- Google Fonts: Inter -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-  
-  <!-- Estilos propios del proyecto -->
-  <link rel="stylesheet" href="css/styles.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Login / Cuenta</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/layout.css">
+    <link rel="stylesheet" href="css/pantallas/auth.css">
 </head>
+<body class="pantalla pantalla--auth" data-raiz=".">
+<div class="app">
+  <header class="hero bg-wave">
+    <div class="topbar"><a class="marca" href="vistas/catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+      <nav class="nav-principal" aria-label="Principal">
+        <a class="activo" href="index.html">Login</a>
+        <a href="vistas/catalogo.html">Inicio</a>
+        <a href="vistas/carta/carta.html">Experiencias</a>
+        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+      </nav>
+      <div class="topbar-acciones">
+      <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
+    </div>
+    </div>
+    <h1 class="hero-titulo">Login/Cuenta</h1>
+    <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
+  </header>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
+      <a href="index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
+      <a href="vistas/usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
+      <a href="vistas/souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="vistas/empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
+      <a href="vistas/transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="vistas/reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="vistas/carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="vistas/ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
+      <a href="vistas/comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
+      <a href="vistas/compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="vistas/catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+  </nav>
 
-<body class="bg-gray-100 min-h-screen">
+  <main class="contenido">
+    <section class="auth-login">
+      <div class="auth-bienvenida">
+        <h2>¡Bienvenido a Mundo a la Carta!</h2>
+        <p>Por favor, ingrese a su cuenta para poder continuar navegando en la página y poder realizar su reservación</p>
+      </div>
+      <div class="auth-panel">
+        <div class="auth-avatar"><i class="fa-solid fa-user"></i></div>
+        <form class="auth-form" data-validar data-exito="Sesión iniciada correctamente" data-ir="vistas/catalogo.html" novalidate>
+          <input class="input-custom" type="text" id="usuario" name="usuario" placeholder="Usuario" aria-label="Usuario" autocomplete="username" required>
+          <input class="input-custom" type="password" id="password" name="password" placeholder="Contraseña" aria-label="Contraseña" autocomplete="current-password" required>
+          <p class="auth-enlaces">¿Olvidaste tu contraseña? <a href="#" data-toast="Te enviamos instrucciones a tu correo">Recuperar contraseña</a><br>
+            ¿No tienes una cuenta? <a href="vistas/auth/acceso-registro.html">Crear usuario</a></p>
+          <div class="acciones acciones--centro" style="margin-top:0"><button type="submit" class="btn-primary">Aceptar</button></div>
+        </form>
+      </div>
+    </section>
+  </main>
 
-  <!-- Contenedor listo para el desarrollo -->
+  <footer class="pie">Login / Cuenta</footer>
+</div>
 
-  <!-- Script modular -->
-  <script type="module" src="js/app.js"></script>
+<div id="toast-container" aria-live="polite"></div>
+    <script src="js/pantallas-indice.js"></script>
+    <script src="js/comun.js"></script>
 </body>
-
 </html>

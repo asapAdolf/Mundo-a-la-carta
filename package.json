@@ -1,11 +1,13 @@
 {
-  "name": "mundo-a-la-carta-gestion-empleados",
+  "name": "mundo-a-la-carta-frontend",
   "version": "1.0.0",
-  "description": "Sistema de Gestión de Empleados (Mundo a la Carta) - Arquitectura modular JavaScript basada en prototipo de pantallas",
-  "main": "js/app.js",
+  "description": "Sistema Mundo a la Carta - Frontend completo organizado por módulos y tipos de pantalla",
+  "main": "server.js",
   "scripts": {
-    "start": "npx serve .",
-    "dev": "npx live-server --port=3000 --entry-file=index.html"
+    "start": "node server.js",
+    "dev": "node server.js",
+    "build": "node tools/generar-pantallas.js",
+    "verify": "node tools/verificar-enlaces.js"
   },
   "keywords": [
     "javascript",

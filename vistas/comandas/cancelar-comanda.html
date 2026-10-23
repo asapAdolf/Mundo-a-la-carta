@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mundo a la Carta - Cancelar comanda</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <link rel="stylesheet" href="../../css/pantallas/cancelar-comanda.css">
+</head>
+
+<body data-raiz="../..">
+    <main class="app">
+
+        <!-- Encabezado -->
+        <header class="topbar bg-wave">
+            <a class="marca" href="../catalogo.html" style="color:inherit;text-decoration:none">
+                <i class="fa-solid fa-globe" aria-hidden="true"></i>
+                <div>MUNDO<span> A LA CARTA</span></div>
+            </a>
+            <div class="topbar-acciones">
+                <button type="button" aria-label="Búsqueda" data-ir="../catalogo.html">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+                <button type="button" aria-label="Menú" data-ir="../catalogo.html">
+                    <i class="fa-solid fa-bars"></i>
+                </button>
+            </div>
+        </header>
+
+        <!-- PA_09_02_01 · Cancelar comanda -->
+        <form class="tarjeta" id="form-cancelar" novalidate>
+
+            <div class="fila">
+                <label for="motivo">Motivo de cancelación:</label>
+                <textarea
+                    class="input-custom campo"
+                    id="motivo"
+                    name="motivo"
+                    maxlength="500"
+                    required
+                    placeholder="Describe por qué se cancela la comanda"
+                ></textarea>
+                <p class="contador" id="contador-motivo">0 / 500</p>
+                <p class="error" id="error-motivo" role="alert"></p>
+            </div>
+
+            <div class="fila">
+                <label for="cantidad">Cantidad:</label>
+                <div class="input-custom campo stepper">
+                    <input
+                        id="cantidad"
+                        name="cantidad"
+                        type="text"
+                        inputmode="numeric"
+                        maxlength="2"
+                        value="1"
+                    >
+                    <button type="button" id="menos" aria-label="Disminuir cantidad">&lt;</button>
+                    <button type="button" id="mas" aria-label="Aumentar cantidad">&gt;</button>
+                </div>
+                <p class="error" id="error-cantidad" role="alert"></p>
+            </div>
+
+            <div class="fila">
+                <label for="password">Contraseña:</label>
+                <input
+                    class="input-custom campo"
+                    id="password"
+                    name="password"
+                    type="password"
+                    maxlength="500"
+                    autocomplete="current-password"
+                    required
+                    placeholder="Contraseña de gerente"
+                >
+                <p class="error" id="error-password" role="alert"></p>
+            </div>
+
+            <div class="acciones">
+                <button type="button" class="btn-secondary" id="btn-cancelar">Cancelar</button>
+                <button type="submit" class="btn-primary" id="btn-guardar">Guardar</button>
+            </div>
+        </form>
+
+        <footer class="pie">PA_09_02_01 · Cancelar Comanda</footer>
+    </main>
+
+    <!-- Contenedor Toasts -->
+    <div id="toast-container"></div>
+
+    <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/cancelar-comanda.js"></script>
+</body>
+
+</html>

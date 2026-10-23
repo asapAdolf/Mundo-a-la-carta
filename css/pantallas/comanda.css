@@ -1,0 +1,109 @@
+/* ==========================================================================
+   PANTALLAS TIPO COMANDA (rol Mesero / Comandera)
+   Mesas, crear comanda y resumen de cancelación.
+   ========================================================================== */
+
+.hero--comanda { padding-bottom: 1.5rem; }
+.hero--comanda .hero-titulo { font-size: 0; margin: 0; }
+.rol-activo { display: flex; align-items: center; gap: 1.5rem; font-weight: 600; }
+.rol-activo span { padding-bottom: 0.2rem; border-bottom: 2px solid transparent; }
+.rol-activo .activo { border-color: #fff; }
+.codigo-pantalla { position: relative; z-index: 2; margin: 0.5rem 0 0; font-size: 0.8rem; font-weight: 700; }
+
+.comanda-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 1.25rem; }
+.panel-comanda {
+  overflow: hidden;
+  background: #fff;
+  border: 2px solid var(--border-orange);
+  border-radius: 1.25rem;
+}
+.panel-comanda-cab {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  font-weight: 700;
+  color: #fff;
+  background: var(--secondary-orange);
+}
+.panel-comanda-cab button { color: #fff; background: none; border: 0; cursor: pointer; font-weight: 800; font-size: 1rem; }
+
+.categorias { display: grid; grid-template-columns: repeat(4, 1fr); gap: 0.75rem; padding: 1rem; }
+.categoria {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 4.2rem;
+  padding: 0.5rem;
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.8rem;
+  color: #1f2937;
+  background: #fed7aa;
+  border: 0;
+  border-radius: 0.9rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.categoria:hover { background: #fdba74; transform: translateY(-2px); }
+.categoria.seleccionada { background: var(--naranja-fuerte); color: #fff; }
+
+.tabla-comanda { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+.tabla-comanda th { padding: 0.6rem 0.5rem; font-weight: 700; background: #fed7aa; text-align: center; }
+.tabla-comanda td { padding: 0.55rem 0.5rem; text-align: center; }
+.tabla-comanda td.nombre { text-align: left; }
+.tabla-comanda .sin-lineas td { padding: 2rem 0; color: var(--texto-suave); }
+.tabla-comanda .borrar { border: 0; background: none; font-size: 1.1rem; color: #fdba74; cursor: pointer; }
+.tabla-comanda .borrar:hover { color: var(--peligro); }
+.comanda-tabla-caja { min-height: 15rem; }
+
+.comanda-pie { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin-top: 1rem; font-family: var(--font-titulo); font-size: 1.15rem; }
+.comanda-pie em { color: #fdba74; font-style: italic; font-weight: 700; }
+.comanda-pie .campo-inline { display: inline-flex; align-items: center; gap: 0.4rem; }
+.comanda-pie .input-custom { width: 7rem; }
+.btn-confirmar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3.2rem;
+  height: 3.2rem;
+  font-size: 1.4rem;
+  color: #fff;
+  background: var(--naranja-fuerte);
+  border: 0;
+  border-radius: 50%;
+  box-shadow: 0 4px 8px rgba(249, 115, 22, 0.35);
+  cursor: pointer;
+}
+.btn-confirmar:hover { background: #ea580c; }
+
+/* Mesas */
+.mesas-cab { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem; font-family: var(--font-titulo); font-size: 1.3rem; }
+.mesas-grid { display: grid; grid-template-columns: repeat(6, 1fr); gap: 0.9rem; }
+.mesa {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 1.3;
+  font: inherit;
+  font-weight: 800;
+  font-size: 1.1rem;
+  color: #1f2937;
+  background: #fed7aa;
+  border: 2px solid transparent;
+  border-radius: 1rem;
+  cursor: pointer;
+  transition: all 0.15s ease;
+}
+.mesa:hover { background: #fdba74; transform: translateY(-2px); }
+.mesa.seleccionada { background: var(--naranja-fuerte); color: #fff; }
+.mesa.ocupada { background: #e5e7eb; color: #9ca3af; cursor: not-allowed; transform: none; }
+
+/* Resumen de cancelación */
+.resumen-cancelacion { max-width: 640px; margin: 0 auto; }
+
+@media (max-width: 820px) {
+  .comanda-layout { grid-template-columns: 1fr; }
+  .mesas-grid { grid-template-columns: repeat(3, 1fr); }
+  .categorias { grid-template-columns: repeat(2, 1fr); }
+}

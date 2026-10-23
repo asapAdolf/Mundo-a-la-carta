@@ -1,0 +1,66 @@
+/* ==========================================================================
+   PANTALLAS TIPO AUTENTICACIÓN
+   Login/Cuenta y Acceso/Registro.
+   ========================================================================== */
+
+.auth-login {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 2rem;
+  padding: 1rem 0 2rem;
+}
+.auth-bienvenida { text-align: center; }
+.auth-bienvenida h2 {
+  margin: 0 0 1rem;
+  font-family: var(--font-titulo);
+  font-weight: 400;
+  font-size: 1.9rem;
+  color: var(--primary-orange);
+}
+.auth-bienvenida p { margin: 0; font-weight: 700; line-height: 1.5; }
+
+.auth-panel { display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+.auth-avatar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 7rem;
+  height: 7rem;
+  border-radius: 50%;
+  font-size: 3.2rem;
+  color: #d97706;
+  background: var(--naranja-suave);
+  border: 5px solid var(--secondary-orange);
+}
+.auth-form { display: flex; flex-direction: column; gap: 0.9rem; width: min(22rem, 100%); }
+.auth-form .input-custom { height: 2.9rem; font-weight: 600; }
+.auth-enlaces { margin: 0; font-size: 0.75rem; text-align: center; line-height: 1.8; }
+.auth-enlaces a { color: var(--text-orange-dark); font-weight: 700; }
+
+/* Acceso / Registro: tarjeta con pestañas */
+.auth-tarjeta { max-width: 640px; margin: 0 auto; }
+.pestanas {
+  display: flex;
+  gap: 0.5rem;
+  margin-bottom: 1.25rem;
+  padding: 0.35rem;
+  background: var(--bg-orange-light);
+  border-radius: 9999px;
+}
+.pestanas a {
+  flex: 1;
+  text-align: center;
+  padding: 0.5rem 1rem;
+  border-radius: 9999px;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--text-orange-dark);
+  text-decoration: none;
+}
+.pestanas a.activo { background: var(--naranja-fuerte); color: #fff; box-shadow: 0 4px 8px rgba(249, 115, 22, 0.3); }
+.auth-tarjeta h2 { margin: 0 0 1rem; text-align: center; font-family: var(--font-titulo); font-weight: 400; font-size: 1.6rem; }
+
+@media (max-width: 820px) {
+  .auth-login { grid-template-columns: 1fr; }
+}
