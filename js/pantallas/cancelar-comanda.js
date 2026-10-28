@@ -74,10 +74,27 @@
     });
   }
 
+  /* Comanda (y línea opcional) que se va a cancelar: ?folio=0001024&linea=0 */
+  var comanda = null;
+  var indiceLinea = MC.param('linea');
+  var maximo = 99;
+  MC.datos.obtener('comandas', MC.param('folio')).then(function (c) {
+    if (c.estado !== 'Enviada' && c.estado !== 'Abierta') throw new Error('La comanda ' + c.folio + ' ya está ' + c.estado.toLowerCase());
+    comanda = c;
+    var linea = indiceLinea !== null ? c.lineas[Number(indiceLinea)] : null;
+    maximo = linea ? linea.cantidad : c.lineas.reduce(function (s, l) { return s + l.cantidad; }, 0);
+    cantidad.value = maximo;
+    actualizarStepper();
+    MC.toast(linea ? 'Cancelar ' + linea.nombre + ' (máx. ' + maximo + ')' : 'Cancelar toda la comanda ' + c.folio + ' · mesa ' + c.mesa, 'info');
+  }).catch(function (err) {
+    MC.toast(err.message || 'Abre la cancelación desde una comanda', 'error');
+    MC.ir('mesas.html', 1500);
+  });
+
   if (btnCancelar) {
     btnCancelar.addEventListener('click', function () {
       MC.toast('Cancelación descartada. Regresando a comanda...', 'info');
-      MC.ir('comanda-crear.html', 600);
+      MC.ir(comanda ? 'comanda-crear.html?mesa=' + encodeURIComponent(comanda.mesa) : 'mesas.html', 600);
     });
   }
 
@@ -107,13 +124,60 @@
       mostrarError('error-password', password, '');
     }
 
+    if (ok && cantVal > maximo) {
+      mostrarError('error-cantidad', cantidad, 'La cantidad no puede ser mayor a ' + maximo + '.');
+      ok = false;
+    }
+
     if (!ok) {
       MC.toast('Revisa los campos marcados en rojo', 'error');
       return;
     }
+    if (!comanda) return MC.toast('No hay una comanda que cancelar', 'error');
 
-    MC.toast('Comanda cancelada con autorización de gerente', 'success');
-    MC.ir('comanda-cancelar-aviso.html', 700);
+    /* Autoriza un gerente o administrador activo */
+    MC.datos.buscar('empleados', function (e) {
+      return e.estado === 'Activo' && (e['rol-puesto'] === 'Gerente' || e['rol-puesto'] === 'Administrador') && e.password === password.value;
+    }).then(function (gerente) {
+      if (!gerente) {
+        mostrarError('error-password', password, 'Contraseña de gerente incorrecta.');
+        throw new Error('Contraseña de gerente incorrecta');
+      }
+      var lineas = comanda.lineas.slice();
+      var alimentos;
+      if (indiceLinea !== null) {
+        var l = lineas[Number(indiceLinea)];
+        alimentos = l.nombre;
+        l.cantidad -= cantVal;
+        if (l.cantidad <= 0) lineas.splice(Number(indiceLinea), 1);
+      } else {
+        alimentos = cantVal >= maximo ? 'Toda la comanda' : 'Varios';
+        var restantes = cantVal;
+        for (var i = lineas.length - 1; i >= 0 && restantes > 0; i--) {
+          var quitar = Math.min(lineas[i].cantidad, restantes);
+          lineas[i].cantidad -= quitar;
+          restantes -= quitar;
+          if (lineas[i].cantidad <= 0) lineas.splice(i, 1);
+        }
+      }
+      var todo = !lineas.length;
+      var registro = { fecha: MC.ahoraMx(), motivo: motivo.value.trim(), alimentos: alimentos, cantidad: cantVal, autorizo: gerente.nombre };
+      return MC.datos.actualizar('comandas', comanda.folio, {
+        lineas: lineas,
+        total: lineas.reduce(function (s, x) { return s + x.precio * x.cantidad; }, 0),
+        estado: todo ? 'Cancelada' : comanda.estado,
+        cancelaciones: (comanda.cancelaciones || []).concat([registro])
+      }).then(function () {
+        return todo ? MC.datos.actualizar('mesas', comanda.mesa, { estado: 'Libre', comanda: null }) : null;
+      }).then(function () {
+        MC.temporal.guardar('cancelacion', {
+          folio: comanda.folio, mesa: comanda.mesa, fecha: MC.fechaMx(MC.hoy()), motivo: registro.motivo,
+          alimentos: alimentos, detalle: 'Autorizó: ' + gerente.nombre, cantidad: cantVal, total: todo
+        });
+        MC.toast('Comanda cancelada con autorización de gerente', 'success');
+        MC.ir('comanda-cancelar-aviso.html?folio=' + encodeURIComponent(comanda.folio), 700);
+      });
+    }).catch(function (err) { MC.toast(err.message, 'error'); });
   });
 
   actualizarContador();

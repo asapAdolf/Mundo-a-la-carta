@@ -1,7 +1,6 @@
 /**
  * carrito.js - Estado del carrito compartido entre carta, carrito y checkout.
  * Persistido en localStorage. Expone MC.carrito.
- * Si está vacío se siembra con el pedido de ejemplo del prototipo.
  */
 (function () {
   'use strict';
@@ -9,8 +8,6 @@
   var CLAVE = 'mc_carrito';
   var SERVICIO = 2.5;
   var IVA = 0.08;
-
-  var SEMILLA = [{ id: 'tapas-jamon', nombre: 'Iberian Ham & Olive Tapas', precio: 22.09, cantidad: 2 }];
 
   function leer() {
     try {
@@ -22,11 +19,10 @@
 
   MC.carrito = {
     items: function () {
-      var d = leer();
-      if (d === null) { d = SEMILLA.slice(); this.guardar(d); }
-      return d;
+      return leer() || [];
     },
     guardar: function (items) { localStorage.setItem(CLAVE, JSON.stringify(items)); },
+    vaciar: function () { this.guardar([]); },
     cambiar: function (producto, cantidad) {
       var items = this.items().filter(function (i) { return i.id !== producto.id; });
       if (cantidad > 0) items.push({ id: producto.id, nombre: producto.nombre, precio: producto.precio, cantidad: cantidad });

@@ -2,7 +2,15 @@
 window.MC_PANTALLAS = [
   {
     "ruta": "index.html",
-    "titulo": "Login / Cuenta"
+    "titulo": "Inicio / Catálogo"
+  },
+  {
+    "ruta": "vistas/admin/dashboard.html",
+    "titulo": "Panel administrativo"
+  },
+  {
+    "ruta": "vistas/auth/acceso-personal.html",
+    "titulo": "Acceso del personal"
   },
   {
     "ruta": "vistas/auth/acceso-login.html",

@@ -10,18 +10,18 @@
     <link rel="stylesheet" href="../../css/pantallas/formulario.css">
     <link rel="stylesheet" href="../../css/pantallas/reservas.css">
 </head>
-<body class="pantalla pantalla--reservas" data-raiz="../..">
+<body class="pantalla pantalla--reservas" data-raiz="../.." data-area="admin">
 <div class="app">
   <header class="hero bg-wave">
-    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+    <div class="topbar"><a class="marca" href="../admin/dashboard.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
-        <a class="activo" href="../empleados/rol-crear.html">Roles</a>
-        <a href="../catalogo.html">Inicio</a>
-        <a href="../carta/carta.html">Experiencias</a>
-        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+        <a href="../admin/dashboard.html">Panel</a>
+        <a class="activo" aria-current="page" href="../empleados/rol-crear.html">Roles</a>
+        <a href="../../index.html">Sitio público</a>
       </nav>
       <div class="topbar-acciones">
       <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <span class="topbar-usuario"><i class="fa-solid fa-circle-user"></i> <span data-sesion-nombre></span></span>
       <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
     </div>
     </div>
@@ -30,17 +30,21 @@
   </header>
   <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
   <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
-      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
-      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
-      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
-      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
-      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
-      <a href="reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
-      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../admin/dashboard.html"><i class="fa-solid fa-gauge"></i>Panel</a>
+      <a href="reservacion-consultar.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="recepcion-consultar.html"><i class="fa-solid fa-bell-concierge"></i>Recepciones</a>
+      <a href="inmersion-consultar.html"><i class="fa-solid fa-vr-cardboard"></i>Inmersiones</a>
+      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Mesas y comandas</a>
       <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
-      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
-      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../transporte/transporte-consulta.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../souvenirs/souvenir-consulta.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras</a>
+      <a href="../compras/devolucion-compra-buscar.html"><i class="fa-solid fa-truck-ramp-box"></i>Devolución de compras</a>
+      <a href="../compras/devolucion-venta-buscar.html"><i class="fa-solid fa-rotate-left"></i>Devolución de ventas</a>
+      <a href="../usuarios/usuario-consulta.html"><i class="fa-solid fa-users"></i>Clientes</a>
+      <a href="../empleados/rol-consulta.html"><i class="fa-solid fa-user-tie"></i>Empleados y roles</a>
       <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+      <a href="../../index.html"><i class="fa-solid fa-globe"></i>Ir al sitio público</a>
   </nav>
 
   <main class="contenido">
@@ -67,18 +71,19 @@
           </div>
           
           <div class="acciones acciones--fin"><button type="button" class="btn-secondary" data-ir="disponibilidad.html">Consultar disponibilidad</button>
-<button type="button" class="btn-secondary" data-ir="../catalogo.html">Cancelar</button>
+<button type="button" class="btn-secondary" data-ir="../admin/dashboard.html">Cancelar</button>
 <button type="submit" class="btn-primary">Guardar</button></div>
         </form>
       </div>
     </div>
   </main>
 
-  <footer class="pie">PA_07_03_03 · Modificar recepción</footer>
+  <footer class="pie pie-admin"><span>© 2026 Mundo a la Carta · Panel administrativo</span><span>PA_07_03_03 · Modificar recepción</span><span>Sesión: <strong data-sesion-nombre></strong></span></footer>
 </div>
 
 <div id="toast-container" aria-live="polite"></div>
     <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/datos.js"></script>
     <script src="../../js/comun.js"></script>
     <script src="../../js/pantallas/reservas.js"></script>
 </body>

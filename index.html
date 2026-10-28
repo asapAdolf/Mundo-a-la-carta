@@ -3,69 +3,103 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Mundo a la Carta - Login / Cuenta</title>
+    <title>Mundo a la Carta - Inicio</title>
+    <meta name="description" content="Restaurante de experiencias inmersivas: reserva una sala temática, consulta la carta y los souvenirs de Mundo a la Carta.">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
     <link rel="stylesheet" href="css/layout.css">
-    <link rel="stylesheet" href="css/pantallas/auth.css">
+    <link rel="stylesheet" href="css/pantallas/inicio.css">
 </head>
-<body class="pantalla pantalla--auth" data-raiz=".">
+<body class="pantalla pantalla--inicio" data-raiz="." data-area="publica">
 <div class="app">
-  <header class="hero bg-wave">
-    <div class="topbar"><a class="marca" href="vistas/catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+  <header class="hero hero--inicio bg-wave">
+    <div class="topbar"><a class="marca" href="index.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
-        <a class="activo" href="index.html">Login</a>
-        <a href="vistas/catalogo.html">Inicio</a>
-        <a href="vistas/carta/carta.html">Experiencias</a>
-        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+        <a class="activo" aria-current="page" href="index.html">Inicio</a>
+        <a href="index.html?tipo=Experiencia#catalogo">Experiencias</a>
+        <a href="vistas/carta/carta.html">Carta</a>
+        <a href="vistas/reservas/reservacion-crear.html">Reservar</a>
+        <a href="#contacto">Contacto</a>
       </nav>
       <div class="topbar-acciones">
       <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <a class="topbar-icono" href="vistas/carta/carrito.html" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="contador-nav" data-carrito-contador hidden>0</span></a>
+      <a class="topbar-cuenta" href="vistas/auth/acceso-login.html" data-cuenta><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
       <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
     </div>
     </div>
-    <h1 class="hero-titulo">Login/Cuenta</h1>
+    <h1 class="hero-titulo">Viaja por el mundo sin levantarte de la mesa</h1>
+    <p class="hero-sub">Salas inmersivas, menús temáticos y recuerdos para llevar. Elige tu experiencia y reserva en minutos.</p>
+    <div class="hero-acciones">
+      <a class="btn-primary" href="vistas/reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>&nbsp;Reservar experiencia</a>
+      <a class="btn-secondary" href="vistas/carta/carta.html"><i class="fa-solid fa-utensils"></i>&nbsp;Ver carta</a>
+    </div>
     <svg class="hero-onda" viewBox="0 0 1440 120" preserveAspectRatio="none" aria-hidden="true"><path d="M0 120L48 105C96 90 192 60 288 45C384 30 480 30 576 40C672 50 768 70 864 75C960 80 1056 70 1152 55C1248 40 1344 20 1392 10L1440 0V120H1392C1344 120 1248 120 1152 120C1056 120 960 120 864 120C768 120 672 120 576 120C480 120 384 120 288 120C192 120 96 120 48 120H0Z" fill="#fff"/></svg>
   </header>
-  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
+  <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar en el sitio..." aria-label="Buscar en el sitio"></form></div>
   <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
-      <a href="index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
-      <a href="vistas/usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
-      <a href="vistas/souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
-      <a href="vistas/empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
-      <a href="vistas/transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
-      <a href="vistas/reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
-      <a href="vistas/carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
-      <a href="vistas/ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
-      <a href="vistas/comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
-      <a href="vistas/compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
-      <a href="vistas/catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+      <a href="index.html"><i class="fa-solid fa-house"></i>Inicio</a>
+      <a href="index.html?tipo=Experiencia#catalogo"><i class="fa-solid fa-map-location-dot"></i>Experiencias</a>
+      <a href="vistas/carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta</a>
+      <a href="vistas/carta/carrito.html"><i class="fa-solid fa-cart-shopping"></i>Mi carrito</a>
+      <a href="vistas/reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-plus"></i>Reservar</a>
+      <a href="vistas/reservas/reservacion-consultar.html"><i class="fa-solid fa-calendar-check"></i>Mis reservaciones</a>
+      <a href="vistas/auth/acceso-login.html"><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>
+      <a href="vistas/auth/acceso-registro.html"><i class="fa-solid fa-user-plus"></i>Crear cuenta</a>
+      <a href="vistas/auth/acceso-personal.html"><i class="fa-solid fa-id-badge"></i>Acceso del personal</a>
   </nav>
 
   <main class="contenido">
-    <section class="auth-login">
-      <div class="auth-bienvenida">
-        <h2>¡Bienvenido a Mundo a la Carta!</h2>
-        <p>Por favor, ingrese a su cuenta para poder continuar navegando en la página y poder realizar su reservación</p>
+    <section class="pasos" aria-label="Cómo funciona">
+      <div class="paso"><i class="fa-solid fa-map-location-dot"></i><div><strong>1. Elige tu destino</strong><span>París, playa, selva, espacio o salón clásico.</span></div></div>
+      <div class="paso"><i class="fa-solid fa-door-open"></i><div><strong>2. Reserva tu sala</strong><span>Consulta disponibilidad por fecha, hora y comensales.</span></div></div>
+      <div class="paso"><i class="fa-solid fa-champagne-glasses"></i><div><strong>3. Disfruta</strong><span>Menú temático, ambientación y recibo al instante.</span></div></div>
+    </section>
+
+    <section id="catalogo" aria-labelledby="catalogo-titulo">
+      <div class="catalogo-cab">
+        <div><h2 id="catalogo-titulo">Catálogo</h2><p>Experiencias, platillos de la carta y souvenirs.</p></div>
       </div>
-      <div class="auth-panel">
-        <div class="auth-avatar"><i class="fa-solid fa-user"></i></div>
-        <form class="auth-form" data-validar data-exito="Sesión iniciada correctamente" data-ir="vistas/catalogo.html" novalidate>
-          <input class="input-custom" type="text" id="usuario" name="usuario" placeholder="Usuario" aria-label="Usuario" autocomplete="username" required>
-          <input class="input-custom" type="password" id="password" name="password" placeholder="Contraseña" aria-label="Contraseña" autocomplete="current-password" required>
-          <p class="auth-enlaces">¿Olvidaste tu contraseña? <a href="#" data-toast="Te enviamos instrucciones a tu correo">Recuperar contraseña</a><br>
-            ¿No tienes una cuenta? <a href="vistas/auth/acceso-registro.html">Crear usuario</a></p>
-          <div class="acciones acciones--centro" style="margin-top:0"><button type="submit" class="btn-primary">Aceptar</button></div>
-        </form>
+      <form class="filtros" role="search" id="filtros" onsubmit="return false">
+        <div class="chips" role="group" aria-label="Tipo">
+          <button type="button" class="chip" data-tipo="" aria-pressed="true">Todo</button>
+          <button type="button" class="chip" data-tipo="Experiencia" aria-pressed="false">Experiencias</button>
+          <button type="button" class="chip" data-tipo="Carta" aria-pressed="false">Carta</button>
+          <button type="button" class="chip" data-tipo="Souvenir" aria-pressed="false">Souvenirs</button>
+        </div>
+        <input class="input-custom" type="search" id="filtro-q" placeholder="Buscar por nombre o categoría..." aria-label="Buscar en el catálogo">
+        <select class="input-custom" id="filtro-orden" aria-label="Ordenar">
+          <option value="">Destacados</option>
+          <option value="precio-asc">Precio: menor a mayor</option>
+          <option value="precio-desc">Precio: mayor a menor</option>
+          <option value="nombre">Nombre (A–Z)</option>
+        </select>
+      </form>
+      <div class="catalogo-grid" id="catalogo-grid" aria-live="polite"></div>
+      <div class="catalogo-pie">
+        <span class="listado-total" id="catalogo-total"></span>
+        <nav class="paginacion" id="catalogo-paginacion" aria-label="Paginación del catálogo"></nav>
       </div>
     </section>
   </main>
 
-  <footer class="pie">Login / Cuenta</footer>
+  <footer class="pie-sitio" id="contacto">
+    <div class="pie-columnas">
+      <div><a class="marca" href="index.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+        <p>Restaurante de experiencias inmersivas: viaja por el mundo a través de sus sabores.</p></div>
+      <nav aria-label="Explora"><h3>Explora</h3><a href="index.html">Inicio</a><a href="index.html?tipo=Experiencia#catalogo">Experiencias</a><a href="vistas/carta/carta.html">Carta</a><a href="vistas/reservas/reservacion-crear.html">Reservar</a></nav>
+      <nav aria-label="Tu cuenta"><h3>Tu cuenta</h3><a href="vistas/auth/acceso-login.html">Iniciar sesión</a><a href="vistas/auth/acceso-registro.html">Crear cuenta</a><a href="vistas/reservas/reservacion-consultar.html">Mis reservaciones</a><a href="vistas/auth/acceso-personal.html">Acceso del personal</a></nav>
+      <div><h3>Contacto</h3><p><i class="fa-solid fa-envelope"></i> contacto@mundoalacarta.mx</p><p><i class="fa-solid fa-phone"></i> 55 0000 0000</p><p><i class="fa-solid fa-clock"></i> Mar a dom · 13:00 a 23:00</p></div>
+    </div>
+    <div class="pie-legal"><span>© 2026 Mundo a la Carta</span><span>Inicio · Catálogo</span></div>
+  </footer>
 </div>
 
 <div id="toast-container" aria-live="polite"></div>
     <script src="js/pantallas-indice.js"></script>
+    <script src="js/datos.js"></script>
     <script src="js/comun.js"></script>
+    <script src="js/carrito.js"></script>
+    <script src="js/pantallas/inicio.js"></script>
 </body>
 </html>

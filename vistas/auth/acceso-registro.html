@@ -10,18 +10,21 @@
     <link rel="stylesheet" href="../../css/pantallas/formulario.css">
     <link rel="stylesheet" href="../../css/pantallas/auth.css">
 </head>
-<body class="pantalla pantalla--auth" data-raiz="../..">
+<body class="pantalla pantalla--auth" data-raiz="../.." data-area="publica">
 <div class="app">
   <header class="hero hero--compacto bg-wave">
-    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+    <div class="topbar"><a class="marca" href="../../index.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <nav class="nav-principal" aria-label="Principal">
-        <a class="activo" href="../../index.html">Usuario</a>
-        <a href="../catalogo.html">Inicio</a>
-        <a href="../carta/carta.html">Experiencias</a>
-        <a href="#" data-toast="Contacto: contacto@mundoalacarta.mx · 55 0000 0000">Contacto</a>
+        <a href="../../index.html">Inicio</a>
+        <a href="../../index.html?tipo=Experiencia#catalogo">Experiencias</a>
+        <a href="../carta/carta.html">Carta</a>
+        <a href="../reservas/reservacion-crear.html">Reservar</a>
+        <a href="#contacto">Contacto</a>
       </nav>
       <div class="topbar-acciones">
       <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <a class="topbar-icono" href="../carta/carrito.html" aria-label="Carrito"><i class="fa-solid fa-cart-shopping"></i><span class="contador-nav" data-carrito-contador hidden>0</span></a>
+      <a class="topbar-cuenta" href="acceso-login.html" data-cuenta><i class="fa-solid fa-right-to-bracket"></i> Iniciar sesión</a>
       <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
     </div>
     </div>
@@ -30,17 +33,15 @@
   </header>
   <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
   <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
-      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
-      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
-      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
-      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
-      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
-      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
-      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
-      <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
-      <a href="../comandas/mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
-      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
-      <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+      <a href="../../index.html"><i class="fa-solid fa-house"></i>Inicio</a>
+      <a href="../../index.html?tipo=Experiencia#catalogo"><i class="fa-solid fa-map-location-dot"></i>Experiencias</a>
+      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta</a>
+      <a href="../carta/carrito.html"><i class="fa-solid fa-cart-shopping"></i>Mi carrito</a>
+      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-plus"></i>Reservar</a>
+      <a href="../reservas/reservacion-consultar.html"><i class="fa-solid fa-calendar-check"></i>Mis reservaciones</a>
+      <a href="acceso-login.html"><i class="fa-solid fa-right-to-bracket"></i>Iniciar sesión</a>
+      <a href="acceso-registro.html"><i class="fa-solid fa-user-plus"></i>Crear cuenta</a>
+      <a href="acceso-personal.html"><i class="fa-solid fa-id-badge"></i>Acceso del personal</a>
   </nav>
 
   <main class="contenido">
@@ -55,18 +56,31 @@
 <div class="campo-grupo"><label for="telefono">Teléfono <span class="req">*</span></label><input class="input-custom" type="tel" id="telefono" name="telefono" required inputmode="tel" maxlength="12"><small class="ayuda">Teléfono · máx. 12 dígitos</small></div>
 <div class="campo-grupo"><label for="telefono-del-contacto-de-emergencia">Teléfono del contacto de emergencia</label><input class="input-custom" type="tel" id="telefono-del-contacto-de-emergencia" name="telefono-del-contacto-de-emergencia" inputmode="tel" maxlength="12"><small class="ayuda">Teléfono · máx. 12 dígitos</small></div>
 <div class="campo-grupo"><label for="correo-electronico">Correo Electrónico <span class="req">*</span></label><input class="input-custom" type="email" id="correo-electronico" name="correo-electronico" required maxlength="150"><small class="ayuda">Correo · máx. 150 caracteres</small></div>
-<div class="campo-grupo"><label for="observaciones-especiales">Observaciones especiales</label><input class="input-custom" type="text" id="observaciones-especiales" name="observaciones-especiales" maxlength="150"><small class="ayuda">Texto · máx. 150 caracteres</small></div></div>
+<div class="campo-grupo"><label for="observaciones-especiales">Observaciones especiales</label><input class="input-custom" type="text" id="observaciones-especiales" name="observaciones-especiales" maxlength="150"><small class="ayuda">Texto · máx. 150 caracteres</small></div>
+<div class="campo-grupo"><label for="password">Contraseña <span class="req">*</span></label><input class="input-custom" type="password" id="password" name="password" required autocomplete="new-password" minlength="6"><small class="ayuda">Mínimo 6 caracteres</small></div>
+<div class="campo-grupo"><label for="confirmar-password">Confirmar contraseña <span class="req">*</span></label><input class="input-custom" type="password" id="confirmar-password" name="confirmar-password" required autocomplete="new-password"></div></div>
         <div class="acciones "><button type="submit" class="btn-primary">Guardar</button>
 <button type="button" class="btn-secondary" data-ir="acceso-login.html">Regresar</button></div>
       </form>
     </section>
   </main>
 
-  <footer class="pie">Acceso · Crear cuenta</footer>
+  <footer class="pie-sitio" id="contacto">
+    <div class="pie-columnas">
+      <div><a class="marca" href="../../index.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+        <p>Restaurante de experiencias inmersivas: viaja por el mundo a través de sus sabores.</p></div>
+      <nav aria-label="Explora"><h3>Explora</h3><a href="../../index.html">Inicio</a><a href="../../index.html?tipo=Experiencia#catalogo">Experiencias</a><a href="../carta/carta.html">Carta</a><a href="../reservas/reservacion-crear.html">Reservar</a></nav>
+      <nav aria-label="Tu cuenta"><h3>Tu cuenta</h3><a href="acceso-login.html">Iniciar sesión</a><a href="acceso-registro.html">Crear cuenta</a><a href="../reservas/reservacion-consultar.html">Mis reservaciones</a><a href="acceso-personal.html">Acceso del personal</a></nav>
+      <div><h3>Contacto</h3><p><i class="fa-solid fa-envelope"></i> contacto@mundoalacarta.mx</p><p><i class="fa-solid fa-phone"></i> 55 0000 0000</p><p><i class="fa-solid fa-clock"></i> Mar a dom · 13:00 a 23:00</p></div>
+    </div>
+    <div class="pie-legal"><span>© 2026 Mundo a la Carta</span><span>Acceso · Crear cuenta</span></div>
+  </footer>
 </div>
 
 <div id="toast-container" aria-live="polite"></div>
     <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/datos.js"></script>
     <script src="../../js/comun.js"></script>
+    <script src="../../js/pantallas/acceso.js"></script>
 </body>
 </html>

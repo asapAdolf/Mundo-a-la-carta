@@ -10,13 +10,14 @@
     <link rel="stylesheet" href="../../css/pantallas/formulario.css">
     <link rel="stylesheet" href="../../css/pantallas/comanda.css">
 </head>
-<body class="pantalla pantalla--comanda" data-raiz="../..">
+<body class="pantalla pantalla--comanda" data-raiz="../.." data-area="admin">
 <div class="app">
   <header class="hero hero--comanda bg-wave">
-    <div class="topbar"><a class="marca" href="../catalogo.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
+    <div class="topbar"><a class="marca" href="../admin/dashboard.html"><i class="fa-solid fa-globe" aria-hidden="true"></i><div>MUNDO<span> A LA CARTA</span></div></a>
       <div class="rol-activo"><span class="activo">Mesero</span><span>Comandera</span></div>
       <div class="topbar-acciones">
       <button type="button" aria-label="Búsqueda" data-alternar="buscador"><i class="fa-solid fa-magnifying-glass"></i></button>
+      <span class="topbar-usuario"><i class="fa-solid fa-circle-user"></i> <span data-sesion-nombre></span></span>
       <button type="button" aria-label="Menú" data-alternar="menu-hamburguesa"><i class="fa-solid fa-bars"></i></button>
     </div>
     </div>
@@ -25,17 +26,21 @@
   </header>
   <div class="buscador" id="buscador"><form role="search"><input class="input-custom" type="search" placeholder="Buscar pantalla..." aria-label="Buscar pantalla"></form></div>
   <nav class="menu-hamburguesa" id="menu-hamburguesa" aria-label="Menú">
-      <a href="../../index.html"><i class="fa-solid fa-right-to-bracket"></i>Acceso y cuenta</a>
-      <a href="../usuarios/usuario-crear.html"><i class="fa-solid fa-users"></i>Usuarios</a>
-      <a href="../souvenirs/souvenir-crear.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
-      <a href="../empleados/rol-crear.html"><i class="fa-solid fa-user-tie"></i>Roles / empleados</a>
-      <a href="../transporte/transporte-crear.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
-      <a href="../reservas/reservacion-crear.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
-      <a href="../carta/carta.html"><i class="fa-solid fa-utensils"></i>Carta y pagos</a>
+      <a href="../admin/dashboard.html"><i class="fa-solid fa-gauge"></i>Panel</a>
+      <a href="../reservas/reservacion-consultar.html"><i class="fa-solid fa-calendar-check"></i>Reservaciones</a>
+      <a href="../reservas/recepcion-consultar.html"><i class="fa-solid fa-bell-concierge"></i>Recepciones</a>
+      <a href="../reservas/inmersion-consultar.html"><i class="fa-solid fa-vr-cardboard"></i>Inmersiones</a>
+      <a href="mesas.html"><i class="fa-solid fa-clipboard-list"></i>Mesas y comandas</a>
       <a href="../ventas/vender-souvenir.html"><i class="fa-solid fa-cash-register"></i>Venta de souvenirs</a>
-      <a href="mesas.html"><i class="fa-solid fa-clipboard-list"></i>Comandas (Mesero)</a>
-      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras y devoluciones</a>
+      <a href="../transporte/transporte-consulta.html"><i class="fa-solid fa-van-shuttle"></i>Transporte</a>
+      <a href="../souvenirs/souvenir-consulta.html"><i class="fa-solid fa-gift"></i>Souvenirs</a>
+      <a href="../compras/registrar-compra.html"><i class="fa-solid fa-cart-flatbed"></i>Compras</a>
+      <a href="../compras/devolucion-compra-buscar.html"><i class="fa-solid fa-truck-ramp-box"></i>Devolución de compras</a>
+      <a href="../compras/devolucion-venta-buscar.html"><i class="fa-solid fa-rotate-left"></i>Devolución de ventas</a>
+      <a href="../usuarios/usuario-consulta.html"><i class="fa-solid fa-users"></i>Clientes</a>
+      <a href="../empleados/rol-consulta.html"><i class="fa-solid fa-user-tie"></i>Empleados y roles</a>
       <a href="../catalogo.html"><i class="fa-solid fa-table-list"></i>Catálogo de pantallas</a>
+      <a href="../../index.html"><i class="fa-solid fa-globe"></i>Ir al sitio público</a>
   </nav>
 
   <main class="contenido">
@@ -56,11 +61,12 @@
     </div>
   </main>
 
-  <footer class="pie">PA_09_01_01 · Crear comanda</footer>
+  <footer class="pie pie-admin"><span>© 2026 Mundo a la Carta · Panel administrativo</span><span>PA_09_01_01 · Crear comanda</span><span>Sesión: <strong data-sesion-nombre></strong></span></footer>
 </div>
 
 <div id="toast-container" aria-live="polite"></div>
     <script src="../../js/pantallas-indice.js"></script>
+    <script src="../../js/datos.js"></script>
     <script src="../../js/comun.js"></script>
     <script src="../../js/pantallas/comanda.js"></script>
 </body>
