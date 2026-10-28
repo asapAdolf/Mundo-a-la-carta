@@ -139,7 +139,7 @@
     actual: function () {
       try { return JSON.parse(localStorage.getItem(CLAVE_SESION)); } catch (e) { return null; }
     },
-    /* Busca primero en empleados (usuario o correo) y luego en clientes (correo) */
+    /* Busca primero en empleados (usuario o correo) y luego en clientes (correo o usuario) */
     iniciar: function (identificador, password) {
       var id = String(identificador || '').trim().toLowerCase();
       var coincide = function (r, campos) {
@@ -147,7 +147,10 @@
       };
       return MC.datos.buscar('empleados', function (e) { return coincide(e, ['usuario', 'correo']); }).then(function (emp) {
         if (emp) return { tipo: 'empleado', registro: emp };
-        return MC.datos.buscar('usuarios', function (u) { return coincide(u, ['correo-electronico']); }).then(function (cli) {
+        return MC.datos.buscar('usuarios', function (u) {
+          return coincide(u, ['correo-electronico', 'usuario']) ||
+            (String(u['correo-electronico'] || '').split('@')[0].toLowerCase() === id && u.password === password);
+        }).then(function (cli) {
           return cli ? { tipo: 'cliente', registro: cli } : null;
         });
       }).then(function (r) {

@@ -62,7 +62,7 @@ pantalla({
       <h2>Inicio de Sesión</h2>
       <form data-validar data-exito="Bienvenido de nuevo" data-ir="../carta/carta.html" novalidate>
         <div class="form-grid" style="grid-template-columns:1fr">
-          ${render([['Correo Electrónico *', 'email'], ['Contraseña *', 'pass', { id: 'password' }]])}
+          ${render([['Correo Electrónico o Usuario *', 'text(150)', { id: 'correo-electronico' }], ['Contraseña *', 'pass', { id: 'password' }]])}
         </div>
         ${acciones([btn('Continuar', { submit: true }), btn('Crear Cuenta', { tipo: 'secondary', ir: 'acceso-registro.html' })], 'acciones--centro')}
       </form>
