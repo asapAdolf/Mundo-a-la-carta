@@ -200,8 +200,73 @@
   };
 
   /* Elementos que dependen de la sesión: nombre, rol, cuenta, permisos por rol y cerrar sesión */
+  /* ---------- Vistas compartidas con encabezado de personal ----------
+   * Reservaciones y cobro se usan desde el sitio público y desde el panel. Cuando las abre el personal,
+   * el header, el menú y el footer se cambian por los del panel administrativo (sin enlaces del sitio
+   * público: ese acceso solo vive en el Panel general). */
+  var COMPARTIDAS = [
+    { re: /\/vistas\/reservas\/(reservacion-|disponibilidad|recibo-reserva)/, modulo: 'Reservaciones', href: 'vistas/reservas/reservacion-consultar.html' },
+    { re: /\/vistas\/ventas\/cobro-/, modulo: 'Venta de souvenirs', href: 'vistas/ventas/vender-souvenir.html' }
+  ];
+  var MENU_PANEL = [
+    ['vistas/admin/dashboard.html', 'fa-gauge', 'Panel'],
+    ['vistas/reservas/reservacion-consultar.html', 'fa-calendar-check', 'Reservaciones'],
+    ['vistas/reservas/recepcion-consultar.html', 'fa-bell-concierge', 'Recepciones'],
+    ['vistas/reservas/inmersion-consultar.html', 'fa-vr-cardboard', 'Inmersiones'],
+    ['vistas/comandas/mesas.html', 'fa-clipboard-list', 'Mesas y comandas'],
+    ['vistas/ventas/vender-souvenir.html', 'fa-cash-register', 'Venta de souvenirs'],
+    ['vistas/transporte/transporte-consulta.html', 'fa-van-shuttle', 'Transporte'],
+    ['vistas/souvenirs/souvenir-consulta.html', 'fa-gift', 'Souvenirs'],
+    ['vistas/compras/registrar-compra.html', 'fa-cart-flatbed', 'Compras'],
+    ['vistas/compras/devolucion-compra-buscar.html', 'fa-truck-ramp-box', 'Devolución de compras'],
+    ['vistas/compras/devolucion-venta-buscar.html', 'fa-rotate-left', 'Devolución de ventas'],
+    ['vistas/usuarios/usuario-consulta.html', 'fa-users', 'Clientes'],
+    ['vistas/empleados/rol-consulta.html', 'fa-user-tie', 'Empleados y roles'],
+    ['vistas/catalogo.html', 'fa-table-list', 'Catálogo de pantallas']
+  ];
+
+  function encabezadoPersonal(s) {
+    var vista = COMPARTIDAS.filter(function (c) { return c.re.test(ruta); })[0];
+    if (!vista || !s || s.tipo !== 'empleado') return;
+    var dashboard = MC.ruta('vistas/admin/dashboard.html');
+
+    document.querySelectorAll('.topbar .marca').forEach(function (a) { a.href = dashboard; });
+    var nav = document.querySelector('.nav-principal');
+    if (nav) {
+      nav.innerHTML = '<a href="' + dashboard + '">Panel</a>' +
+        '<a class="activo" aria-current="page" href="' + MC.ruta(vista.href) + '">' + MC.esc(vista.modulo) + '</a>';
+    }
+    var acciones = document.querySelector('.topbar-acciones');
+    if (acciones) {
+      acciones.querySelectorAll('a[href$="carrito.html"]').forEach(function (a) { a.remove(); });
+      acciones.querySelectorAll('[data-cuenta]').forEach(function (a) {
+        var chip = document.createElement('span');
+        chip.className = 'topbar-usuario';
+        chip.innerHTML = '<i class="fa-solid fa-circle-user"></i> <span data-sesion-nombre></span>';
+        a.replaceWith(chip);
+      });
+    }
+    var menu = document.getElementById('menu-hamburguesa');
+    if (menu) {
+      menu.innerHTML = MENU_PANEL.map(function (m) {
+        return '<a href="' + MC.ruta(m[0]) + '"><i class="fa-solid ' + m[1] + '"></i>' + MC.esc(m[2]) + '</a>';
+      }).join('');
+    }
+    var pie = document.querySelector('footer.pie-sitio');
+    if (pie) {
+      var legal = pie.querySelectorAll('.pie-legal span');
+      var pantalla = legal.length > 1 ? legal[legal.length - 1].textContent : vista.modulo;
+      var nuevo = document.createElement('footer');
+      nuevo.className = 'pie pie-admin';
+      nuevo.innerHTML = '<span>© 2026 Mundo a la Carta · Panel administrativo</span><span>' + MC.esc(pantalla) +
+        '</span><span>Sesión: <strong data-sesion-nombre></strong></span>';
+      pie.replaceWith(nuevo);
+    }
+  }
+
   document.addEventListener('DOMContentLoaded', function () {
     var s = MC.sesion.actual();
+    encabezadoPersonal(s);
     var menu = document.getElementById('menu-hamburguesa');
     if (s && menu) {
       var salir = document.createElement('a');
@@ -221,15 +286,6 @@
       a.href = MC.ruta(s.tipo === 'empleado' ? 'vistas/admin/dashboard.html' : 'vistas/reservas/reservacion-consultar.html');
       a.title = s.tipo === 'empleado' ? 'Ir al panel administrativo' : 'Mis reservaciones';
     });
-    /* El personal siempre tiene a la mano el regreso al panel, aunque esté en una vista pública
-     * (ej. Reservaciones). El enlace al sitio público solo vive en el panel general (dashboard). */
-    var nav = document.querySelector('.nav-principal');
-    if (s && s.tipo === 'empleado' && MC.area === 'publica' && nav && !nav.querySelector('a[href$="admin/dashboard.html"]')) {
-      var panel = document.createElement('a');
-      panel.href = MC.ruta('vistas/admin/dashboard.html');
-      panel.textContent = 'Panel';
-      nav.insertBefore(panel, nav.firstChild);
-    }
     MC.actualizarContadorCarrito();
   });
   document.addEventListener('click', function (e) {
