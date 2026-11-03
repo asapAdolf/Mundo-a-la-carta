@@ -102,9 +102,9 @@ Contacto y horario) y una franja legal con © y el código de la pantalla. En ce
 | Zona | Contenido |
 |---|---|
 | Izquierda | Marca → Panel |
-| Centro | **Panel** · *Módulo actual* (activo) · **Sitio público** |
+| Centro | **Panel** · *Módulo actual* (activo). **Sitio público** solo aparece en el Panel general (dashboard) |
 | Derecha | Buscar pantalla · chip con el nombre del usuario · Menú ☰ |
-| Menú ☰ | Todos los módulos del panel (mismo orden que el sidebar), catálogo de pantallas, ir al sitio público y cerrar sesión |
+| Menú ☰ | Todos los módulos del panel (mismo orden que el sidebar), catálogo de pantallas y cerrar sesión ("Ir al sitio público" solo en el Panel general) |
 
 **Sidebar** (solo en el Panel, `.admin-lateral`): saludo con nombre y rol y los módulos agrupados en General,
 Reservas, Operación, Inventario y compras y Administración, filtrados por rol. En celular se convierte en una
@@ -118,6 +118,8 @@ y el usuario en sesión.
 
 1. La marca siempre lleva al inicio de su área (Inicio o Panel).
 2. "Regresar" en un módulo lleva al Panel; en el área pública, al Inicio.
+   Fuera del Panel general, el personal siempre ve el botón **Panel** (también en la Comandera y en las vistas
+   públicas que abre, como Reservaciones); el acceso al sitio público solo está en el Panel general.
 3. Un registro seleccionado viaja en la URL (`?folio=`), así un enlace abre exactamente ese registro.
 4. Sin sesión, una página protegida redirige al login de su área con `?volver=` y regresa ahí al iniciar sesión.
 5. Los flujos de varias pantallas (reservar, cobrar, cancelar comanda) guardan su avance en `sessionStorage`

@@ -221,6 +221,15 @@
       a.href = MC.ruta(s.tipo === 'empleado' ? 'vistas/admin/dashboard.html' : 'vistas/reservas/reservacion-consultar.html');
       a.title = s.tipo === 'empleado' ? 'Ir al panel administrativo' : 'Mis reservaciones';
     });
+    /* El personal siempre tiene a la mano el regreso al panel, aunque esté en una vista pública
+     * (ej. Reservaciones). El enlace al sitio público solo vive en el panel general (dashboard). */
+    var nav = document.querySelector('.nav-principal');
+    if (s && s.tipo === 'empleado' && MC.area === 'publica' && nav && !nav.querySelector('a[href$="admin/dashboard.html"]')) {
+      var panel = document.createElement('a');
+      panel.href = MC.ruta('vistas/admin/dashboard.html');
+      panel.textContent = 'Panel';
+      nav.insertBefore(panel, nav.firstChild);
+    }
     MC.actualizarContadorCarrito();
   });
   document.addEventListener('click', function (e) {
