@@ -2,13 +2,17 @@
 
 Frontend estático basado en `pantallas.pdf`. `index.html` es el **Inicio / Catálogo público** y `vistas/admin/dashboard.html` el **Panel administrativo**. La estructura completa (sitemap, layout de cada área y paginación) está en [`docs/estructura-sitio.md`](docs/estructura-sitio.md).
 
-## Uso
+## Uso Local y Despliegue
 
 ```bash
-npm start     # Inicia el servidor en http://localhost:3000 (abre el Inicio público)
-npm run build # Regenera index.html, vistas/<modulo>/*.html y js/pantallas-indice.js
+npm start     # Inicia el servidor y API en http://localhost:3000
+npm run build # Inicializa o actualiza la base de datos SQLite y dependencias
 npm run verify # Verifica que todos los enlaces internos existan
 ```
+
+### ☁️ Despliegue en Render
+
+El proyecto está listo para desplegarse en [Render](https://render.com) en un solo clic mediante [`render.yaml`](render.yaml). Consulta la [**Guía de despliegue en Render**](docs/despliegue-render.md) para ver los pasos detallados.
 
 > ⚠️ `npm run build` regenera las vistas desde `tools/` y **sobrescribe** los cambios hechos a mano en `vistas/`
 > (comentarios RN de transporte, scripts de funcionalidad, campos de contraseña del registro). No lo ejecutes
@@ -48,6 +52,15 @@ Personal: `vistas/auth/acceso-personal.html` (o *Acceso del personal* en el men�
   reintegra el inventario.
 - **Comandas**: mesas → comanda → enviar a cocina → cobrar (libera la mesa). Quitar alimentos ya enviados requiere la contraseña de un gerente.
 - **Compras**: registrar orden (aumenta existencias) → devolución de la orden al proveedor.
+
+### Base de Datos Relacional
+
+La base de datos completa se encuentra en la carpeta [`database/`](database/README.md) e incluye:
+- `database/mundo_a_la_carta.db`: Base de datos SQLite lista para usar.
+- `database/schema.sql`: Esquema DDL con llaves primarias, foráneas, restricciones y reglas de negocio.
+- `database/seed.sql`: Semilla de datos con los registros de prueba correspondientes a las pantallas.
+- `database/schema_mysql.sql` y `database/schema_postgresql.sql`: Esquemas adaptados a MySQL y PostgreSQL.
+- Para inicializar o reiniciar: `npm run db:init` o `npm run db:reset`.
 
 ### Para el equipo de Base de Datos
 

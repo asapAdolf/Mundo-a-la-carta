@@ -260,12 +260,7 @@
   var listo = function (v) { return Promise.resolve(copia(v)); };
   var falla = function (msg) { return Promise.reject(new Error(msg)); };
 
-  MC.datos = {
-    /**
-     * Lista registros con búsqueda, filtro y paginación.
-     * opciones: { q, campos: [...], filtro: {campo: valor} | fn, pagina (1..n), porPagina }
-     * Resuelve: { items, total, pagina, paginas, porPagina }
-     */
+  var local = {
     listar: function (col, o) {
       o = o || {};
       var items = coleccion(col).slice();
@@ -291,11 +286,9 @@
       var r = coleccion(col).find(function (x) { return String(x.folio) === String(folio); });
       return r ? listo(r) : falla('No existe el registro con folio ' + folio);
     },
-    /* Primer registro que cumple fn (o null) */
     buscar: function (col, fn) {
       return listo(coleccion(col).find(fn) || null);
     },
-    /* Si datos.folio viene definido se respeta (p. ej. recepción ligada a una reservación) */
     crear: function (col, datos) {
       var b = bd();
       var registro = copia(datos);
@@ -328,16 +321,128 @@
       guardar();
       return listo(true);
     },
-    /* Siguiente folio que se asignará (solo informativo) */
     siguienteFolio: function (col) {
       var n = bd().secuencias[col] || 1;
       return Promise.resolve(FOLIOS[col] ? FOLIOS[col](n) : String(n));
     },
-    /* Restaura los datos de ejemplo */
     reiniciar: function () {
       memoria = semilla();
       guardar();
       return Promise.resolve(true);
+    }
+  };
+
+  /* Conexión con Backend REST API (con fallback a localStorage) */
+  var tieneApi = (typeof window !== 'undefined' && (window.location.protocol === 'http:' || window.location.protocol === 'https:'));
+
+  var api = {
+    listar: function (col, o) {
+      o = o || {};
+      var params = new URLSearchParams();
+      if (o.q) params.set('q', o.q);
+      if (o.pagina) params.set('pagina', o.pagina);
+      if (o.porPagina) params.set('porPagina', o.porPagina);
+      if (o.filtro && typeof o.filtro === 'object') {
+        Object.keys(o.filtro).forEach(function (k) { params.set(k, o.filtro[k]); });
+      }
+      return fetch('/api/' + encodeURIComponent(col) + '?' + params.toString())
+        .then(function (res) {
+          if (!res.ok) throw new Error('Error HTTP ' + res.status);
+          return res.json();
+        })
+        .then(function (data) {
+          var items = data.items || [];
+          if (typeof o.filtro === 'function') items = items.filter(o.filtro);
+          if (o.orden) items.sort(o.orden);
+          data.items = items;
+          return data;
+        });
+    },
+    obtener: function (col, folio) {
+      return fetch('/api/' + encodeURIComponent(col) + '/' + encodeURIComponent(folio))
+        .then(function (res) {
+          if (!res.ok) throw new Error('No existe el registro con folio ' + folio);
+          return res.json();
+        });
+    },
+    buscar: function (col, fn) {
+      return api.listar(col, {}).then(function (res) {
+        return (res.items && res.items.find(fn)) || null;
+      });
+    },
+    crear: function (col, datos) {
+      return fetch('/api/' + encodeURIComponent(col), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(datos)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Error al crear registro');
+        return res.json();
+      });
+    },
+    actualizar: function (col, folio, cambios) {
+      return fetch('/api/' + encodeURIComponent(col) + '/' + encodeURIComponent(folio), {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(cambios)
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Error al actualizar registro');
+        return res.json();
+      });
+    },
+    eliminar: function (col, folio) {
+      return fetch('/api/' + encodeURIComponent(col) + '/' + encodeURIComponent(folio), {
+        method: 'DELETE'
+      }).then(function (res) {
+        if (!res.ok) throw new Error('Error al eliminar registro');
+        return true;
+      });
+    },
+    siguienteFolio: function (col) {
+      return fetch('/api/secuencias/' + encodeURIComponent(col))
+        .then(function (res) { return res.json(); })
+        .then(function (data) { return data.folio; });
+    },
+    reiniciar: function () {
+      return fetch('/api/reiniciar', { method: 'POST' }).then(function () {
+        local.reiniciar();
+        return true;
+      });
+    }
+  };
+
+  MC.datos = {
+    listar: function (col, o) {
+      if (!tieneApi) return local.listar(col, o);
+      return api.listar(col, o).catch(function () { return local.listar(col, o); });
+    },
+    obtener: function (col, folio) {
+      if (!tieneApi) return local.obtener(col, folio);
+      return api.obtener(col, folio).catch(function () { return local.obtener(col, folio); });
+    },
+    buscar: function (col, fn) {
+      if (!tieneApi) return local.buscar(col, fn);
+      return api.buscar(col, fn).catch(function () { return local.buscar(col, fn); });
+    },
+    crear: function (col, datos) {
+      if (!tieneApi) return local.crear(col, datos);
+      return api.crear(col, datos).catch(function () { return local.crear(col, datos); });
+    },
+    actualizar: function (col, folio, cambios) {
+      if (!tieneApi) return local.actualizar(col, folio, cambios);
+      return api.actualizar(col, folio, cambios).catch(function () { return local.actualizar(col, folio, cambios); });
+    },
+    eliminar: function (col, folio) {
+      if (!tieneApi) return local.eliminar(col, folio);
+      return api.eliminar(col, folio).catch(function () { return local.eliminar(col, folio); });
+    },
+    siguienteFolio: function (col) {
+      if (!tieneApi) return local.siguienteFolio(col);
+      return api.siguienteFolio(col).catch(function () { return local.siguienteFolio(col); });
+    },
+    reiniciar: function () {
+      if (!tieneApi) return local.reiniciar();
+      return api.reiniciar().catch(function () { return local.reiniciar(); });
     }
   };
 })();

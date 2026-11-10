@@ -1,11 +1,13 @@
 /**
- * server.js - Servidor HTTP local ultra-ligero (Zero Dependencies)
- * Diseñado para servir la SPA con soporte completo para ES Modules (type="module") y CORS.
+ * server.js - Servidor HTTP y API REST (Zero Dependencies externas)
+ * Diseñado para servir la SPA y la API REST conectada a SQLite.
+ * Compatible con despliegue en Render, Railway o local.
  */
 
 const http = require('http');
 const fs = require('fs');
 const path = require('path');
+const { manejarApi } = require('./api');
 
 const PORT = process.env.PORT || 3000;
 const ROOT = path.resolve(__dirname);
@@ -30,7 +32,8 @@ const MIME_TYPES = {
 const server = http.createServer((req, res) => {
   // Manejo de CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Methods', 'GET, OPTIONS');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PATCH, PUT, DELETE, OPTIONS');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
 
   if (req.method === 'OPTIONS') {
     res.writeHead(204);
@@ -41,6 +44,13 @@ const server = http.createServer((req, res) => {
   // Sanitizar URL y resolver archivo
   const parsedUrl = new URL(req.url, `http://${req.headers.host || 'localhost'}`);
   let pathname = decodeURIComponent(parsedUrl.pathname);
+
+  // Ruta de API o Health Check
+  if (pathname.startsWith('/api/') || pathname === '/api' || pathname === '/health') {
+    const query = Object.fromEntries(parsedUrl.searchParams.entries());
+    const apiPath = pathname === '/health' ? '/api/health' : pathname;
+    return manejarApi(req, res, apiPath, query);
+  }
 
   if (pathname === '/' || pathname === '') {
     pathname = '/index.html';
@@ -87,11 +97,12 @@ const server = http.createServer((req, res) => {
   });
 });
 
-server.listen(PORT, () => {
+server.listen(PORT, '0.0.0.0', () => {
   console.log(`\n======================================================`);
-  console.log(`  🌐 Mundo a la Carta - Frontend del Sistema`);
-  console.log(`  Login (inicio): http://localhost:${PORT}/index.html`);
-  console.log(`  Catálogo:       http://localhost:${PORT}/vistas/catalogo.html`);
+  console.log(`  🌐 Mundo a la Carta - Servidor y API REST`);
+  console.log(`  Servidor activo en: http://0.0.0.0:${PORT}`);
+  console.log(`  API Health check:   http://0.0.0.0:${PORT}/api/health`);
+  console.log(`  Catálogo de vistas: http://0.0.0.0:${PORT}/vistas/catalogo.html`);
   console.log(`  Presiona Ctrl + C para detener el servidor`);
   console.log(`======================================================\n`);
 });

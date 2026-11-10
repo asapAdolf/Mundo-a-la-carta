@@ -1,0 +1,19 @@
+# Render Blueprint para Mundo a la Carta
+# Documentación: https://render.com/docs/blueprint-spec
+
+services:
+  - type: web
+    name: mundo-a-la-carta
+    runtime: node
+    plan: free
+    region: oregon
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /health
+    autoDeploy: true
+    envVars:
+      - key: NODE_VERSION
+        value: 22.14.0
+      - key: PORT
+        value: 3000
+

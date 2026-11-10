@@ -6,8 +6,14 @@
   "scripts": {
     "start": "node server.js",
     "dev": "node server.js",
-    "build": "node tools/generar-pantallas.js",
-    "verify": "node tools/verificar-enlaces.js"
+    "build": "node database/init-db.js",
+    "generate": "node tools/generar-pantallas.js",
+    "verify": "node tools/verificar-enlaces.js",
+    "db:init": "node database/init-db.js",
+    "db:reset": "node database/init-db.js --reset"
+  },
+  "engines": {
+    "node": ">=22.0.0"
   },
   "keywords": [
     "javascript",
@@ -17,5 +23,8 @@
     "reglas-de-negocio"
   ],
   "author": "Mundo a la Carta",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "its": "^1.0.2"
+  }
 }
