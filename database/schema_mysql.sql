@@ -119,7 +119,8 @@ CREATE TABLE IF NOT EXISTS menus (
 
 CREATE TABLE IF NOT EXISTS reservaciones (
     folio VARCHAR(15) PRIMARY KEY,
-    cliente_folio VARCHAR(10) NOT NULL,
+    cliente_folio VARCHAR(10),
+    cliente_nombre VARCHAR(150),
     fecha DATE NOT NULL,
     hora_entrada TIME NOT NULL,
     hora_salida TIME NOT NULL,
@@ -179,6 +180,7 @@ CREATE TABLE IF NOT EXISTS mesas (
     capacidad INT NOT NULL DEFAULT 4,
     estado ENUM('Libre', 'Ocupada', 'Reservada', 'Mantenimiento') NOT NULL DEFAULT 'Libre',
     mesero_folio VARCHAR(10),
+    comanda VARCHAR(15),
     FOREIGN KEY (mesero_folio) REFERENCES empleados(folio)
 ) ENGINE=InnoDB;
 
@@ -190,7 +192,8 @@ CREATE TABLE IF NOT EXISTS comandas (
     subtotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     iva DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    estado ENUM('Abierta', 'En cocina', 'Cobrada', 'Cancelada') NOT NULL DEFAULT 'Abierta',
+    metodo_pago VARCHAR(30),
+    estado ENUM('Abierta', 'Enviada', 'En cocina', 'Pagada', 'Cobrada', 'Cancelada') NOT NULL DEFAULT 'Abierta',
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cerrado_en TIMESTAMP NULL,
     FOREIGN KEY (mesa_folio) REFERENCES mesas(folio),

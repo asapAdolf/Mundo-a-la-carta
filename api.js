@@ -58,7 +58,8 @@ const FORMATO_FOLIO = {
   pedidos: (n) => 'PED-' + String(n).padStart(6, '0'),
   comandas: (n) => String(n).padStart(7, '0'),
   compras: (n) => 'OC-' + anio + '-' + String(n).padStart(4, '0'),
-  devoluciones: (n) => 'D-' + anio + '-' + String(n).padStart(6, '0')
+  devoluciones: (n) => 'D-' + anio + '-' + String(n).padStart(6, '0'),
+  devoluciones_compras: (n) => 'DEV-' + anio + '-' + String(n).padStart(4, '0')
 };
 
 const BASE_FOLIO = {
@@ -70,8 +71,9 @@ const BASE_FOLIO = {
   ventas: 214589,
   pedidos: 1,
   comandas: 1024,
-  compras: 150,
-  devoluciones: 451
+  compras: 148,
+  devoluciones: 451,
+  devoluciones_compras: 1
 };
 
 function siguienteNumeroFolio(col, tabla) {
@@ -88,9 +90,38 @@ function siguienteNumeroFolio(col, tabla) {
   return Math.max(base, max + 1);
 }
 
+// Helpers para resolver FKs por folio o por nombre
+function resolverEmpleadoFolio(valor) {
+  if (!valor) {
+    const primero = db.prepare("SELECT folio FROM empleados WHERE estado = 'Activo' LIMIT 1").get() || db.prepare('SELECT folio FROM empleados LIMIT 1').get();
+    return primero ? primero.folio : null;
+  }
+  const s = String(valor).trim();
+  const emp = db.prepare('SELECT folio FROM empleados WHERE folio = ? OR LOWER(nombre) = LOWER(?) OR LOWER(usuario) = LOWER(?) LIMIT 1').get(s, s, s);
+  if (emp) return emp.folio;
+  const fallback = db.prepare("SELECT folio FROM empleados WHERE estado = 'Activo' LIMIT 1").get() || db.prepare('SELECT folio FROM empleados LIMIT 1').get();
+  return fallback ? fallback.folio : null;
+}
+
+function resolverProveedorId(valor) {
+  if (!valor) return null;
+  const s = String(valor).trim();
+  const prov = db.prepare('SELECT id FROM proveedores WHERE id = ? OR LOWER(nombre) = LOWER(?) LIMIT 1').get(s, s);
+  if (prov) return prov.id;
+  // Auto-registrar proveedor si se captura una clave o nombre nuevo en formularios
+  const nuevoId = /^\d+$/.test(s) ? s : String(Date.now()).slice(-5);
+  const nombre = /^\d+$/.test(s) ? `Proveedor ${s}` : s;
+  db.prepare('INSERT OR IGNORE INTO proveedores (id, nombre, activo) VALUES (?, ?, 1)').run(nuevoId, nombre);
+  return nuevoId;
+}
+
 function consultarTodos(col, tabla) {
   if (col === 'reservaciones') {
-    return db.prepare(`SELECT r.*, COALESCE(u.nombre, '') AS cliente FROM reservaciones r LEFT JOIN usuarios u ON r.cliente_folio = u.folio`).all();
+    return db.prepare(`
+      SELECT r.*, COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
+      FROM reservaciones r
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+    `).all();
   }
   if (col === 'recepciones') {
     return db.prepare(`
@@ -98,7 +129,7 @@ function consultarTodos(col, tabla) {
              r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
              r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
              r.precio_persona, r.monto_reserva, r.cliente_folio,
-             COALESCE(u.nombre, '') AS cliente
+             COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
       FROM recepciones rec
       LEFT JOIN reservaciones r ON rec.reservacion_folio = r.folio
       LEFT JOIN usuarios u ON r.cliente_folio = u.folio
@@ -110,18 +141,62 @@ function consultarTodos(col, tabla) {
              r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
              r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
              r.precio_persona, r.monto_reserva, r.cliente_folio,
-             COALESCE(u.nombre, '') AS cliente
+             COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
       FROM inmersiones inm
       LEFT JOIN reservaciones r ON inm.reservacion_folio = r.folio
       LEFT JOIN usuarios u ON r.cliente_folio = u.folio
     `).all();
+  }
+  if (col === 'comandas') {
+    return db.prepare(`
+      SELECT c.*, COALESCE(e.nombre, c.mesero_folio) AS mesero_nombre
+      FROM comandas c
+      LEFT JOIN empleados e ON c.mesero_folio = e.folio
+    `).all();
+  }
+  if (col === 'ventas') {
+    return db.prepare(`
+      SELECT v.*, COALESCE(s.nombre, '') AS souvenir_nombre, COALESCE(e.nombre, v.vendedor_folio) AS vendedor_nombre
+      FROM ventas v
+      LEFT JOIN souvenirs s ON v.souvenir_folio = s.folio
+      LEFT JOIN empleados e ON v.vendedor_folio = e.folio
+    `).all();
+  }
+  if (col === 'compras') {
+    return db.prepare(`
+      SELECT cp.*, COALESCE(p.nombre, cp.proveedor_id) AS proveedor_nombre
+      FROM compras cp
+      LEFT JOIN proveedores p ON cp.proveedor_id = p.id
+    `).all();
+  }
+  if (col === 'devoluciones') {
+    const dv = db.prepare(`
+      SELECT dv.*, 'venta' AS tipo, v.cliente_nombre AS cliente, v.fecha_hora AS fecha_venta,
+             COALESCE(s.nombre, '') AS souvenir, v.cantidad, COALESCE(e.nombre, dv.autorizado_por) AS autorizo_nombre
+      FROM devoluciones_ventas dv
+      LEFT JOIN ventas v ON dv.venta_folio = v.folio
+      LEFT JOIN souvenirs s ON v.souvenir_folio = s.folio
+      LEFT JOIN empleados e ON dv.autorizado_por = e.folio
+    `).all();
+    const dc = db.prepare(`
+      SELECT dc.*, 'compra' AS tipo, COALESCE(p.nombre, c.proveedor_id) AS proveedor
+      FROM devoluciones_compras dc
+      LEFT JOIN compras c ON dc.compra_folio = c.folio
+      LEFT JOIN proveedores p ON c.proveedor_id = p.id
+    `).all();
+    return [...dv, ...dc];
   }
   return db.prepare(`SELECT * FROM ${tabla}`).all();
 }
 
 function consultarPorFolio(col, tabla, folio) {
   if (col === 'reservaciones') {
-    return db.prepare(`SELECT r.*, COALESCE(u.nombre, '') AS cliente FROM reservaciones r LEFT JOIN usuarios u ON r.cliente_folio = u.folio WHERE r.folio = ?`).get(folio);
+    return db.prepare(`
+      SELECT r.*, COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
+      FROM reservaciones r
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+      WHERE r.folio = ?
+    `).get(folio);
   }
   if (col === 'recepciones') {
     return db.prepare(`
@@ -129,7 +204,7 @@ function consultarPorFolio(col, tabla, folio) {
              r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
              r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
              r.precio_persona, r.monto_reserva, r.cliente_folio,
-             COALESCE(u.nombre, '') AS cliente
+             COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
       FROM recepciones rec
       LEFT JOIN reservaciones r ON rec.reservacion_folio = r.folio
       LEFT JOIN usuarios u ON r.cliente_folio = u.folio
@@ -142,11 +217,55 @@ function consultarPorFolio(col, tabla, folio) {
              r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
              r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
              r.precio_persona, r.monto_reserva, r.cliente_folio,
-             COALESCE(u.nombre, '') AS cliente
+             COALESCE(NULLIF(r.cliente_nombre, ''), u.nombre, '') AS cliente
       FROM inmersiones inm
       LEFT JOIN reservaciones r ON inm.reservacion_folio = r.folio
       LEFT JOIN usuarios u ON r.cliente_folio = u.folio
       WHERE inm.folio = ?
+    `).get(folio);
+  }
+  if (col === 'comandas') {
+    return db.prepare(`
+      SELECT c.*, COALESCE(e.nombre, c.mesero_folio) AS mesero_nombre
+      FROM comandas c
+      LEFT JOIN empleados e ON c.mesero_folio = e.folio
+      WHERE c.folio = ?
+    `).get(folio);
+  }
+  if (col === 'ventas') {
+    return db.prepare(`
+      SELECT v.*, COALESCE(s.nombre, '') AS souvenir_nombre, COALESCE(e.nombre, v.vendedor_folio) AS vendedor_nombre
+      FROM ventas v
+      LEFT JOIN souvenirs s ON v.souvenir_folio = s.folio
+      LEFT JOIN empleados e ON v.vendedor_folio = e.folio
+      WHERE v.folio = ?
+    `).get(folio);
+  }
+  if (col === 'compras') {
+    return db.prepare(`
+      SELECT cp.*, COALESCE(p.nombre, cp.proveedor_id) AS proveedor_nombre
+      FROM compras cp
+      LEFT JOIN proveedores p ON cp.proveedor_id = p.id
+      WHERE cp.folio = ?
+    `).get(folio);
+  }
+  if (col === 'devoluciones') {
+    const dv = db.prepare(`
+      SELECT dv.*, 'venta' AS tipo, v.cliente_nombre AS cliente, v.fecha_hora AS fecha_venta,
+             COALESCE(s.nombre, '') AS souvenir, v.cantidad, COALESCE(e.nombre, dv.autorizado_por) AS autorizo_nombre
+      FROM devoluciones_ventas dv
+      LEFT JOIN ventas v ON dv.venta_folio = v.folio
+      LEFT JOIN souvenirs s ON v.souvenir_folio = s.folio
+      LEFT JOIN empleados e ON dv.autorizado_por = e.folio
+      WHERE dv.folio = ?
+    `).get(folio);
+    if (dv) return dv;
+    return db.prepare(`
+      SELECT dc.*, 'compra' AS tipo, COALESCE(p.nombre, c.proveedor_id) AS proveedor
+      FROM devoluciones_compras dc
+      LEFT JOIN compras c ON dc.compra_folio = c.folio
+      LEFT JOIN proveedores p ON c.proveedor_id = p.id
+      WHERE dc.folio = ?
     `).get(folio);
   }
   return db.prepare(`SELECT * FROM ${tabla} WHERE folio = ?`).get(folio);
@@ -157,7 +276,6 @@ function normalizarFila(col, row) {
   if (!row) return null;
   const item = { ...row };
 
-  // Campos comunes con guiones para el frontend
   if (col === 'usuarios') {
     item['tipo-de-cliente'] = item.tipo_cliente;
     item['contacto-de-emergencia'] = item.contacto_emergencia;
@@ -195,26 +313,38 @@ function normalizarFila(col, row) {
     item.vegano = Boolean(item.vegano);
   } else if (col === 'comandas') {
     item.mesa = item.mesa_folio;
-    item.mesero = item.mesero_folio;
-    // Cargar lineas de la comanda
+    item.mesero = item.mesero_nombre || item.mesero_folio;
+    item.fecha = item.fecha_hora;
+    item.metodo = item.metodo_pago;
     try {
       const lineas = db.prepare('SELECT * FROM comanda_detalles WHERE comanda_folio = ?').all(item.folio);
       item.lineas = lineas.map(l => ({
         nombre: l.articulo_nombre,
         precio: l.precio_unitario,
-        cant: l.cantidad,
-        sub: l.subtotal,
-        enviado: Boolean(l.enviado_cocina),
+        cantidad: l.cantidad,
+        enviada: Boolean(l.enviado_cocina),
         cancelado: Boolean(l.cancelado)
       }));
     } catch (e) {
       item.lineas = [];
     }
+  } else if (col === 'ventas') {
+    item.cliente = item.cliente_nombre;
+    item.souvenir = item.souvenir_nombre || '';
+    item.souvenirFolio = item.souvenir_folio;
+    item.vendedor = item.vendedor_nombre || item.vendedor_folio;
+    item.precio = item.precio_unitario;
+    item.metodo = item.metodo_pago;
+    item.fecha = item.fecha_hora;
   } else if (col === 'compras') {
+    item.proveedor = item.proveedor_nombre || item.proveedor_id;
+    item.fecha = item.fecha_compra;
+    item.registro = item.fecha_registro;
     try {
       const lineas = db.prepare('SELECT * FROM compra_detalles WHERE compra_folio = ?').all(item.folio);
       item.lineas = lineas.map(l => ({
         tipo: l.tipo_producto,
+        folio: l.folio_souvenir,
         articulo: l.articulo,
         cantidad: l.cantidad,
         precio: l.precio_unitario,
@@ -223,13 +353,32 @@ function normalizarFila(col, row) {
     } catch (e) {
       item.lineas = [];
     }
+  } else if (col === 'pedidos') {
+    item.entrega = item.metodo_entrega;
+    item.metodo = item.metodo_pago;
+    item.fecha = item.fecha_hora;
+    item.clienteFolio = item.cliente_folio;
+  } else if (col === 'devoluciones') {
+    if (item.tipo === 'compra') {
+      item.compra = item.compra_folio;
+      item.fecha = item.fecha_hora;
+      item.total = item.total_devuelto;
+    } else {
+      item.venta = item.venta_folio;
+      item.fecha = item.fecha_hora;
+      item.total = item.monto_reembolso;
+      item.metodo = item.forma_reembolso;
+      item.observaciones = item.observaciones_dictamen;
+      item.autorizo = item.autorizo_nombre || item.autorizado_por;
+      item.reintegrar = Boolean(item.reintegra_inventario);
+    }
   }
 
   return item;
 }
 
 // Convertir datos del frontend a columnas de BD
-function prepararDatosBD(col, datos) {
+function prepararDatosBD(col, datos, esCreacion = false) {
   const d = { ...datos };
   const out = {};
 
@@ -244,13 +393,14 @@ function prepararDatosBD(col, datos) {
     if (d['correo-electronico'] || d.correo_electronico) out.correo_electronico = d['correo-electronico'] || d.correo_electronico;
     if (d['observaciones-especiales'] || d.observaciones_especiales) out.observaciones_especiales = d['observaciones-especiales'] || d.observaciones_especiales;
     if (d.password || d.password_hash) out.password_hash = d.password || d.password_hash;
+    else if (esCreacion) out.password_hash = 'cliente123';
     if (d.estado !== undefined) out.estado = d.estado;
   } else if (col === 'souvenirs') {
     if (d.folio !== undefined) out.folio = d.folio;
     if (d.nombre !== undefined) out.nombre = d.nombre;
     if (d['precio-por-unidad'] !== undefined || d.precio_unitario !== undefined) out.precio_unitario = Number(d['precio-por-unidad'] || d.precio_unitario);
     if (d.departamento !== undefined) out.departamento = d.departamento;
-    if (d['clave-del-proveedor'] || d.proveedor_id) out.proveedor_id = d['clave-del-proveedor'] || d.proveedor_id;
+    if (d['clave-del-proveedor'] || d.proveedor_id) out.proveedor_id = resolverProveedorId(d['clave-del-proveedor'] || d.proveedor_id);
     if (d.descripcion !== undefined) out.descripcion = d.descripcion;
     if (d.existencia !== undefined) out.existencia = Number(d.existencia);
     if (d.estado !== undefined) out.estado = d.estado;
@@ -263,7 +413,14 @@ function prepararDatosBD(col, datos) {
     if (d['rol-puesto'] || d.rol_puesto) out.rol_puesto = d['rol-puesto'] || d.rol_puesto;
     if (d['clave-del-contrato'] || d.clave_contrato) out.clave_contrato = d['clave-del-contrato'] || d.clave_contrato;
     if (d.usuario !== undefined) out.usuario = d.usuario;
+    else if (esCreacion) {
+      const baseUsr = d.correo
+        ? String(d.correo).split('@')[0]
+        : (d.nombre ? String(d.nombre).toLowerCase().replace(/[^a-z0-9]/g, '').slice(0, 12) : 'emp');
+      out.usuario = `${baseUsr || 'emp'}_${d.folio || Date.now()}`;
+    }
     if (d.password || d.password_hash) out.password_hash = d.password || d.password_hash;
+    else if (esCreacion) out.password_hash = 'empleado123';
     if (d.estado !== undefined) out.estado = d.estado;
   } else if (col === 'transporte') {
     if (d.folio !== undefined) out.folio = d.folio;
@@ -280,18 +437,15 @@ function prepararDatosBD(col, datos) {
     if (d.color !== undefined) out.color = d.color;
     if (d['estatus-de-verificacion-vehicular'] || d.estatus_verificacion) out.estatus_verificacion = d['estatus-de-verificacion-vehicular'] || d.estatus_verificacion;
     if (d.estado !== undefined) out.estado = d.estado;
-    if (d.motivo_baja !== undefined) out.motivo_baja = d.motivo_baja;
+    if (d.motivo_baja !== undefined || d.motivoBaja !== undefined) out.motivo_baja = d.motivoBaja !== undefined ? d.motivoBaja : d.motivo_baja;
   } else if (col === 'reservaciones') {
     if (d.folio !== undefined) out.folio = d.folio;
+    if (d.cliente !== undefined) out.cliente_nombre = d.cliente;
     if (d.clienteFolio || d.cliente_folio) {
       out.cliente_folio = d.clienteFolio || d.cliente_folio;
     } else if (d.cliente) {
       const u = db.prepare('SELECT folio FROM usuarios WHERE LOWER(nombre) = LOWER(?) LIMIT 1').get(String(d.cliente).trim());
       if (u) out.cliente_folio = u.folio;
-      else {
-        const primero = db.prepare('SELECT folio FROM usuarios LIMIT 1').get();
-        if (primero) out.cliente_folio = primero.folio;
-      }
     }
     if (d.fecha !== undefined) out.fecha = d.fecha;
     if (d['hora-entrada'] || d.hora_entrada) out.hora_entrada = d['hora-entrada'] || d.hora_entrada;
@@ -324,15 +478,19 @@ function prepararDatosBD(col, datos) {
   } else if (col === 'mesas') {
     if (d.folio !== undefined) out.folio = d.folio;
     if (d.estado !== undefined) out.estado = d.estado;
-    if (d.mesero_folio !== undefined || d.mesero !== undefined) out.mesero_folio = d.mesero_folio || d.mesero;
+    if (d.comanda !== undefined) out.comanda = d.comanda;
+    if (d.mesero_folio !== undefined || d.mesero !== undefined) out.mesero_folio = resolverEmpleadoFolio(d.mesero_folio || d.mesero);
   } else if (col === 'comandas') {
     if (d.folio !== undefined) out.folio = d.folio;
     if (d.mesa || d.mesa_folio) out.mesa_folio = d.mesa || d.mesa_folio;
-    if (d.mesero || d.mesero_folio) out.mesero_folio = d.mesero || d.mesero_folio;
+    if (d.mesero !== undefined || d.mesero_folio !== undefined) out.mesero_folio = resolverEmpleadoFolio(d.mesero_folio || d.mesero);
     if (d.total !== undefined) out.total = Number(d.total);
+    if (d.metodo || d.metodo_pago) out.metodo_pago = d.metodo || d.metodo_pago;
     if (d.estado !== undefined) out.estado = d.estado;
+    if (d.fecha || d.fecha_hora) out.fecha_hora = d.fecha || d.fecha_hora;
   } else if (col === 'ventas') {
     if (d.folio !== undefined) out.folio = d.folio;
+    if (d.fecha || d.fecha_hora) out.fecha_hora = d.fecha || d.fecha_hora;
     if (d.cliente || d.cliente_nombre) out.cliente_nombre = d.cliente || d.cliente_nombre;
     if (d.clienteFolio || d.cliente_folio) out.cliente_folio = d.clienteFolio || d.cliente_folio;
     if (d.souvenirFolio || d.souvenir_folio) out.souvenir_folio = d.souvenirFolio || d.souvenir_folio;
@@ -342,18 +500,47 @@ function prepararDatosBD(col, datos) {
     if (d.metodo || d.metodo_pago) out.metodo_pago = d.metodo || d.metodo_pago;
     if (d.monto_recibido !== undefined) out.monto_recibido = Number(d.monto_recibido);
     if (d.cambio !== undefined) out.cambio = Number(d.cambio);
-    if (d.vendedor || d.vendedor_folio) out.vendedor_folio = d.vendedor || d.vendedor_folio;
+    if (d.vendedor !== undefined || d.vendedor_folio !== undefined) out.vendedor_folio = resolverEmpleadoFolio(d.vendedor_folio || d.vendedor);
     if (d.estado !== undefined) out.estado = d.estado;
     if (d.observaciones !== undefined) out.observaciones = d.observaciones;
   } else if (col === 'compras') {
     if (d.folio !== undefined) out.folio = d.folio;
-    if (d.proveedor || d.proveedor_id) out.proveedor_id = d.proveedor || d.proveedor_id;
+    if (d.proveedor || d.proveedor_id) out.proveedor_id = resolverProveedorId(d.proveedor || d.proveedor_id);
     if (d.fecha || d.fecha_compra) out.fecha_compra = d.fecha || d.fecha_compra;
+    if (d.registro || d.fecha_registro) out.fecha_registro = d.registro || d.fecha_registro;
     if (d.estado !== undefined) out.estado = d.estado;
     if (d.total !== undefined) out.total = Number(d.total);
     if (d.observaciones !== undefined) out.observaciones = d.observaciones;
+  } else if (col === 'pedidos') {
+    if (d.folio !== undefined) out.folio = d.folio;
+    if (d.clienteFolio || d.cliente_folio) out.cliente_folio = d.clienteFolio || d.cliente_folio;
+    if (d.fecha || d.fecha_hora) out.fecha_hora = d.fecha || d.fecha_hora;
+    if (d.entrega || d.metodo_entrega) out.metodo_entrega = d.entrega || d.metodo_entrega;
+    if (d.subtotal !== undefined) out.subtotal = Number(d.subtotal);
+    if (d.servicio !== undefined) out.servicio = Number(d.servicio);
+    if (d.iva !== undefined) out.iva = Number(d.iva);
+    if (d.total !== undefined) out.total = Number(d.total);
+    if (d.metodo || d.metodo_pago) out.metodo_pago = d.metodo || d.metodo_pago;
+    if (d.estado !== undefined) out.estado = d.estado;
+  } else if (col === 'devoluciones_compras') {
+    if (d.folio !== undefined) out.folio = d.folio;
+    if (d.compra || d.compra_folio) out.compra_folio = d.compra || d.compra_folio;
+    if (d.fecha || d.fecha_hora) out.fecha_hora = d.fecha || d.fecha_hora;
+    if (d.total !== undefined || d.total_devuelto !== undefined) out.total_devuelto = Number(d.total || d.total_devuelto || 0);
+    if (d.motivo !== undefined) out.motivo = d.motivo;
+    if (d.estado !== undefined) out.estado = d.estado;
+  } else if (col === 'devoluciones_ventas') {
+    if (d.folio !== undefined) out.folio = d.folio;
+    if (d.venta || d.venta_folio) out.venta_folio = d.venta || d.venta_folio;
+    if (d.fecha || d.fecha_hora) out.fecha_hora = d.fecha || d.fecha_hora;
+    if (d.motivo !== undefined) out.motivo = d.motivo;
+    if (d.total !== undefined || d.monto_reembolso !== undefined) out.monto_reembolso = Number(d.total || d.monto_reembolso || 0);
+    if (d.metodo || d.forma_reembolso) out.forma_reembolso = d.metodo || d.forma_reembolso;
+    if (d.reintegrar !== undefined || d.reintegra_inventario !== undefined) out.reintegra_inventario = (d.reintegrar || d.reintegra_inventario) ? 1 : 0;
+    if (d.observaciones !== undefined || d.observaciones_dictamen !== undefined) out.observaciones_dictamen = d.observaciones || d.observaciones_dictamen;
+    if (d.autorizo !== undefined || d.autorizado_por !== undefined) out.autorizado_por = resolverEmpleadoFolio(d.autorizo || d.autorizado_por);
+    if (d.estado !== undefined) out.estado = d.estado;
   } else {
-    // Genérico
     Object.keys(d).forEach(k => {
       const sqlKey = k.replace(/-/g, '_');
       out[sqlKey] = d[k];
@@ -380,7 +567,7 @@ async function manejarApi(req, res, pathname, query) {
       if (fs.existsSync(DB_PATH)) fs.unlinkSync(DB_PATH);
       db = obtenerBD();
       res.writeHead(200);
-      return res.end(JSON.stringify({ ok: true, mensaje: 'Base de datos reiniciada con semilla oficial' }));
+      return res.end(JSON.stringify({ ok: true, mensaje: 'Base de datos reiniciada con catálogos base' }));
     } catch (e) {
       res.writeHead(500);
       return res.end(JSON.stringify({ error: e.message }));
@@ -442,7 +629,6 @@ async function manejarApi(req, res, pathname, query) {
       const rows = consultarTodos(coleccion, tabla);
       let items = rows.map(r => normalizarFila(coleccion, r));
 
-      // Búsqueda q
       if (query.q) {
         const q = String(query.q).toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
         items = items.filter(r => {
@@ -453,7 +639,6 @@ async function manejarApi(req, res, pathname, query) {
         });
       }
 
-      // Filtros específicos query param (ej. ?estado=Activo)
       Object.keys(query).forEach(k => {
         if (!['q', 'pagina', 'porPagina', 'orden'].includes(k)) {
           items = items.filter(r => String(r[k]) === String(query[k]) || String(r[k.replace(/-/g, '_')]) === String(query[k]));
@@ -479,14 +664,28 @@ async function manejarApi(req, res, pathname, query) {
     // 3. POST /api/:coleccion (Crear registro)
     if (req.method === 'POST') {
       const body = await leerCuerpo();
+
+      // Determinar tabla real para devoluciones (compra vs venta)
+      let colDestino = coleccion;
+      let tablaDestino = tabla;
+      if (coleccion === 'devoluciones') {
+        if (body.tipo === 'compra' || body.compra || (body.folio && String(body.folio).startsWith('DEV-'))) {
+          colDestino = 'devoluciones_compras';
+          tablaDestino = 'devoluciones_compras';
+        } else {
+          colDestino = 'devoluciones_ventas';
+          tablaDestino = 'devoluciones_ventas';
+        }
+      }
+
       if (!body.folio) {
-        const n = siguienteNumeroFolio(coleccion, tabla);
-        const fnFolio = FORMATO_FOLIO[coleccion] || ((x) => String(x));
+        const n = siguienteNumeroFolio(colDestino, tablaDestino);
+        const fnFolio = FORMATO_FOLIO[colDestino] || ((x) => String(x));
         body.folio = fnFolio(n);
       }
 
-      const columnasValidas = db.prepare(`PRAGMA table_info(${tabla})`).all().map(c => c.name);
-      const datosBD = prepararDatosBD(coleccion, body);
+      const columnasValidas = db.prepare(`PRAGMA table_info(${tablaDestino})`).all().map(c => c.name);
+      const datosBD = prepararDatosBD(colDestino, body, true);
       const colsInsert = [];
       const valsInsert = [];
       const placeholders = [];
@@ -504,18 +703,44 @@ async function manejarApi(req, res, pathname, query) {
         return res.end(JSON.stringify({ error: 'No se enviaron campos válidos para la tabla' }));
       }
 
-      const sqlInsert = `INSERT INTO ${tabla} (${colsInsert.join(', ')}) VALUES (${placeholders.join(', ')})`;
+      const sqlInsert = `INSERT INTO ${tablaDestino} (${colsInsert.join(', ')}) VALUES (${placeholders.join(', ')})`;
       db.prepare(sqlInsert).run(...valsInsert);
 
-      // Si vienen líneas en comanda, guardarlas en comanda_detalles
+      // Líneas de comanda
       if (coleccion === 'comandas' && Array.isArray(body.lineas)) {
         const insLinea = db.prepare('INSERT INTO comanda_detalles (comanda_folio, articulo_nombre, precio_unitario, cantidad, subtotal, enviado_cocina) VALUES (?, ?, ?, ?, ?, ?)');
         for (const l of body.lineas) {
-          insLinea.run(body.folio, l.nombre, Number(l.precio || 0), Number(l.cant || 1), Number(l.sub || l.precio || 0), l.enviado ? 1 : 0);
+          const cant = Number(l.cantidad || l.cant || 1);
+          const precio = Number(l.precio || 0);
+          insLinea.run(body.folio, l.nombre, precio, cant, Number(l.sub || (precio * cant)), (l.enviada || l.enviado) ? 1 : 0);
         }
       }
 
-      const nuevo = consultarPorFolio(coleccion, tabla, body.folio);
+      // Líneas de compra
+      if (coleccion === 'compras' && Array.isArray(body.lineas)) {
+        const insCompra = db.prepare('INSERT INTO compra_detalles (compra_folio, tipo_producto, folio_souvenir, articulo, cantidad, precio_unitario, subtotal) VALUES (?, ?, ?, ?, ?, ?, ?)');
+        for (const l of body.lineas) {
+          const cant = Number(l.cantidad || 1);
+          const precio = Number(l.precio || 0);
+          insCompra.run(body.folio, l.tipo || 'Souvenir', l.folio || null, l.articulo || '', cant, precio, cant * precio);
+        }
+      }
+
+      // Líneas de pedido
+      if (coleccion === 'pedidos' && Array.isArray(body.items)) {
+        const insPed = db.prepare('INSERT INTO pedido_detalles (pedido_folio, producto_folio, nombre, precio_unitario, cantidad, subtotal) VALUES (?, ?, ?, ?, ?, ?)');
+        for (const l of body.items) {
+          const prodId = l.id || l.folio;
+          if (prodId) {
+            db.prepare('INSERT OR IGNORE INTO productos_carta (folio, nombre, precio, categoria, estado) VALUES (?, ?, ?, ?, ?)').run(prodId, l.nombre || prodId, Number(l.precio || 0), 'Entradas', 'Activo');
+            const cant = Number(l.cantidad || 1);
+            const precio = Number(l.precio || 0);
+            insPed.run(body.folio, prodId, l.nombre || prodId, precio, cant, cant * precio);
+          }
+        }
+      }
+
+      const nuevo = consultarPorFolio(coleccion, tablaDestino, body.folio);
       res.writeHead(201);
       return res.end(JSON.stringify(normalizarFila(coleccion, nuevo)));
     }
@@ -523,8 +748,21 @@ async function manejarApi(req, res, pathname, query) {
     // 4. PATCH /api/:coleccion/:folio (Actualizar registro)
     if (req.method === 'PATCH' && folio) {
       const body = await leerCuerpo();
-      const columnasValidas = db.prepare(`PRAGMA table_info(${tabla})`).all().map(c => c.name);
-      const datosBD = prepararDatosBD(coleccion, body);
+
+      let colDestino = coleccion;
+      let tablaDestino = tabla;
+      if (coleccion === 'devoluciones') {
+        if (String(folio).startsWith('DEV-')) {
+          colDestino = 'devoluciones_compras';
+          tablaDestino = 'devoluciones_compras';
+        } else {
+          colDestino = 'devoluciones_ventas';
+          tablaDestino = 'devoluciones_ventas';
+        }
+      }
+
+      const columnasValidas = db.prepare(`PRAGMA table_info(${tablaDestino})`).all().map(c => c.name);
+      const datosBD = prepararDatosBD(colDestino, body, false);
       const sets = [];
       const vals = [];
 
@@ -537,27 +775,33 @@ async function manejarApi(req, res, pathname, query) {
 
       if (sets.length > 0) {
         vals.push(folio);
-        const sqlUpdate = `UPDATE ${tabla} SET ${sets.join(', ')} WHERE folio = ?`;
+        const sqlUpdate = `UPDATE ${tablaDestino} SET ${sets.join(', ')} WHERE folio = ?`;
         db.prepare(sqlUpdate).run(...vals);
       }
 
-      // Si se actualizan líneas de comanda
       if (coleccion === 'comandas' && Array.isArray(body.lineas)) {
         db.prepare('DELETE FROM comanda_detalles WHERE comanda_folio = ?').run(folio);
         const insLinea = db.prepare('INSERT INTO comanda_detalles (comanda_folio, articulo_nombre, precio_unitario, cantidad, subtotal, enviado_cocina) VALUES (?, ?, ?, ?, ?, ?)');
         for (const l of body.lineas) {
-          insLinea.run(folio, l.nombre, Number(l.precio || 0), Number(l.cant || 1), Number(l.sub || l.precio || 0), l.enviado ? 1 : 0);
+          const cant = Number(l.cantidad || l.cant || 1);
+          const precio = Number(l.precio || 0);
+          insLinea.run(folio, l.nombre, precio, cant, Number(l.sub || (precio * cant)), (l.enviada || l.enviado) ? 1 : 0);
         }
       }
 
-      const actualizado = consultarPorFolio(coleccion, tabla, folio);
+      const actualizado = consultarPorFolio(coleccion, tablaDestino, folio);
       res.writeHead(200);
       return res.end(JSON.stringify(normalizarFila(coleccion, actualizado)));
     }
 
     // 5. DELETE /api/:coleccion/:folio
     if (req.method === 'DELETE' && folio) {
-      db.prepare(`DELETE FROM ${tabla} WHERE folio = ?`).run(folio);
+      if (coleccion === 'devoluciones') {
+        const tablaDestino = String(folio).startsWith('DEV-') ? 'devoluciones_compras' : 'devoluciones_ventas';
+        db.prepare(`DELETE FROM ${tablaDestino} WHERE folio = ?`).run(folio);
+      } else {
+        db.prepare(`DELETE FROM ${tabla} WHERE folio = ?`).run(folio);
+      }
       res.writeHead(200);
       return res.end(JSON.stringify({ ok: true, eliminado: folio }));
     }
@@ -572,4 +816,3 @@ async function manejarApi(req, res, pathname, query) {
 }
 
 module.exports = { manejarApi };
-

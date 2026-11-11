@@ -136,7 +136,8 @@ CREATE TABLE IF NOT EXISTS menus (
 
 CREATE TABLE IF NOT EXISTS reservaciones (
     folio VARCHAR(15) PRIMARY KEY, -- ej. '1024'
-    cliente_folio VARCHAR(10) NOT NULL,
+    cliente_folio VARCHAR(10),
+    cliente_nombre VARCHAR(150),
     fecha DATE NOT NULL,
     hora_entrada TIME NOT NULL,
     hora_salida TIME NOT NULL,
@@ -199,6 +200,7 @@ CREATE TABLE IF NOT EXISTS mesas (
     capacidad INT NOT NULL DEFAULT 4,
     estado VARCHAR(20) NOT NULL DEFAULT 'Libre' CHECK (estado IN ('Libre', 'Ocupada', 'Reservada', 'Mantenimiento')),
     mesero_folio VARCHAR(10),
+    comanda VARCHAR(15),
     FOREIGN KEY (mesero_folio) REFERENCES empleados(folio)
 );
 
@@ -210,7 +212,8 @@ CREATE TABLE IF NOT EXISTS comandas (
     subtotal DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     iva DECIMAL(10,2) NOT NULL DEFAULT 0.00,
     total DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-    estado VARCHAR(20) NOT NULL DEFAULT 'Abierta' CHECK (estado IN ('Abierta', 'En cocina', 'Cobrada', 'Cancelada')),
+    metodo_pago VARCHAR(30),
+    estado VARCHAR(20) NOT NULL DEFAULT 'Abierta' CHECK (estado IN ('Abierta', 'Enviada', 'En cocina', 'Pagada', 'Cobrada', 'Cancelada')),
     creado_en TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     cerrado_en TIMESTAMP,
     FOREIGN KEY (mesa_folio) REFERENCES mesas(folio),
@@ -341,6 +344,7 @@ CREATE TABLE IF NOT EXISTS compra_detalles (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     compra_folio VARCHAR(20) NOT NULL,
     tipo_producto VARCHAR(20) NOT NULL CHECK (tipo_producto IN ('Souvenir', 'Ingrediente')),
+    folio_souvenir VARCHAR(10),
     articulo VARCHAR(100) NOT NULL,
     estado_articulo VARCHAR(20) DEFAULT 'Vigente',
     cantidad INT NOT NULL CHECK (cantidad > 0),

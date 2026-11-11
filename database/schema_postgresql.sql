@@ -114,7 +114,8 @@ CREATE TABLE IF NOT EXISTS menus (
 
 CREATE TABLE IF NOT EXISTS reservaciones (
     folio VARCHAR(15) PRIMARY KEY,
-    cliente_folio VARCHAR(10) NOT NULL REFERENCES usuarios(folio) ON UPDATE CASCADE,
+    cliente_folio VARCHAR(10) REFERENCES usuarios(folio) ON UPDATE CASCADE,
+    cliente_nombre VARCHAR(150),
     fecha DATE NOT NULL,
     hora_entrada TIME NOT NULL,
     hora_salida TIME NOT NULL,
@@ -164,7 +165,8 @@ CREATE TABLE IF NOT EXISTS mesas (
     numero INT NOT NULL,
     capacidad INT NOT NULL DEFAULT 4,
     estado VARCHAR(20) NOT NULL DEFAULT 'Libre' CHECK (estado IN ('Libre', 'Ocupada', 'Reservada', 'Mantenimiento')),
-    mesero_folio VARCHAR(10) REFERENCES empleados(folio)
+    mesero_folio VARCHAR(10) REFERENCES empleados(folio),
+    comanda VARCHAR(15)
 );
 
 CREATE TABLE IF NOT EXISTS comandas (
@@ -175,7 +177,8 @@ CREATE TABLE IF NOT EXISTS comandas (
     subtotal NUMERIC(10,2) NOT NULL DEFAULT 0.00,
     iva NUMERIC(10,2) NOT NULL DEFAULT 0.00,
     total NUMERIC(10,2) NOT NULL DEFAULT 0.00,
-    estado VARCHAR(20) NOT NULL DEFAULT 'Abierta' CHECK (estado IN ('Abierta', 'En cocina', 'Cobrada', 'Cancelada')),
+    metodo_pago VARCHAR(30),
+    estado VARCHAR(20) NOT NULL DEFAULT 'Abierta' CHECK (estado IN ('Abierta', 'Enviada', 'En cocina', 'Pagada', 'Cobrada', 'Cancelada')),
     creado_en TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     cerrado_en TIMESTAMP WITH TIME ZONE
 );
