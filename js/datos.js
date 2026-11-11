@@ -340,8 +340,11 @@
       o = o || {};
       var params = new URLSearchParams();
       if (o.q) params.set('q', o.q);
-      if (o.pagina) params.set('pagina', o.pagina);
-      if (o.porPagina) params.set('porPagina', o.porPagina);
+      var filtrarEnCliente = typeof o.filtro === 'function' || typeof o.orden === 'function';
+      if (!filtrarEnCliente) {
+        if (o.pagina) params.set('pagina', o.pagina);
+        if (o.porPagina) params.set('porPagina', o.porPagina);
+      }
       if (o.filtro && typeof o.filtro === 'object') {
         Object.keys(o.filtro).forEach(function (k) { params.set(k, o.filtro[k]); });
       }
@@ -354,6 +357,19 @@
           var items = data.items || [];
           if (typeof o.filtro === 'function') items = items.filter(o.filtro);
           if (o.orden) items.sort(o.orden);
+          if (filtrarEnCliente) {
+            var total = items.length;
+            var porPagina = o.porPagina || total || 1;
+            var paginas = Math.max(1, Math.ceil(total / porPagina));
+            var pagina = Math.min(Math.max(1, o.pagina || 1), paginas);
+            return {
+              items: items.slice((pagina - 1) * porPagina, pagina * porPagina),
+              total: total,
+              pagina: pagina,
+              paginas: paginas,
+              porPagina: porPagina
+            };
+          }
           data.items = items;
           return data;
         });

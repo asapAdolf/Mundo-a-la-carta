@@ -61,6 +61,97 @@ const FORMATO_FOLIO = {
   devoluciones: (n) => 'D-' + anio + '-' + String(n).padStart(6, '0')
 };
 
+const BASE_FOLIO = {
+  usuarios: 123,
+  souvenirs: 123,
+  empleados: 123,
+  transporte: 123,
+  reservaciones: 1024,
+  ventas: 214589,
+  pedidos: 1,
+  comandas: 1024,
+  compras: 150,
+  devoluciones: 451
+};
+
+function siguienteNumeroFolio(col, tabla) {
+  const base = BASE_FOLIO[col] || 1;
+  const rows = db.prepare(`SELECT folio FROM ${tabla}`).all();
+  let max = 0;
+  for (const r of rows) {
+    const match = String(r.folio || '').match(/(\d+)$/);
+    if (match) {
+      const num = parseInt(match[1], 10);
+      if (num > max) max = num;
+    }
+  }
+  return Math.max(base, max + 1);
+}
+
+function consultarTodos(col, tabla) {
+  if (col === 'reservaciones') {
+    return db.prepare(`SELECT r.*, COALESCE(u.nombre, '') AS cliente FROM reservaciones r LEFT JOIN usuarios u ON r.cliente_folio = u.folio`).all();
+  }
+  if (col === 'recepciones') {
+    return db.prepare(`
+      SELECT rec.folio, rec.reservacion_folio, rec.fecha_hora, rec.observaciones, rec.empleado_folio, rec.estado,
+             r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
+             r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
+             r.precio_persona, r.monto_reserva, r.cliente_folio,
+             COALESCE(u.nombre, '') AS cliente
+      FROM recepciones rec
+      LEFT JOIN reservaciones r ON rec.reservacion_folio = r.folio
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+    `).all();
+  }
+  if (col === 'inmersiones') {
+    return db.prepare(`
+      SELECT inm.folio, inm.reservacion_folio, inm.vehiculo_folio, inm.fecha_hora, inm.observaciones, inm.empleado_folio, inm.estado,
+             r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
+             r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
+             r.precio_persona, r.monto_reserva, r.cliente_folio,
+             COALESCE(u.nombre, '') AS cliente
+      FROM inmersiones inm
+      LEFT JOIN reservaciones r ON inm.reservacion_folio = r.folio
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+    `).all();
+  }
+  return db.prepare(`SELECT * FROM ${tabla}`).all();
+}
+
+function consultarPorFolio(col, tabla, folio) {
+  if (col === 'reservaciones') {
+    return db.prepare(`SELECT r.*, COALESCE(u.nombre, '') AS cliente FROM reservaciones r LEFT JOIN usuarios u ON r.cliente_folio = u.folio WHERE r.folio = ?`).get(folio);
+  }
+  if (col === 'recepciones') {
+    return db.prepare(`
+      SELECT rec.folio, rec.reservacion_folio, rec.fecha_hora, rec.observaciones, rec.empleado_folio, rec.estado,
+             r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
+             r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
+             r.precio_persona, r.monto_reserva, r.cliente_folio,
+             COALESCE(u.nombre, '') AS cliente
+      FROM recepciones rec
+      LEFT JOIN reservaciones r ON rec.reservacion_folio = r.folio
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+      WHERE rec.folio = ?
+    `).get(folio);
+  }
+  if (col === 'inmersiones') {
+    return db.prepare(`
+      SELECT inm.folio, inm.reservacion_folio, inm.vehiculo_folio, inm.fecha_hora, inm.observaciones, inm.empleado_folio, inm.estado,
+             r.fecha, r.hora_entrada, r.hora_salida, r.comensales, r.tipo_evento, r.tipo_menu, r.tipo_mesa,
+             r.sala_id, r.ambientacion_id, r.alergias, r.descorche, r.vegetariano, r.vegano,
+             r.precio_persona, r.monto_reserva, r.cliente_folio,
+             COALESCE(u.nombre, '') AS cliente
+      FROM inmersiones inm
+      LEFT JOIN reservaciones r ON inm.reservacion_folio = r.folio
+      LEFT JOIN usuarios u ON r.cliente_folio = u.folio
+      WHERE inm.folio = ?
+    `).get(folio);
+  }
+  return db.prepare(`SELECT * FROM ${tabla} WHERE folio = ?`).get(folio);
+}
+
 // Normalizar objeto de BD para el frontend (bidireccional: kebab-case y snake_case)
 function normalizarFila(col, row) {
   if (!row) return null;
@@ -88,14 +179,14 @@ function normalizarFila(col, row) {
     item['tipo-de-vehiculo'] = item.tipo_vehiculo;
     item['vigencia-de-tarjeta-de-circulacion'] = item.vigencia_tarjeta_circulacion;
     item['estatus-de-verificacion-vehicular'] = item.estatus_verificacion;
-  } else if (col === 'reservaciones') {
+  } else if (col === 'reservaciones' || col === 'recepciones' || col === 'inmersiones') {
     item['tipo-evento'] = item.tipo_evento;
     item['tipo-menu'] = item.tipo_menu;
     item['tipo-mesa'] = item.tipo_mesa;
     item['hora-entrada'] = item.hora_entrada;
     item['hora-salida'] = item.hora_salida;
-    item['precio-persona'] = String(item.precio_persona);
-    item['monto-reserva'] = String(item.monto_reserva);
+    item['precio-persona'] = item.precio_persona != null ? String(item.precio_persona) : '';
+    item['monto-reserva'] = item.monto_reserva != null ? String(item.monto_reserva) : '';
     item.sala = item.sala_id;
     item.ambientacion = item.ambientacion_id;
     item.clienteFolio = item.cliente_folio;
@@ -192,7 +283,16 @@ function prepararDatosBD(col, datos) {
     if (d.motivo_baja !== undefined) out.motivo_baja = d.motivo_baja;
   } else if (col === 'reservaciones') {
     if (d.folio !== undefined) out.folio = d.folio;
-    if (d.clienteFolio || d.cliente_folio) out.cliente_folio = d.clienteFolio || d.cliente_folio;
+    if (d.clienteFolio || d.cliente_folio) {
+      out.cliente_folio = d.clienteFolio || d.cliente_folio;
+    } else if (d.cliente) {
+      const u = db.prepare('SELECT folio FROM usuarios WHERE LOWER(nombre) = LOWER(?) LIMIT 1').get(String(d.cliente).trim());
+      if (u) out.cliente_folio = u.folio;
+      else {
+        const primero = db.prepare('SELECT folio FROM usuarios LIMIT 1').get();
+        if (primero) out.cliente_folio = primero.folio;
+      }
+    }
     if (d.fecha !== undefined) out.fecha = d.fecha;
     if (d['hora-entrada'] || d.hora_entrada) out.hora_entrada = d['hora-entrada'] || d.hora_entrada;
     if (d['hora-salida'] || d.hora_salida) out.hora_salida = d['hora-salida'] || d.hora_salida;
@@ -210,6 +310,17 @@ function prepararDatosBD(col, datos) {
     if (d['monto-reserva'] || d.monto_reserva) out.monto_reserva = Number(d['monto-reserva'] || d.monto_reserva);
     if (d.observaciones !== undefined) out.observaciones = d.observaciones;
     if (d.estado !== undefined) out.estado = d.estado;
+    if (d.motivo !== undefined || d.motivo_cancelacion !== undefined) out.motivo_cancelacion = d.motivo || d.motivo_cancelacion;
+    if (d.multa !== undefined || d.multa_monto !== undefined) out.multa_monto = Number(d.multa || d.multa_monto || 0);
+  } else if (col === 'recepciones' || col === 'inmersiones') {
+    if (d.folio !== undefined) {
+      out.folio = d.folio;
+      out.reservacion_folio = d.reservacion_folio || d.folio;
+    }
+    if (d.observaciones !== undefined) out.observaciones = d.observaciones;
+    if (d.estado !== undefined) out.estado = d.estado;
+    if (d.vehiculo_folio !== undefined) out.vehiculo_folio = d.vehiculo_folio;
+    if (d.empleado_folio !== undefined) out.empleado_folio = d.empleado_folio;
   } else if (col === 'mesas') {
     if (d.folio !== undefined) out.folio = d.folio;
     if (d.estado !== undefined) out.estado = d.estado;
@@ -288,11 +399,10 @@ async function manejarApi(req, res, pathname, query) {
       res.writeHead(404);
       return res.end(JSON.stringify({ error: 'Colección no encontrada' }));
     }
-    const countRow = db.prepare(`SELECT COUNT(*) as count FROM ${tabla}`).get();
-    const count = (countRow ? countRow.count : 0) + 124;
-    const fnFolio = FORMATO_FOLIO[col] || ((n) => String(n));
+    const n = siguienteNumeroFolio(col, tabla);
+    const fnFolio = FORMATO_FOLIO[col] || ((x) => String(x));
     res.writeHead(200);
-    return res.end(JSON.stringify({ folio: fnFolio(count) }));
+    return res.end(JSON.stringify({ folio: fnFolio(n) }));
   }
 
   const coleccion = primerSegmento;
@@ -318,7 +428,7 @@ async function manejarApi(req, res, pathname, query) {
   try {
     // 1. GET /api/:coleccion/:folio
     if (req.method === 'GET' && folio) {
-      const row = db.prepare(`SELECT * FROM ${tabla} WHERE folio = ?`).get(folio);
+      const row = consultarPorFolio(coleccion, tabla, folio);
       if (!row) {
         res.writeHead(404);
         return res.end(JSON.stringify({ error: `No existe el registro con folio ${folio}` }));
@@ -329,7 +439,7 @@ async function manejarApi(req, res, pathname, query) {
 
     // 2. GET /api/:coleccion (Listar con filtros y paginación)
     if (req.method === 'GET' && !folio) {
-      const rows = db.prepare(`SELECT * FROM ${tabla}`).all();
+      const rows = consultarTodos(coleccion, tabla);
       let items = rows.map(r => normalizarFila(coleccion, r));
 
       // Búsqueda q
@@ -370,8 +480,7 @@ async function manejarApi(req, res, pathname, query) {
     if (req.method === 'POST') {
       const body = await leerCuerpo();
       if (!body.folio) {
-        const countRow = db.prepare(`SELECT COUNT(*) as count FROM ${tabla}`).get();
-        const n = (countRow ? countRow.count : 0) + 124;
+        const n = siguienteNumeroFolio(coleccion, tabla);
         const fnFolio = FORMATO_FOLIO[coleccion] || ((x) => String(x));
         body.folio = fnFolio(n);
       }
@@ -406,7 +515,7 @@ async function manejarApi(req, res, pathname, query) {
         }
       }
 
-      const nuevo = db.prepare(`SELECT * FROM ${tabla} WHERE folio = ?`).get(body.folio);
+      const nuevo = consultarPorFolio(coleccion, tabla, body.folio);
       res.writeHead(201);
       return res.end(JSON.stringify(normalizarFila(coleccion, nuevo)));
     }
@@ -441,7 +550,7 @@ async function manejarApi(req, res, pathname, query) {
         }
       }
 
-      const actualizado = db.prepare(`SELECT * FROM ${tabla} WHERE folio = ?`).get(folio);
+      const actualizado = consultarPorFolio(coleccion, tabla, folio);
       res.writeHead(200);
       return res.end(JSON.stringify(normalizarFila(coleccion, actualizado)));
     }
