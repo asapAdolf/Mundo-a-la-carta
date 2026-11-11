@@ -30,7 +30,7 @@ function reservaForm({ editable, conDatos, archivo, folioEditable = true, estado
   const cab = [];
   if (estado) cab.push(`<span class="estado-reserva">Estado <span class="insignia ${estado === 'Activa' ? 'insignia--ok' : ''}">${esc(estado)}</span></span>`);
   cab.push(folioEditable
-    ? `<div style="min-width:12rem">${campo(`${tipoFolio} *`, 'int(10)', { id: 'folio', v: conDatos ? '1024' : undefined, ph: 'int(10)', ayuda: 'Ingresa el folio para consultar' })}</div>`
+    ? `<div style="min-width:12rem">${campo(`${tipoFolio} *`, 'int(10)', { id: 'folio', v: conDatos ? '1024' : undefined, ayuda: 'Ingresa el folio para consultar' })}</div>`
     : folio(tipoFolio, 'Automático'));
 
   const fecha = campo('Fecha (i)', 's(20)', { id: 'fecha', v: conDatos ? '15/05/2026' : 'Automática', ayuda: 'Se asigna automáticamente' });
